@@ -1,0 +1,466 @@
+{
+  "_comment": "Canonical NFL franchises, derived from Can-Tre-Beat-Vegas/NFL/elo/teams.py so the pool and the model share one set of 32 identities. Hand-editable: add spoken forms to `aliases`. Deliberately no player or coach roster \u2014 person answers grade against the resolved outcome in results-26-27.json, so there is nothing here to keep current and nothing to go stale.",
+  "teams": [
+    {
+      "id": "ARI",
+      "name": "Arizona Cardinals",
+      "city": "Arizona",
+      "nickname": "Cardinals",
+      "conference": "NFC",
+      "division": "NFC West",
+      "aliases": [
+        "ari",
+        "arizona",
+        "arizona cardinals",
+        "cardinals",
+        "cards"
+      ]
+    },
+    {
+      "id": "ATL",
+      "name": "Atlanta Falcons",
+      "city": "Atlanta",
+      "nickname": "Falcons",
+      "conference": "NFC",
+      "division": "NFC South",
+      "aliases": [
+        "atl",
+        "atlanta",
+        "atlanta falcons",
+        "falcons"
+      ]
+    },
+    {
+      "id": "BAL",
+      "name": "Baltimore Ravens",
+      "city": "Baltimore",
+      "nickname": "Ravens",
+      "conference": "AFC",
+      "division": "AFC North",
+      "aliases": [
+        "bal",
+        "baltimore",
+        "baltimore ravens",
+        "ravens"
+      ]
+    },
+    {
+      "id": "BUF",
+      "name": "Buffalo Bills",
+      "city": "Buffalo",
+      "nickname": "Bills",
+      "conference": "AFC",
+      "division": "AFC East",
+      "aliases": [
+        "bills",
+        "buf",
+        "buffalo",
+        "buffalo bills"
+      ]
+    },
+    {
+      "id": "CAR",
+      "name": "Carolina Panthers",
+      "city": "Carolina",
+      "nickname": "Panthers",
+      "conference": "NFC",
+      "division": "NFC South",
+      "aliases": [
+        "car",
+        "carolina",
+        "carolina panthers",
+        "panthers"
+      ]
+    },
+    {
+      "id": "CHI",
+      "name": "Chicago Bears",
+      "city": "Chicago",
+      "nickname": "Bears",
+      "conference": "NFC",
+      "division": "NFC North",
+      "aliases": [
+        "bears",
+        "chi",
+        "chicago",
+        "chicago bears"
+      ]
+    },
+    {
+      "id": "CIN",
+      "name": "Cincinnati Bengals",
+      "city": "Cincinnati",
+      "nickname": "Bengals",
+      "conference": "AFC",
+      "division": "AFC North",
+      "aliases": [
+        "bengals",
+        "cin",
+        "cincinnati",
+        "cincinnati bengals"
+      ]
+    },
+    {
+      "id": "CLE",
+      "name": "Cleveland Browns",
+      "city": "Cleveland",
+      "nickname": "Browns",
+      "conference": "AFC",
+      "division": "AFC North",
+      "aliases": [
+        "browns",
+        "cle",
+        "cleveland",
+        "cleveland browns"
+      ]
+    },
+    {
+      "id": "DAL",
+      "name": "Dallas Cowboys",
+      "city": "Dallas",
+      "nickname": "Cowboys",
+      "conference": "NFC",
+      "division": "NFC East",
+      "aliases": [
+        "cowboys",
+        "dal",
+        "dallas",
+        "dallas cowboys"
+      ]
+    },
+    {
+      "id": "DEN",
+      "name": "Denver Broncos",
+      "city": "Denver",
+      "nickname": "Broncos",
+      "conference": "AFC",
+      "division": "AFC West",
+      "aliases": [
+        "broncos",
+        "den",
+        "denver",
+        "denver broncos"
+      ]
+    },
+    {
+      "id": "DET",
+      "name": "Detroit Lions",
+      "city": "Detroit",
+      "nickname": "Lions",
+      "conference": "NFC",
+      "division": "NFC North",
+      "aliases": [
+        "det",
+        "detroit",
+        "detroit lions",
+        "lions"
+      ]
+    },
+    {
+      "id": "GB",
+      "name": "Green Bay Packers",
+      "city": "Green Bay",
+      "nickname": "Packers",
+      "conference": "NFC",
+      "division": "NFC North",
+      "aliases": [
+        "gb",
+        "green bay",
+        "green bay packers",
+        "pack",
+        "packers"
+      ]
+    },
+    {
+      "id": "HOU",
+      "name": "Houston Texans",
+      "city": "Houston",
+      "nickname": "Texans",
+      "conference": "AFC",
+      "division": "AFC South",
+      "aliases": [
+        "hou",
+        "houston",
+        "houston texans",
+        "texans"
+      ]
+    },
+    {
+      "id": "IND",
+      "name": "Indianapolis Colts",
+      "city": "Indianapolis",
+      "nickname": "Colts",
+      "conference": "AFC",
+      "division": "AFC South",
+      "aliases": [
+        "colts",
+        "ind",
+        "indianapolis",
+        "indianapolis colts",
+        "indy"
+      ]
+    },
+    {
+      "id": "JAX",
+      "name": "Jacksonville Jaguars",
+      "city": "Jacksonville",
+      "nickname": "Jaguars",
+      "conference": "AFC",
+      "division": "AFC South",
+      "aliases": [
+        "jacksonville",
+        "jacksonville jaguars",
+        "jags",
+        "jaguars",
+        "jax"
+      ]
+    },
+    {
+      "id": "KC",
+      "name": "Kansas City Chiefs",
+      "city": "Kansas City",
+      "nickname": "Chiefs",
+      "conference": "AFC",
+      "division": "AFC West",
+      "aliases": [
+        "chiefs",
+        "kansas city",
+        "kansas city chiefs",
+        "kc"
+      ]
+    },
+    {
+      "id": "LA",
+      "name": "Los Angeles Rams",
+      "city": "Los Angeles",
+      "nickname": "Rams",
+      "conference": "NFC",
+      "division": "NFC West",
+      "aliases": [
+        "la",
+        "la rams",
+        "los angeles rams",
+        "rams"
+      ]
+    },
+    {
+      "id": "LAC",
+      "name": "Los Angeles Chargers",
+      "city": "Los Angeles",
+      "nickname": "Chargers",
+      "conference": "AFC",
+      "division": "AFC West",
+      "aliases": [
+        "bolts",
+        "chargers",
+        "la chargers",
+        "lac",
+        "los angeles chargers"
+      ]
+    },
+    {
+      "id": "LV",
+      "name": "Las Vegas Raiders",
+      "city": "Las Vegas",
+      "nickname": "Raiders",
+      "conference": "AFC",
+      "division": "AFC West",
+      "aliases": [
+        "las vegas",
+        "las vegas raiders",
+        "lv",
+        "raiders",
+        "vegas"
+      ]
+    },
+    {
+      "id": "MIA",
+      "name": "Miami Dolphins",
+      "city": "Miami",
+      "nickname": "Dolphins",
+      "conference": "AFC",
+      "division": "AFC East",
+      "aliases": [
+        "dolphins",
+        "mia",
+        "miami",
+        "miami dolphins"
+      ]
+    },
+    {
+      "id": "MIN",
+      "name": "Minnesota Vikings",
+      "city": "Minnesota",
+      "nickname": "Vikings",
+      "conference": "NFC",
+      "division": "NFC North",
+      "aliases": [
+        "min",
+        "minnesota",
+        "minnesota vikings",
+        "vikings"
+      ]
+    },
+    {
+      "id": "NE",
+      "name": "New England Patriots",
+      "city": "New England",
+      "nickname": "Patriots",
+      "conference": "AFC",
+      "division": "AFC East",
+      "aliases": [
+        "ne",
+        "new england",
+        "new england patriots",
+        "patriots",
+        "pats"
+      ]
+    },
+    {
+      "id": "NO",
+      "name": "New Orleans Saints",
+      "city": "New Orleans",
+      "nickname": "Saints",
+      "conference": "NFC",
+      "division": "NFC South",
+      "aliases": [
+        "new orleans",
+        "new orleans saints",
+        "no",
+        "nola",
+        "saints"
+      ]
+    },
+    {
+      "id": "NYG",
+      "name": "New York Giants",
+      "city": "New York",
+      "nickname": "Giants",
+      "conference": "NFC",
+      "division": "NFC East",
+      "aliases": [
+        "big blue",
+        "giants",
+        "new york giants",
+        "nyg"
+      ]
+    },
+    {
+      "id": "NYJ",
+      "name": "New York Jets",
+      "city": "New York",
+      "nickname": "Jets",
+      "conference": "AFC",
+      "division": "AFC East",
+      "aliases": [
+        "jets",
+        "new york jets",
+        "nyj"
+      ]
+    },
+    {
+      "id": "PHI",
+      "name": "Philadelphia Eagles",
+      "city": "Philadelphia",
+      "nickname": "Eagles",
+      "conference": "NFC",
+      "division": "NFC East",
+      "aliases": [
+        "eagles",
+        "phi",
+        "philadelphia",
+        "philadelphia eagles",
+        "philly"
+      ]
+    },
+    {
+      "id": "PIT",
+      "name": "Pittsburgh Steelers",
+      "city": "Pittsburgh",
+      "nickname": "Steelers",
+      "conference": "AFC",
+      "division": "AFC North",
+      "aliases": [
+        "pit",
+        "pittsburgh",
+        "pittsburgh steelers",
+        "steelers"
+      ]
+    },
+    {
+      "id": "SEA",
+      "name": "Seattle Seahawks",
+      "city": "Seattle",
+      "nickname": "Seahawks",
+      "conference": "NFC",
+      "division": "NFC West",
+      "aliases": [
+        "sea",
+        "seahawks",
+        "seattle",
+        "seattle seahawks"
+      ]
+    },
+    {
+      "id": "SF",
+      "name": "San Francisco 49ers",
+      "city": "San Francisco",
+      "nickname": "49ers",
+      "conference": "NFC",
+      "division": "NFC West",
+      "aliases": [
+        "49ers",
+        "niners",
+        "san fran",
+        "san francisco",
+        "san francisco 49ers",
+        "sf"
+      ]
+    },
+    {
+      "id": "TB",
+      "name": "Tampa Bay Buccaneers",
+      "city": "Tampa Bay",
+      "nickname": "Buccaneers",
+      "conference": "NFC",
+      "division": "NFC South",
+      "aliases": [
+        "buccaneers",
+        "bucs",
+        "tampa",
+        "tampa bay",
+        "tampa bay buccaneers",
+        "tb"
+      ]
+    },
+    {
+      "id": "TEN",
+      "name": "Tennessee Titans",
+      "city": "Tennessee",
+      "nickname": "Titans",
+      "conference": "AFC",
+      "division": "AFC South",
+      "aliases": [
+        "ten",
+        "tennessee",
+        "tennessee titans",
+        "titans"
+      ]
+    },
+    {
+      "id": "WAS",
+      "name": "Washington Commanders",
+      "city": "Washington",
+      "nickname": "Commanders",
+      "conference": "NFC",
+      "division": "NFC East",
+      "aliases": [
+        "commanders",
+        "was",
+        "washington",
+        "washington commanders",
+        "wft"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,137 @@
+{
+  "_readme": [
+    "THE MODEL'S ENTRY \u2014 locked, versioned, committed. Never regenerated at build time:",
+    "the whole point is that these picks were fixed before kickoff, like everyone else's.",
+    "",
+    "Derived from Can-Tre-Beat-Vegas's committed preseason futures snapshot",
+    "(web/public/data/nfl/latest.json), read at 0-0 across the league with all 272",
+    "regular-season games still to play. No new simulation was run for this pool.",
+    "",
+    "`abstentions` is deliberate and is rendered as such. Where the Elo has no signal the",
+    "model takes the zero rather than inventing a confident answer.",
+    "",
+    "To lock a future season: bump `version`, write a new file, leave this one alone."
+  ],
+  "entrantId": "model",
+  "displayName": "Can Tre Beat Vegas (model)",
+  "version": "nfl-elo-2026.09.09",
+  "generatedAt": "2026-09-09T17:28:13+00:00",
+  "sourceSnapshot": {
+    "repo": "Hijodeagua/Can-Tre-Beat-Vegas",
+    "file": "web/public/data/nfl/latest.json",
+    "runDate": "2026-09-09",
+    "week": "Week 1",
+    "sims": 10000,
+    "gamesRemaining": 272
+  },
+  "picks": {
+    "afc_east": {
+      "value": "Buffalo Bills",
+      "team": "BUF",
+      "confidence": 0.437,
+      "basis": "highest division-title probability across 10,000 season replays"
+    },
+    "afc_north": {
+      "value": "Baltimore Ravens",
+      "team": "BAL",
+      "confidence": 0.3792,
+      "basis": "highest division-title probability across 10,000 season replays"
+    },
+    "afc_south": {
+      "value": "Houston Texans",
+      "team": "HOU",
+      "confidence": 0.4972,
+      "basis": "highest division-title probability across 10,000 season replays"
+    },
+    "afc_west": {
+      "value": "Denver Broncos",
+      "team": "DEN",
+      "confidence": 0.5331,
+      "basis": "highest division-title probability across 10,000 season replays"
+    },
+    "nfc_east": {
+      "value": "Philadelphia Eagles",
+      "team": "PHI",
+      "confidence": 0.4929,
+      "basis": "highest division-title probability across 10,000 season replays"
+    },
+    "nfc_north": {
+      "value": "Detroit Lions",
+      "team": "DET",
+      "confidence": 0.3097,
+      "basis": "highest division-title probability across 10,000 season replays"
+    },
+    "nfc_south": {
+      "value": "Tampa Bay Buccaneers",
+      "team": "TB",
+      "confidence": 0.3102,
+      "basis": "highest division-title probability across 10,000 season replays"
+    },
+    "nfc_west": {
+      "value": "Seattle Seahawks",
+      "team": "SEA",
+      "confidence": 0.5113,
+      "basis": "highest division-title probability across 10,000 season replays"
+    },
+    "afc_one_seed": {
+      "value": "Houston Texans",
+      "team": "HOU",
+      "confidence": 0.1777,
+      "basis": "highest #1-seed probability in the conference"
+    },
+    "afc_champ": {
+      "value": "Houston Texans",
+      "team": "HOU",
+      "confidence": 0.1547,
+      "basis": "highest conference-title probability"
+    },
+    "nfc_one_seed": {
+      "value": "Seattle Seahawks",
+      "team": "SEA",
+      "confidence": 0.2579,
+      "basis": "highest #1-seed probability in the conference"
+    },
+    "nfc_champ": {
+      "value": "Seattle Seahawks",
+      "team": "SEA",
+      "confidence": 0.2281,
+      "basis": "highest conference-title probability"
+    },
+    "most_wins": {
+      "value": "Seattle Seahawks",
+      "team": "SEA",
+      "confidence": null,
+      "basis": "highest expected wins (11.8)"
+    },
+    "worst_record": {
+      "value": "Las Vegas Raiders",
+      "team": "LV",
+      "confidence": null,
+      "basis": "lowest expected wins (5.4)"
+    },
+    "sb_champ": {
+      "value": "Seattle Seahawks",
+      "team": "SEA",
+      "confidence": 0.1311,
+      "basis": "highest Super Bowl probability"
+    }
+  },
+  "abstentions": {
+    "mvp": "individual award \u2014 the Elo rates teams, not players",
+    "opoy": "individual award \u2014 the Elo rates teams, not players",
+    "dpoy": "individual award \u2014 the Elo rates teams, not players",
+    "oroy": "individual award \u2014 no rookie projection in the model",
+    "droy": "individual award \u2014 no rookie projection in the model",
+    "cpoy": "individual award \u2014 no player-level input",
+    "coy": "voter award \u2014 not modelled",
+    "sb_mvp": "individual award \u2014 the Elo rates teams, not players",
+    "dark_horse": "individual award \u2014 the Elo rates teams, not players",
+    "pass_yards": "no player-level projection",
+    "rush_yards": "no player-level projection",
+    "rec_yards": "no player-level projection",
+    "sacks": "no player-level projection",
+    "first_fired": "not modelled \u2014 depends on ownership decisions, not results",
+    "first_benched": "not modelled \u2014 depends on coaching decisions, not results",
+    "sb_points": "the sim does not simulate scores, only win probabilities"
+  }
+}

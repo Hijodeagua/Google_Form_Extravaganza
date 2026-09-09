@@ -1,0 +1,29 @@
+{
+  "_readme": [
+    "HAND-EDITED ALIAS MAP. Checked before every other resolution route, so an entry",
+    "here always wins \u2014 including over the 'two names in one box scores zero' rule.",
+    "",
+    "Keys are normalized answers: lowercase, no punctuation, no accents, no odds or",
+    "'(favorite)' parenthetical, no ', WR, Titans' suffix, no Jr./III. In practice:",
+    "type the answer in lowercase with the parentheses removed.",
+    "",
+    "  global      applies to every question.",
+    "  byQuestion  keyed by question id, and beats `global`. Use it when the same",
+    "              word means different things in different columns.",
+    "",
+    "Anything the resolver could not place shows up on /nfl-futures-26-27/admin with",
+    "the exact key to paste here."
+  ],
+  "global": {
+    "saquan": "Saquon Barkley",
+    "garret": "Myles Garrett",
+    "puca nacua": "Puka Nacua",
+    "aaron glen": "Aaron Glenn",
+    "sun god st brown": "Amon-Ra St. Brown"
+  },
+  "byQuestion": {
+    "coy": {},
+    "first_fired": {},
+    "oroy": {}
+  }
+}

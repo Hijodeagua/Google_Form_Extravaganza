@@ -1,0 +1,224 @@
+{
+  "_readme": [
+    "THE RESOLUTION KEY. Hand-edited: this is the only file that says what actually happened.",
+    "Fill a `value` in as each outcome settles and the whole site recomputes from it.",
+    "",
+    "  value      the outcome. A team name or 3-letter id for team questions, a full",
+    "             person name for person questions, an integer for sb_points.",
+    "             Leave null while it is still undecided \u2014 null renders as PENDING",
+    "             everywhere and is excluded from every denominator, never as wrong.",
+    "  team       the franchise the outcome belongs to. Set it on coach questions so",
+    "             an entrant who answered 'Panthers coach' or 'Arizona' grades",
+    "             correctly; on team questions it is filled in automatically.",
+    "  resolvedAt ISO date the outcome became official. Shown next to the result.",
+    "  source     free-text note, e.g. 'AP awards, 2027-02-05'.",
+    "  void       set true only if a question can never resolve (no coach was fired",
+    "             all season). A void question drops out instead of scoring zero.",
+    "",
+    "Dark Horse MVP has no entry here on purpose: it is graded against `mvp`."
+  ],
+  "poolId": "nfl-futures-26-27",
+  "season": "2026-27",
+  "schemaVersion": 1,
+  "outcomes": {
+    "afc_east": {
+      "label": "AFC East winner",
+      "value": null,
+      "resolvedAt": null,
+      "source": null,
+      "team": null
+    },
+    "afc_north": {
+      "label": "AFC North winner",
+      "value": null,
+      "resolvedAt": null,
+      "source": null,
+      "team": null
+    },
+    "afc_south": {
+      "label": "AFC South winner",
+      "value": null,
+      "resolvedAt": null,
+      "source": null,
+      "team": null
+    },
+    "afc_west": {
+      "label": "AFC West winner",
+      "value": null,
+      "resolvedAt": null,
+      "source": null,
+      "team": null
+    },
+    "nfc_east": {
+      "label": "NFC East winner",
+      "value": null,
+      "resolvedAt": null,
+      "source": null,
+      "team": null
+    },
+    "nfc_north": {
+      "label": "NFC North winner",
+      "value": null,
+      "resolvedAt": null,
+      "source": null,
+      "team": null
+    },
+    "nfc_south": {
+      "label": "NFC South winner",
+      "value": null,
+      "resolvedAt": null,
+      "source": null,
+      "team": null
+    },
+    "nfc_west": {
+      "label": "NFC West winner",
+      "value": null,
+      "resolvedAt": null,
+      "source": null,
+      "team": null
+    },
+    "mvp": {
+      "label": "MVP",
+      "value": null,
+      "resolvedAt": null,
+      "source": null
+    },
+    "opoy": {
+      "label": "Offensive Player of the Year",
+      "value": null,
+      "resolvedAt": null,
+      "source": null
+    },
+    "dpoy": {
+      "label": "Defensive Player of the Year",
+      "value": null,
+      "resolvedAt": null,
+      "source": null
+    },
+    "oroy": {
+      "label": "Offensive Rookie of the Year",
+      "value": null,
+      "resolvedAt": null,
+      "source": null
+    },
+    "droy": {
+      "label": "Defensive Rookie of the Year",
+      "value": null,
+      "resolvedAt": null,
+      "source": null
+    },
+    "cpoy": {
+      "label": "Comeback Player of the Year",
+      "value": null,
+      "resolvedAt": null,
+      "source": null
+    },
+    "coy": {
+      "label": "Coach of the Year",
+      "value": null,
+      "resolvedAt": null,
+      "source": null,
+      "team": null,
+      "void": false
+    },
+    "sb_mvp": {
+      "label": "Super Bowl LXI MVP",
+      "value": null,
+      "resolvedAt": null,
+      "source": null
+    },
+    "sb_champ": {
+      "label": "Super Bowl LXI Champion",
+      "value": null,
+      "resolvedAt": null,
+      "source": null,
+      "team": null
+    },
+    "sb_points": {
+      "label": "Combined points, Super Bowl LXI",
+      "value": null,
+      "resolvedAt": null,
+      "source": null
+    },
+    "afc_one_seed": {
+      "label": "1 seed in the AFC",
+      "value": null,
+      "resolvedAt": null,
+      "source": null,
+      "team": null
+    },
+    "nfc_one_seed": {
+      "label": "1 seed in the NFC",
+      "value": null,
+      "resolvedAt": null,
+      "source": null,
+      "team": null
+    },
+    "most_wins": {
+      "label": "Most wins, both conferences",
+      "value": null,
+      "resolvedAt": null,
+      "source": null,
+      "team": null
+    },
+    "worst_record": {
+      "label": "Worst record in the league",
+      "value": null,
+      "resolvedAt": null,
+      "source": null,
+      "team": null
+    },
+    "afc_champ": {
+      "label": "AFC Champion",
+      "value": null,
+      "resolvedAt": null,
+      "source": null,
+      "team": null
+    },
+    "nfc_champ": {
+      "label": "NFC Champion",
+      "value": null,
+      "resolvedAt": null,
+      "source": null,
+      "team": null
+    },
+    "pass_yards": {
+      "label": "Passing yards leader",
+      "value": null,
+      "resolvedAt": null,
+      "source": null
+    },
+    "rush_yards": {
+      "label": "Rushing yards leader",
+      "value": null,
+      "resolvedAt": null,
+      "source": null
+    },
+    "rec_yards": {
+      "label": "Receiving yards leader",
+      "value": null,
+      "resolvedAt": null,
+      "source": null
+    },
+    "sacks": {
+      "label": "Sack leader",
+      "value": null,
+      "resolvedAt": null,
+      "source": null
+    },
+    "first_fired": {
+      "label": "First head coach fired",
+      "value": null,
+      "resolvedAt": null,
+      "source": null,
+      "team": null,
+      "void": false
+    },
+    "first_benched": {
+      "label": "First Week 1 starting QB benched",
+      "value": null,
+      "resolvedAt": null,
+      "source": null
+    }
+  }
+}
