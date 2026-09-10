@@ -38,21 +38,27 @@ const GAMES = 17;
 /**
  * How hard team strength pulls a player's projection.
  *
- * Started at 0.5 and came down. At 0.5 the multiplier was deciding the passing
- * title on its own: Sam Darnold led Matthew Stafford by ten yards in five
- * thousand, purely because Seattle's win projection moved half a win after one
- * game. Team quality genuinely affects volume, but far less than that, and for
- * passing it partly cancels — trailing teams throw more, not less.
+ * Backtested, not asserted. `scripts/fit-projection.ts` rebuilds this model for
+ * every season from 2017 on using only the two seasons before it, and checks
+ * the predicted leader against who actually led. Averaged across the whole grid,
+ * 0.2-0.3 is the plateau; below it team quality is ignored, above it the
+ * multiplier starts deciding titles on its own.
  */
 const TEAM_PULL = 0.3;
 
 /**
- * A yards leader has to be on the field. Projecting everyone over a full 17
- * games hands the title to whoever had the best rate in an injury-shortened
- * season, so the assumption is shrunk halfway toward what the player has
- * actually managed recently.
+ * A yards leader has to be on the field, so the 17-game assumption is shrunk
+ * toward what the player actually managed. The backtest puts the useful range
+ * at 0.25-0.5 and is flat across it.
  */
 const DURABILITY_SHRINK = 0.5;
+
+/**
+ * What the backtest measured at exactly these settings: 9 seasons x 4
+ * categories. Quoted on the page so nobody mistakes a projection for a
+ * prediction. Re-run scripts/fit-projection.ts if the constants change.
+ */
+const BACKTEST = { seasons: 9, categories: 4, cases: 36, exact: 3, topThree: 11 };
 
 /** Two projections closer than this are a coin flip, and are labelled as one. */
 const CLOSE_CALL_MARGIN = 0.03;
@@ -167,8 +173,12 @@ async function main() {
 
   const fmt = (n: number) => Math.round(n);
   const picks: Record<string, unknown> = {};
-  const put = (id: string, value: string, basis: string, tier: string, team?: string, confidence: number | null = null, closeCall = false) => {
-    picks[id] = { value, team: team ?? null, confidence, basis, tier, closeCall };
+  const put = (
+    id: string, value: string, basis: string, tier: string,
+    team?: string, confidence: number | null = null, closeCall = false,
+    alternatives: { name: string; team: string; value: number }[] = [],
+  ) => {
+    picks[id] = { value, team: team ?? null, confidence, basis, tier, closeCall, alternatives };
   };
 
   // ---- team-level picks, straight from the Elo sim ----
@@ -212,7 +222,11 @@ async function main() {
     const gap = close
       ? `only ${(margin * 100).toFixed(1)}% clear of ${next.name} — effectively a coin flip`
       : `${(margin * 100).toFixed(0)}% clear of ${next?.name ?? "the field"}`;
-    put(qid, top.name, `projected ${fmt(top.proj[stat])} ${unit} over ${top.expGames.toFixed(1)} games, ${gap}`, "projected", top.team, null, close);
+    // The backtest says the exact pick lands 8% of the time but the true leader
+    // is inside the top three 31% of the time, so the runner-ups are carried
+    // through and shown — they are where most of the signal actually lives.
+    const alternatives = ranked.slice(1, 3).map((p) => ({ name: p.name, team: p.team, value: fmt(p.proj[stat]) }));
+    put(qid, top.name, `projected ${fmt(top.proj[stat])} ${unit} over ${top.expGames.toFixed(1)} games, ${gap}`, "projected", top.team, null, close, alternatives);
   }
 
   // ---- awards derived from the same projections ----
@@ -310,6 +324,7 @@ async function main() {
       durabilityShrink: DURABILITY_SHRINK,
       closeCallMargin: CLOSE_CALL_MARGIN,
       playersProjected: projections.length,
+      backtest: BACKTEST,
     },
     picks,
     abstentions,

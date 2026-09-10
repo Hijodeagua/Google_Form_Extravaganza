@@ -149,6 +149,50 @@ export default async function ModelPage() {
         </table>
       </div>
 
+      <h2 className="section-h">How well does this actually work</h2>
+      <p className="section-sub">
+        The projection was rebuilt for every season since 2017 using only the two seasons before it, then checked
+        against who actually led. That is {modelEntry.playerModel.backtest.cases} cases:{" "}
+        {modelEntry.playerModel.backtest.seasons} seasons across {modelEntry.playerModel.backtest.categories} stat
+        categories.
+      </p>
+
+      <div className="stats">
+        <div className="stat accent">
+          <div className="l">Exact leader called</div>
+          <div className="n">
+            {Math.round((modelEntry.playerModel.backtest.exact / modelEntry.playerModel.backtest.cases) * 100)}%
+          </div>
+          <div className="s">
+            {modelEntry.playerModel.backtest.exact} of {modelEntry.playerModel.backtest.cases} backtested seasons
+          </div>
+        </div>
+        <div className="stat model-accent">
+          <div className="l">Leader in its top three</div>
+          <div className="n">
+            {Math.round((modelEntry.playerModel.backtest.topThree / modelEntry.playerModel.backtest.cases) * 100)}%
+          </div>
+          <div className="s">where most of the signal is</div>
+        </div>
+        <div className="stat">
+          <div className="l">Players projected</div>
+          <div className="n">{modelEntry.playerModel.playersProjected.toLocaleString()}</div>
+          <div className="s">on a 2026 roster with prior production</div>
+        </div>
+        <div className="stat">
+          <div className="l">Effect of tuning</div>
+          <div className="n">3</div>
+          <div className="s">picks separate the best and worst settings tried, out of 36</div>
+        </div>
+      </div>
+
+      <div className="notice warn">
+        <b>Read the stat-leader picks as a shortlist, not a call.</b> Naming the exact season leader lands about one
+        time in twelve. The useful number is the other one: the player who actually led was inside this model&apos;s top
+        three about a third of the time, against roughly one in two hundred for a guess. The runner-ups are listed
+        below each pick for that reason.
+      </div>
+
       <h2 className="section-h">How each pick was made</h2>
       <p className="section-sub">
         Not every answer is worth the same trust, so each one carries the method behind it. Team outcomes come from the
@@ -189,6 +233,11 @@ export default async function ModelPage() {
                   </td>
                   <td className="t-mut" style={{ fontSize: 12.5, lineHeight: 1.55 }}>
                     {pick ? pick.basis : abstained}
+                    {pick?.alternatives && pick.alternatives.length > 0 && (
+                      <div className="t-dim" style={{ marginTop: 5 }}>
+                        Then: {pick.alternatives.map((a) => `${a.name} (${a.value})`).join(", ")}
+                      </div>
+                    )}
                   </td>
                 </tr>
               );
@@ -196,6 +245,15 @@ export default async function ModelPage() {
           </tbody>
         </table>
       </div>
+      <div className="notice model">
+        <b>The constants are fitted, not guessed.</b> <code>scripts/fit-projection.ts</code> grid-searches the recency
+        weight, the team-strength pull and the durability shrink over{" "}
+        {modelEntry.playerModel.backtest.seasons} seasons of held-out history. It also shows how little any of it
+        matters: every setting tried lands between one and four correct picks out of{" "}
+        {modelEntry.playerModel.backtest.cases}. The values below sit at the plateau rather than at the grid&apos;s
+        lucky maximum, which on this little data would be noise.
+      </div>
+
       <div className="notice model">
         <b>The player projections.</b> Two prior seasons of {modelEntry.playerModel.source}, weighted{" "}
         {Math.round((modelEntry.playerModel.seasons["2025"] ?? 0.7) * 100)}/

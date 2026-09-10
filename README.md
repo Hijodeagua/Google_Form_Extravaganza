@@ -103,6 +103,26 @@ The player projection weights the two prior seasons 70/30 toward the most
 recent, converts to a per-game rate, maps each player onto his **2026** roster
 so an offseason move follows him, and lets team strength lift volume gently.
 
+### Fitting the constants
+
+`scripts/fit-projection.ts` rebuilds the projection for every season since 2017
+using only the two seasons before it, then checks the predicted leader against
+who actually led. Nine seasons across four categories, 36 cases, no lookahead.
+
+```bash
+npx tsx scripts/fit-projection.ts
+```
+
+At the shipped settings it calls the exact leader **3 of 36 times (8%)** and has
+the true leader inside its **top three 11 of 36 times (31%)**. For scale, a guess
+inside a ~600-player pool lands near 0.5%.
+
+The more useful finding is how little the tuning matters: **across all 180
+configurations in the grid, hit rate ranges from 1 to 4 correct out of 36.** That
+is the entire combined effect of every constant. So the values below are chosen
+from the marginal plateau rather than the grid's lucky maximum, which on 36
+samples would be noise.
+
 Two guards, both added after the first run produced a nonsense pick:
 
 - **`TEAM_PULL = 0.3`**, down from 0.5. At 0.5 the team multiplier decided the

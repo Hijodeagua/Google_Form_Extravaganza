@@ -334,6 +334,15 @@ function entrant(name: string, answers: Record<string, string>, at: number, outc
   check("model: every projected pick states its margin",
     Object.values(model.picks).filter((p) => (p as { tier: string }).tier === "projected")
       .every((p) => /clear of/.test((p as { basis: string }).basis)));
+  // The measured accuracy has to travel with the picks. A page claiming a hit
+  // rate it never measured is worse than one that says nothing.
+  const bt = (model.playerModel as { backtest?: { cases: number; exact: number; topThree: number } }).backtest;
+  check("model: carries its backtest", !!bt);
+  check("model: backtest is internally consistent",
+    !!bt && bt.exact <= bt.topThree && bt.topThree <= bt.cases && bt.cases > 0);
+  check("model: every projected pick carries runner-ups",
+    Object.values(model.picks).filter((p) => (p as { tier: string }).tier === "projected")
+      .every((p) => ((p as { alternatives?: unknown[] }).alternatives ?? []).length >= 1));
   eq("model: four stat leaders are projected",
     Object.values(model.picks).filter((p) => (p as { tier: string }).tier === "projected").length, 4);
 }

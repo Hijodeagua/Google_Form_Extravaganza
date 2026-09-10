@@ -13,7 +13,7 @@
   "entrantId": "model",
   "displayName": "Can Tre Beat Vegas (model)",
   "version": "nfl-elo-plus-projections-2026-09-10",
-  "generatedAt": "2026-09-10T18:11:07.289Z",
+  "generatedAt": "2026-09-10T18:17:46.006Z",
   "sourceSnapshot": {
     "repo": "Hijodeagua/Can-Tre-Beat-Vegas",
     "file": "web/public/data/nfl/latest.json",
@@ -32,7 +32,14 @@
     "teamPull": 0.3,
     "durabilityShrink": 0.5,
     "closeCallMargin": 0.03,
-    "playersProjected": 1898
+    "playersProjected": 1898,
+    "backtest": {
+      "seasons": 9,
+      "categories": 4,
+      "cases": 36,
+      "exact": 3,
+      "topThree": 11
+    }
   },
   "picks": {
     "nfc_west": {
@@ -41,7 +48,8 @@
       "confidence": 0.5626,
       "basis": "highest division-title probability across 10,000 season replays",
       "tier": "modelled",
-      "closeCall": false
+      "closeCall": false,
+      "alternatives": []
     },
     "afc_south": {
       "value": "Houston Texans",
@@ -49,7 +57,8 @@
       "confidence": 0.488,
       "basis": "highest division-title probability across 10,000 season replays",
       "tier": "modelled",
-      "closeCall": false
+      "closeCall": false,
+      "alternatives": []
     },
     "afc_west": {
       "value": "Denver Broncos",
@@ -57,7 +66,8 @@
       "confidence": 0.5279,
       "basis": "highest division-title probability across 10,000 season replays",
       "tier": "modelled",
-      "closeCall": false
+      "closeCall": false,
+      "alternatives": []
     },
     "afc_east": {
       "value": "Buffalo Bills",
@@ -65,7 +75,8 @@
       "confidence": 0.4858,
       "basis": "highest division-title probability across 10,000 season replays",
       "tier": "modelled",
-      "closeCall": false
+      "closeCall": false,
+      "alternatives": []
     },
     "nfc_east": {
       "value": "Philadelphia Eagles",
@@ -73,7 +84,8 @@
       "confidence": 0.498,
       "basis": "highest division-title probability across 10,000 season replays",
       "tier": "modelled",
-      "closeCall": false
+      "closeCall": false,
+      "alternatives": []
     },
     "nfc_north": {
       "value": "Detroit Lions",
@@ -81,7 +93,8 @@
       "confidence": 0.3033,
       "basis": "highest division-title probability across 10,000 season replays",
       "tier": "modelled",
-      "closeCall": false
+      "closeCall": false,
+      "alternatives": []
     },
     "afc_north": {
       "value": "Baltimore Ravens",
@@ -89,7 +102,8 @@
       "confidence": 0.3781,
       "basis": "highest division-title probability across 10,000 season replays",
       "tier": "modelled",
-      "closeCall": false
+      "closeCall": false,
+      "alternatives": []
     },
     "nfc_south": {
       "value": "Tampa Bay Buccaneers",
@@ -97,7 +111,8 @@
       "confidence": 0.3101,
       "basis": "highest division-title probability across 10,000 season replays",
       "tier": "modelled",
-      "closeCall": false
+      "closeCall": false,
+      "alternatives": []
     },
     "afc_one_seed": {
       "value": "Houston Texans",
@@ -105,7 +120,8 @@
       "confidence": 0.1753,
       "basis": "highest #1-seed probability in the conference",
       "tier": "modelled",
-      "closeCall": false
+      "closeCall": false,
+      "alternatives": []
     },
     "afc_champ": {
       "value": "Houston Texans",
@@ -113,7 +129,8 @@
       "confidence": 0.146,
       "basis": "highest conference-title probability",
       "tier": "modelled",
-      "closeCall": false
+      "closeCall": false,
+      "alternatives": []
     },
     "nfc_one_seed": {
       "value": "Seattle Seahawks",
@@ -121,7 +138,8 @@
       "confidence": 0.2996,
       "basis": "highest #1-seed probability in the conference",
       "tier": "modelled",
-      "closeCall": false
+      "closeCall": false,
+      "alternatives": []
     },
     "nfc_champ": {
       "value": "Seattle Seahawks",
@@ -129,7 +147,8 @@
       "confidence": 0.2606,
       "basis": "highest conference-title probability",
       "tier": "modelled",
-      "closeCall": false
+      "closeCall": false,
+      "alternatives": []
     },
     "most_wins": {
       "value": "Seattle Seahawks",
@@ -137,7 +156,8 @@
       "confidence": null,
       "basis": "highest expected wins (12.3)",
       "tier": "modelled",
-      "closeCall": false
+      "closeCall": false,
+      "alternatives": []
     },
     "worst_record": {
       "value": "Las Vegas Raiders",
@@ -145,7 +165,8 @@
       "confidence": null,
       "basis": "lowest expected wins (5.3)",
       "tier": "modelled",
-      "closeCall": false
+      "closeCall": false,
+      "alternatives": []
     },
     "sb_champ": {
       "value": "Seattle Seahawks",
@@ -153,7 +174,8 @@
       "confidence": 0.1528,
       "basis": "highest Super Bowl probability",
       "tier": "modelled",
-      "closeCall": false
+      "closeCall": false,
+      "alternatives": []
     },
     "pass_yards": {
       "value": "Jared Goff",
@@ -161,7 +183,19 @@
       "confidence": null,
       "basis": "projected 4784 yards over 17.0 games, only 1.2% clear of Matthew Stafford — effectively a coin flip",
       "tier": "projected",
-      "closeCall": true
+      "closeCall": true,
+      "alternatives": [
+        {
+          "name": "Matthew Stafford",
+          "team": "LA",
+          "value": 4728
+        },
+        {
+          "name": "Sam Darnold",
+          "team": "SEA",
+          "value": 4614
+        }
+      ]
     },
     "rush_yards": {
       "value": "Derrick Henry",
@@ -169,7 +203,19 @@
       "confidence": null,
       "basis": "projected 1756 yards over 17.0 games, 12% clear of Jonathan Taylor",
       "tier": "projected",
-      "closeCall": false
+      "closeCall": false,
+      "alternatives": [
+        {
+          "name": "Jonathan Taylor",
+          "team": "IND",
+          "value": 1553
+        },
+        {
+          "name": "James Cook",
+          "team": "BUF",
+          "value": 1541
+        }
+      ]
     },
     "rec_yards": {
       "value": "Jaxon Smith-Njigba",
@@ -177,7 +223,19 @@
       "confidence": null,
       "basis": "projected 1781 yards over 17.0 games, 3% clear of Puka Nacua",
       "tier": "projected",
-      "closeCall": false
+      "closeCall": false,
+      "alternatives": [
+        {
+          "name": "Puka Nacua",
+          "team": "LA",
+          "value": 1723
+        },
+        {
+          "name": "Ja'Marr Chase",
+          "team": "CIN",
+          "value": 1522
+        }
+      ]
     },
     "sacks": {
       "value": "Myles Garrett",
@@ -185,7 +243,19 @@
       "confidence": null,
       "basis": "projected 22 sacks over 16.7 games, 29% clear of Danielle Hunter",
       "tier": "projected",
-      "closeCall": false
+      "closeCall": false,
+      "alternatives": [
+        {
+          "name": "Danielle Hunter",
+          "team": "HOU",
+          "value": 16
+        },
+        {
+          "name": "Nik Bonitto",
+          "team": "DEN",
+          "value": 15
+        }
+      ]
     },
     "mvp": {
       "value": "Sam Darnold",
@@ -193,7 +263,8 @@
       "confidence": null,
       "basis": "4614 projected passing yards on a 15% Super Bowl team. Award weights title odds twice as heavily as yardage, which is why this is not the projected passing leader, 38% clear of Matthew Stafford",
       "tier": "derived",
-      "closeCall": false
+      "closeCall": false,
+      "alternatives": []
     },
     "opoy": {
       "value": "Bijan Robinson",
@@ -201,7 +272,8 @@
       "confidence": null,
       "basis": "most projected yards from scrimmage by a non-quarterback (2152)",
       "tier": "derived",
-      "closeCall": false
+      "closeCall": false,
+      "alternatives": []
     },
     "dpoy": {
       "value": "Myles Garrett",
@@ -209,7 +281,8 @@
       "confidence": null,
       "basis": "projected sack leader (22)",
       "tier": "derived",
-      "closeCall": false
+      "closeCall": false,
+      "alternatives": []
     },
     "sb_mvp": {
       "value": "Sam Darnold",
@@ -217,7 +290,8 @@
       "confidence": null,
       "basis": "starting quarterback of the projected Super Bowl champion",
       "tier": "derived",
-      "closeCall": false
+      "closeCall": false,
+      "alternatives": []
     },
     "dark_horse": {
       "value": "Jared Goff",
@@ -225,7 +299,8 @@
       "confidence": null,
       "basis": "best projected passer outside the six title favourites (4784 yards)",
       "tier": "derived",
-      "closeCall": false
+      "closeCall": false,
+      "alternatives": []
     },
     "coy": {
       "value": "John Harbaugh",
@@ -233,7 +308,8 @@
       "confidence": null,
       "basis": "New York Giants projected +3.0 wins on last season, the biggest gain in the league",
       "tier": "derived",
-      "closeCall": false
+      "closeCall": false,
+      "alternatives": []
     },
     "first_fired": {
       "value": "Klint Kubliak",
@@ -241,7 +317,8 @@
       "confidence": null,
       "basis": "coaches the lowest-projected team in the league (5.3 wins)",
       "tier": "derived",
-      "closeCall": false
+      "closeCall": false,
+      "alternatives": []
     },
     "first_benched": {
       "value": "Kenny Pickett",
@@ -249,7 +326,8 @@
       "confidence": null,
       "basis": "last season's starter on the lowest-projected team",
       "tier": "derived",
-      "closeCall": false
+      "closeCall": false,
+      "alternatives": []
     },
     "oroy": {
       "value": "Jeremiyah Love",
@@ -257,7 +335,8 @@
       "confidence": null,
       "basis": "shortest price in the Form's own dropdown (+550)",
       "tier": "market",
-      "closeCall": false
+      "closeCall": false,
+      "alternatives": []
     },
     "droy": {
       "value": "Rueben Bain Jr.",
@@ -265,7 +344,8 @@
       "confidence": null,
       "basis": "the option the Form marked as favourite",
       "tier": "market",
-      "closeCall": false
+      "closeCall": false,
+      "alternatives": []
     },
     "cpoy": {
       "value": "Patrick Mahomes",
@@ -273,7 +353,8 @@
       "confidence": null,
       "basis": "the option the Form marked as favourite",
       "tier": "market",
-      "closeCall": false
+      "closeCall": false,
+      "alternatives": []
     }
   },
   "abstentions": {
