@@ -7,6 +7,7 @@ const TABS = [
   { href: "", label: "Standings" },
   { href: "/distribution", label: "Pick distribution" },
   { href: "/model", label: "Model vs field" },
+  { href: "/advanced", label: "Advanced" },
   { href: "/side-pot", label: "Side pot" },
   { href: "/admin", label: "Admin" },
 ];

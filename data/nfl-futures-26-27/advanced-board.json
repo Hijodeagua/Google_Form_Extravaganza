@@ -1,0 +1,961 @@
+{
+  "_readme": [
+    "The projection's working, for arguing with. Written by scripts/build-model-picks.ts",
+    "from the same nflverse weekly stats the picks come from, weighted the same way.",
+    "Every column is PER GAME over the two prior seasons. Nothing here picks anything —",
+    "these are the rate stats that explain why a projection looks the way it does."
+  ],
+  "generatedAt": "2026-09-10T18:22:58.150Z",
+  "seasons": {
+    "2024": 0.3,
+    "2025": 0.7
+  },
+  "boards": [
+    {
+      "id": "passing",
+      "label": "Passing",
+      "stat": "passing_yards",
+      "unit": "yds",
+      "note": "EPA is total expected points added passing. CPOE is completion percentage over expected. PACR is passing yards per air yard — a low PACR with high air yards means throwing deep and missing.",
+      "cols": [
+        {
+          "key": "attempts",
+          "label": "Att/g",
+          "dp": 1
+        },
+        {
+          "key": "passing_epa",
+          "label": "EPA/g",
+          "dp": 2
+        },
+        {
+          "key": "passing_cpoe",
+          "label": "CPOE",
+          "dp": 1
+        },
+        {
+          "key": "pacr",
+          "label": "PACR",
+          "dp": 2
+        },
+        {
+          "key": "passing_air_yards",
+          "label": "AirY/g",
+          "dp": 0
+        },
+        {
+          "key": "passing_tds",
+          "label": "TD/g",
+          "dp": 2
+        },
+        {
+          "key": "passing_interceptions",
+          "label": "INT/g",
+          "dp": 2
+        }
+      ],
+      "rows": [
+        {
+          "name": "Jared Goff",
+          "team": "DET",
+          "position": "QB",
+          "projected": 4784,
+          "gamesPlayed": 17,
+          "expGames": 17,
+          "teamWins": 9.8,
+          "cols": {
+            "attempts": 33.3118,
+            "passing_epa": 7.3581,
+            "passing_cpoe": 4.2486,
+            "pacr": 1.4005,
+            "passing_air_yards": 213.0765,
+            "passing_tds": 2.0529,
+            "passing_interceptions": 0.5412
+          }
+        },
+        {
+          "name": "Matthew Stafford",
+          "team": "LA",
+          "position": "QB",
+          "projected": 4728,
+          "gamesPlayed": 16.7,
+          "expGames": 16.8,
+          "teamWins": 10.3,
+          "cols": {
+            "attempts": 34.3114,
+            "passing_epa": 6.8966,
+            "passing_cpoe": 0.98,
+            "pacr": 0.9307,
+            "passing_air_yards": 301.2156,
+            "passing_tds": 2.2874,
+            "passing_interceptions": 0.479
+          }
+        },
+        {
+          "name": "Sam Darnold",
+          "team": "SEA",
+          "position": "QB",
+          "projected": 4614,
+          "gamesPlayed": 17,
+          "expGames": 17,
+          "teamWins": 12.3,
+          "cols": {
+            "attempts": 29.2588,
+            "passing_epa": 3.9464,
+            "passing_cpoe": 5.6211,
+            "pacr": 1.0881,
+            "passing_air_yards": 235.7353,
+            "passing_tds": 1.6471,
+            "passing_interceptions": 0.7882
+          }
+        },
+        {
+          "name": "Bo Nix",
+          "team": "DEN",
+          "position": "QB",
+          "projected": 4139,
+          "gamesPlayed": 17,
+          "expGames": 17,
+          "teamWins": 10.5,
+          "cols": {
+            "attempts": 35.2059,
+            "passing_epa": 3.2152,
+            "passing_cpoe": -0.5969,
+            "pacr": 1.1393,
+            "passing_air_yards": 257.3529,
+            "passing_tds": 1.5412,
+            "passing_interceptions": 0.6647
+          }
+        },
+        {
+          "name": "Drake Maye",
+          "team": "NE",
+          "position": "QB",
+          "projected": 4047,
+          "gamesPlayed": 15.8,
+          "expGames": 16.4,
+          "teamWins": 9.6,
+          "cols": {
+            "attempts": 28.2152,
+            "passing_epa": 6.8617,
+            "passing_cpoe": 7.7662,
+            "pacr": 1.002,
+            "passing_air_yards": 246.0127,
+            "passing_tds": 1.6582,
+            "passing_interceptions": 0.5443
+          }
+        },
+        {
+          "name": "Josh Allen",
+          "team": "BUF",
+          "position": "QB",
+          "projected": 4040,
+          "gamesPlayed": 16,
+          "expGames": 16.5,
+          "teamWins": 10.4,
+          "cols": {
+            "attempts": 29.1813,
+            "passing_epa": 5.5601,
+            "passing_cpoe": 2.5026,
+            "pacr": 1.2414,
+            "passing_air_yards": 222.3688,
+            "passing_tds": 1.6188,
+            "passing_interceptions": 0.55
+          }
+        },
+        {
+          "name": "Dak Prescott",
+          "team": "DAL",
+          "position": "QB",
+          "projected": 4000,
+          "gamesPlayed": 14.3,
+          "expGames": 15.6,
+          "teamWins": 7.6,
+          "cols": {
+            "attempts": 35.3706,
+            "passing_epa": 5.4032,
+            "passing_cpoe": 1.5398,
+            "pacr": 1.0185,
+            "passing_air_yards": 283.028,
+            "passing_tds": 1.6993,
+            "passing_interceptions": 0.6573
+          }
+        },
+        {
+          "name": "Patrick Mahomes",
+          "team": "KC",
+          "position": "QB",
+          "projected": 3936,
+          "gamesPlayed": 14.6,
+          "expGames": 15.8,
+          "teamWins": 8.1,
+          "cols": {
+            "attempts": 36.0068,
+            "passing_epa": 4.7338,
+            "passing_cpoe": 0.9335,
+            "pacr": 1.0178,
+            "passing_air_yards": 269.8151,
+            "passing_tds": 1.589,
+            "passing_interceptions": 0.7534
+          }
+        },
+        {
+          "name": "Baker Mayfield",
+          "team": "TB",
+          "position": "QB",
+          "projected": 3908,
+          "gamesPlayed": 17,
+          "expGames": 17,
+          "teamWins": 8.3,
+          "cols": {
+            "attempts": 32.4176,
+            "passing_epa": 2.0642,
+            "passing_cpoe": -0.6519,
+            "pacr": 0.971,
+            "passing_air_yards": 251.5,
+            "passing_tds": 1.7941,
+            "passing_interceptions": 0.7353
+          }
+        },
+        {
+          "name": "Caleb Williams",
+          "team": "CHI",
+          "position": "QB",
+          "projected": 3862,
+          "gamesPlayed": 17,
+          "expGames": 17,
+          "teamWins": 8.8,
+          "cols": {
+            "attempts": 33.3059,
+            "passing_epa": 0.9041,
+            "passing_cpoe": -2.3399,
+            "pacr": 0.8409,
+            "passing_air_yards": 280.8882,
+            "passing_tds": 1.4647,
+            "passing_interceptions": 0.3941
+          }
+        },
+        {
+          "name": "Justin Herbert",
+          "team": "LAC",
+          "position": "QB",
+          "projected": 3851,
+          "gamesPlayed": 16.3,
+          "expGames": 16.6,
+          "teamWins": 8.5,
+          "cols": {
+            "attempts": 31.2638,
+            "passing_epa": 2.0209,
+            "passing_cpoe": 1.8217,
+            "pacr": 0.9733,
+            "passing_air_yards": 252.0368,
+            "passing_tds": 1.5399,
+            "passing_interceptions": 0.6135
+          }
+        },
+        {
+          "name": "Trevor Lawrence",
+          "team": "JAX",
+          "position": "QB",
+          "projected": 3819,
+          "gamesPlayed": 14.9,
+          "expGames": 15.9,
+          "teamWins": 9.8,
+          "cols": {
+            "attempts": 32.0268,
+            "passing_epa": 1.9276,
+            "passing_cpoe": -1.4146,
+            "pacr": 0.8463,
+            "passing_air_yards": 282.5906,
+            "passing_tds": 1.5839,
+            "passing_interceptions": 0.7047
+          }
+        }
+      ]
+    },
+    {
+      "id": "rushing",
+      "label": "Rushing",
+      "stat": "rushing_yards",
+      "unit": "yds",
+      "note": "Carries per game is the volume the projection leans on. Rushing EPA below zero is normal — most runs lose expected points, which is why bulk rushing rarely wins awards.",
+      "cols": [
+        {
+          "key": "carries",
+          "label": "Car/g",
+          "dp": 1
+        },
+        {
+          "key": "rushing_epa",
+          "label": "EPA/g",
+          "dp": 2
+        },
+        {
+          "key": "rushing_first_downs",
+          "label": "1D/g",
+          "dp": 2
+        },
+        {
+          "key": "rushing_tds",
+          "label": "TD/g",
+          "dp": 2
+        }
+      ],
+      "rows": [
+        {
+          "name": "Derrick Henry",
+          "team": "BAL",
+          "position": "RB",
+          "projected": 1756,
+          "gamesPlayed": 17,
+          "expGames": 17,
+          "teamWins": 9.6,
+          "cols": {
+            "carries": 18.3765,
+            "rushing_epa": 1.0938,
+            "rushing_first_downs": 4.9118,
+            "rushing_tds": 0.9412
+          }
+        },
+        {
+          "name": "Jonathan Taylor",
+          "team": "IND",
+          "position": "RB",
+          "projected": 1553,
+          "gamesPlayed": 16.1,
+          "expGames": 16.5,
+          "teamWins": 8,
+          "cols": {
+            "carries": 19.6894,
+            "rushing_epa": 0.3893,
+            "rushing_first_downs": 4.9752,
+            "rushing_tds": 0.9876
+          }
+        },
+        {
+          "name": "James Cook",
+          "team": "BUF",
+          "position": "RB",
+          "projected": 1541,
+          "gamesPlayed": 16.7,
+          "expGames": 16.8,
+          "teamWins": 10.4,
+          "cols": {
+            "carries": 16.6707,
+            "rushing_epa": 0.4248,
+            "rushing_first_downs": 3.7126,
+            "rushing_tds": 0.7904
+          }
+        },
+        {
+          "name": "Saquon Barkley",
+          "team": "PHI",
+          "position": "RB",
+          "projected": 1511,
+          "gamesPlayed": 16,
+          "expGames": 16.5,
+          "teamWins": 9.9,
+          "cols": {
+            "carries": 18.7188,
+            "rushing_epa": -0.3556,
+            "rushing_first_downs": 3.6375,
+            "rushing_tds": 0.55
+          }
+        },
+        {
+          "name": "Bijan Robinson",
+          "team": "ATL",
+          "position": "RB",
+          "projected": 1456,
+          "gamesPlayed": 17,
+          "expGames": 17,
+          "teamWins": 8.2,
+          "cols": {
+            "carries": 17.1824,
+            "rushing_epa": -0.1881,
+            "rushing_first_downs": 4.0412,
+            "rushing_tds": 0.5353
+          }
+        },
+        {
+          "name": "Kyren Williams",
+          "team": "LA",
+          "position": "RB",
+          "projected": 1353,
+          "gamesPlayed": 16.7,
+          "expGames": 16.8,
+          "teamWins": 10.3,
+          "cols": {
+            "carries": 16.5329,
+            "rushing_epa": -0.2162,
+            "rushing_first_downs": 4.6287,
+            "rushing_tds": 0.6707
+          }
+        },
+        {
+          "name": "Jahmyr Gibbs",
+          "team": "DET",
+          "position": "RB",
+          "projected": 1336,
+          "gamesPlayed": 17,
+          "expGames": 17,
+          "teamWins": 9.8,
+          "cols": {
+            "carries": 14.4176,
+            "rushing_epa": 0.509,
+            "rushing_first_downs": 3.5412,
+            "rushing_tds": 0.8176
+          }
+        },
+        {
+          "name": "De'Von Achane",
+          "team": "MIA",
+          "position": "RB",
+          "projected": 1183,
+          "gamesPlayed": 16.3,
+          "expGames": 16.6,
+          "teamWins": 7.2,
+          "cols": {
+            "carries": 13.9571,
+            "rushing_epa": 0.3953,
+            "rushing_first_downs": 3.0859,
+            "rushing_tds": 0.454
+          }
+        },
+        {
+          "name": "Josh Jacobs",
+          "team": "GB",
+          "position": "RB",
+          "projected": 1108,
+          "gamesPlayed": 15.6,
+          "expGames": 16.3,
+          "teamWins": 8.8,
+          "cols": {
+            "carries": 16.2885,
+            "rushing_epa": -1.0544,
+            "rushing_first_downs": 3.8718,
+            "rushing_tds": 0.8718
+          }
+        },
+        {
+          "name": "J.K. Dobbins",
+          "team": "DEN",
+          "position": "RB",
+          "projected": 1107,
+          "gamesPlayed": 10.9,
+          "expGames": 13.9,
+          "teamWins": 10.5,
+          "cols": {
+            "carries": 15.1927,
+            "rushing_epa": 0.3854,
+            "rushing_first_downs": 3.6697,
+            "rushing_tds": 0.5046
+          }
+        },
+        {
+          "name": "Rico Dowdle",
+          "team": "PIT",
+          "position": "RB",
+          "projected": 1098,
+          "gamesPlayed": 16.7,
+          "expGames": 16.8,
+          "teamWins": 8.8,
+          "cols": {
+            "carries": 14.1138,
+            "rushing_epa": -0.2858,
+            "rushing_first_downs": 3.0898,
+            "rushing_tds": 0.2874
+          }
+        },
+        {
+          "name": "D'Andre Swift",
+          "team": "CHI",
+          "position": "RB",
+          "projected": 1082,
+          "gamesPlayed": 16.3,
+          "expGames": 16.6,
+          "teamWins": 8.8,
+          "cols": {
+            "carries": 14.2331,
+            "rushing_epa": -0.053,
+            "rushing_first_downs": 3.454,
+            "rushing_tds": 0.4969
+          }
+        }
+      ]
+    },
+    {
+      "id": "receiving",
+      "label": "Receiving",
+      "stat": "receiving_yards",
+      "unit": "yds",
+      "note": "WOPR combines target share and air-yards share into one opportunity number; above about 0.7 is a true number-one option. RACR is receiving yards per air yard targeted.",
+      "cols": [
+        {
+          "key": "targets",
+          "label": "Tgt/g",
+          "dp": 1
+        },
+        {
+          "key": "target_share",
+          "label": "Tgt%",
+          "dp": 3
+        },
+        {
+          "key": "air_yards_share",
+          "label": "AY%",
+          "dp": 3
+        },
+        {
+          "key": "wopr",
+          "label": "WOPR",
+          "dp": 2
+        },
+        {
+          "key": "racr",
+          "label": "RACR",
+          "dp": 2
+        },
+        {
+          "key": "receiving_epa",
+          "label": "EPA/g",
+          "dp": 2
+        },
+        {
+          "key": "receiving_tds",
+          "label": "TD/g",
+          "dp": 2
+        }
+      ],
+      "rows": [
+        {
+          "name": "Jaxon Smith-Njigba",
+          "team": "SEA",
+          "position": "WR",
+          "projected": 1781,
+          "gamesPlayed": 17,
+          "expGames": 17,
+          "teamWins": 12.3,
+          "cols": {
+            "targets": 9.1294,
+            "target_share": 0.3287,
+            "air_yards_share": 0.44,
+            "wopr": 0.8009,
+            "racr": 1.2493,
+            "receiving_epa": 4.5885,
+            "receiving_tds": 0.5176
+          }
+        },
+        {
+          "name": "Puka Nacua",
+          "team": "LA",
+          "position": "WR",
+          "projected": 1723,
+          "gamesPlayed": 14.5,
+          "expGames": 15.7,
+          "teamWins": 10.3,
+          "cols": {
+            "targets": 10.2069,
+            "target_share": 0.3066,
+            "air_yards_share": 0.315,
+            "wopr": 0.6804,
+            "racr": 1.5502,
+            "receiving_epa": 6.6685,
+            "receiving_tds": 0.5448
+          }
+        },
+        {
+          "name": "Ja'Marr Chase",
+          "team": "CIN",
+          "position": "WR",
+          "projected": 1522,
+          "gamesPlayed": 16.3,
+          "expGames": 16.6,
+          "teamWins": 8.3,
+          "cols": {
+            "targets": 11.1656,
+            "target_share": 0.3055,
+            "air_yards_share": 0.351,
+            "wopr": 0.704,
+            "racr": 1.0882,
+            "receiving_epa": 3.1944,
+            "receiving_tds": 0.6564
+          }
+        },
+        {
+          "name": "Amon-Ra St. Brown",
+          "team": "DET",
+          "position": "WR",
+          "projected": 1419,
+          "gamesPlayed": 17,
+          "expGames": 17,
+          "teamWins": 9.8,
+          "cols": {
+            "targets": 9.5706,
+            "target_share": 0.3018,
+            "air_yards_share": 0.3639,
+            "wopr": 0.7075,
+            "racr": 1.1152,
+            "receiving_epa": 3.9909,
+            "receiving_tds": 0.6647
+          }
+        },
+        {
+          "name": "Nico Collins",
+          "team": "HOU",
+          "position": "WR",
+          "projected": 1284,
+          "gamesPlayed": 14.1,
+          "expGames": 15.5,
+          "teamWins": 10.8,
+          "cols": {
+            "targets": 8.0638,
+            "target_share": 0.2432,
+            "air_yards_share": 0.3461,
+            "wopr": 0.607,
+            "racr": 0.906,
+            "receiving_epa": 2.8629,
+            "receiving_tds": 0.4468
+          }
+        },
+        {
+          "name": "George Pickens",
+          "team": "DAL",
+          "position": "WR",
+          "projected": 1263,
+          "gamesPlayed": 16.1,
+          "expGames": 16.5,
+          "teamWins": 7.6,
+          "cols": {
+            "targets": 7.8758,
+            "target_share": 0.2362,
+            "air_yards_share": 0.3536,
+            "wopr": 0.6018,
+            "racr": 0.8667,
+            "receiving_epa": 4.3786,
+            "receiving_tds": 0.4472
+          }
+        },
+        {
+          "name": "Justin Jefferson",
+          "team": "MIN",
+          "position": "WR",
+          "projected": 1238,
+          "gamesPlayed": 17,
+          "expGames": 17,
+          "teamWins": 9.6,
+          "cols": {
+            "targets": 8.5235,
+            "target_share": 0.3049,
+            "air_yards_share": 0.3923,
+            "wopr": 0.732,
+            "racr": 0.8669,
+            "receiving_epa": 0.5634,
+            "receiving_tds": 0.2588
+          }
+        },
+        {
+          "name": "CeeDee Lamb",
+          "team": "DAL",
+          "position": "WR",
+          "projected": 1210,
+          "gamesPlayed": 13.6,
+          "expGames": 15.3,
+          "teamWins": 7.6,
+          "cols": {
+            "targets": 9.375,
+            "target_share": 0.2614,
+            "air_yards_share": 0.3212,
+            "wopr": 0.617,
+            "racr": 0.942,
+            "receiving_epa": 1.9286,
+            "receiving_tds": 0.2868
+          }
+        },
+        {
+          "name": "Zay Flowers",
+          "team": "BAL",
+          "position": "WR",
+          "projected": 1209,
+          "gamesPlayed": 17,
+          "expGames": 17,
+          "teamWins": 9.6,
+          "cols": {
+            "targets": 6.9059,
+            "target_share": 0.2854,
+            "air_yards_share": 0.3318,
+            "wopr": 0.6605,
+            "racr": 1.1735,
+            "receiving_epa": 2.698,
+            "receiving_tds": 0.2765
+          }
+        },
+        {
+          "name": "A.J. Brown",
+          "team": "NE",
+          "position": "WR",
+          "projected": 1160,
+          "gamesPlayed": 14.4,
+          "expGames": 15.7,
+          "teamWins": 9.6,
+          "cols": {
+            "targets": 7.9028,
+            "target_share": 0.3006,
+            "air_yards_share": 0.3869,
+            "wopr": 0.7218,
+            "racr": 0.8018,
+            "receiving_epa": 2.9251,
+            "receiving_tds": 0.4861
+          }
+        },
+        {
+          "name": "Jameson Williams",
+          "team": "DET",
+          "position": "WR",
+          "projected": 1150,
+          "gamesPlayed": 16.4,
+          "expGames": 16.7,
+          "teamWins": 9.8,
+          "cols": {
+            "targets": 6.0183,
+            "target_share": 0.1864,
+            "air_yards_share": 0.3183,
+            "wopr": 0.5023,
+            "racr": 1.0464,
+            "receiving_epa": 3.0856,
+            "receiving_tds": 0.4268
+          }
+        },
+        {
+          "name": "Drake London",
+          "team": "ATL",
+          "position": "WR",
+          "projected": 1145,
+          "gamesPlayed": 13.5,
+          "expGames": 15.2,
+          "teamWins": 8.2,
+          "cols": {
+            "targets": 9.3185,
+            "target_share": 0.2916,
+            "air_yards_share": 0.39,
+            "wopr": 0.7103,
+            "racr": 0.7818,
+            "receiving_epa": 2.1012,
+            "receiving_tds": 0.563
+          }
+        }
+      ]
+    },
+    {
+      "id": "pressure",
+      "label": "Pass rush",
+      "stat": "def_sacks",
+      "unit": "sacks",
+      "note": "QB hits per game is the more stable signal: sacks are noisy year to year, pressure is not. A high hit rate with low sacks usually corrects upward.",
+      "cols": [
+        {
+          "key": "def_qb_hits",
+          "label": "Hits/g",
+          "dp": 2
+        },
+        {
+          "key": "def_tackles_for_loss",
+          "label": "TFL/g",
+          "dp": 2
+        },
+        {
+          "key": "def_fumbles_forced",
+          "label": "FF/g",
+          "dp": 2
+        },
+        {
+          "key": "def_pass_defended",
+          "label": "PD/g",
+          "dp": 2
+        }
+      ],
+      "rows": [
+        {
+          "name": "Myles Garrett",
+          "team": "LA",
+          "position": "LB",
+          "projected": 22,
+          "gamesPlayed": 16.4,
+          "expGames": 16.7,
+          "teamWins": 10.3,
+          "cols": {
+            "def_qb_hits": 2.1768,
+            "def_tackles_for_loss": 1.811,
+            "def_fumbles_forced": 0.1829,
+            "def_pass_defended": 0.061
+          }
+        },
+        {
+          "name": "Danielle Hunter",
+          "team": "HOU",
+          "position": "DL",
+          "projected": 16,
+          "gamesPlayed": 16,
+          "expGames": 16.5,
+          "teamWins": 10.8,
+          "cols": {
+            "def_qb_hits": 1.3938,
+            "def_tackles_for_loss": 0.975,
+            "def_fumbles_forced": 0.15,
+            "def_pass_defended": 0.1875
+          }
+        },
+        {
+          "name": "Nik Bonitto",
+          "team": "DEN",
+          "position": "LB",
+          "projected": 15,
+          "gamesPlayed": 17,
+          "expGames": 17,
+          "teamWins": 10.5,
+          "cols": {
+            "def_qb_hits": 1.5765,
+            "def_tackles_for_loss": 0.8588,
+            "def_fumbles_forced": 0.1176,
+            "def_pass_defended": 0.1118
+          }
+        },
+        {
+          "name": "Aidan Hutchinson",
+          "team": "DET",
+          "position": "DL",
+          "projected": 15,
+          "gamesPlayed": 13.4,
+          "expGames": 15.2,
+          "teamWins": 9.8,
+          "cols": {
+            "def_qb_hits": 2.209,
+            "def_tackles_for_loss": 0.8881,
+            "def_fumbles_forced": 0.2313,
+            "def_pass_defended": 0.1567
+          }
+        },
+        {
+          "name": "Micah Parsons",
+          "team": "GB",
+          "position": "LB",
+          "projected": 14,
+          "gamesPlayed": 13.7,
+          "expGames": 15.3,
+          "teamWins": 8.8,
+          "cols": {
+            "def_qb_hits": 1.8832,
+            "def_tackles_for_loss": 0.8759,
+            "def_fumbles_forced": 0.146,
+            "def_pass_defended": 0.073
+          }
+        },
+        {
+          "name": "Brian Burns",
+          "team": "NYG",
+          "position": "LB",
+          "projected": 13,
+          "gamesPlayed": 17,
+          "expGames": 17,
+          "teamWins": 7,
+          "cols": {
+            "def_qb_hits": 1.5941,
+            "def_tackles_for_loss": 1.2059,
+            "def_fumbles_forced": 0.1588,
+            "def_pass_defended": 0.4294
+          }
+        },
+        {
+          "name": "Will Anderson Jr.",
+          "team": "HOU",
+          "position": "DL",
+          "projected": 13,
+          "gamesPlayed": 15.8,
+          "expGames": 16.4,
+          "teamWins": 10.8,
+          "cols": {
+            "def_qb_hits": 1.3797,
+            "def_tackles_for_loss": 1.1899,
+            "def_fumbles_forced": 0.1519,
+            "def_pass_defended": 0.1709
+          }
+        },
+        {
+          "name": "Tuli Tuipulotu",
+          "team": "LAC",
+          "position": "LB",
+          "projected": 12,
+          "gamesPlayed": 15,
+          "expGames": 16,
+          "teamWins": 8.5,
+          "cols": {
+            "def_qb_hits": 1.4133,
+            "def_tackles_for_loss": 1.1533,
+            "def_fumbles_forced": 0.1133,
+            "def_pass_defended": 0.18
+          }
+        },
+        {
+          "name": "Byron Young",
+          "team": "LA",
+          "position": "LB",
+          "projected": 11,
+          "gamesPlayed": 17,
+          "expGames": 17,
+          "teamWins": 10.3,
+          "cols": {
+            "def_qb_hits": 1.4235,
+            "def_tackles_for_loss": 0.7059,
+            "def_fumbles_forced": 0.0588,
+            "def_pass_defended": 0.0176
+          }
+        },
+        {
+          "name": "Trey Hendrickson",
+          "team": "BAL",
+          "position": "LB",
+          "projected": 11,
+          "gamesPlayed": 10,
+          "expGames": 13.5,
+          "teamWins": 9.6,
+          "cols": {
+            "def_qb_hits": 1.64,
+            "def_tackles_for_loss": 0.78,
+            "def_fumbles_forced": 0.13,
+            "def_pass_defended": 0.25
+          }
+        },
+        {
+          "name": "Al-Quadin Muhammad",
+          "team": "TB",
+          "position": "LB",
+          "projected": 11,
+          "gamesPlayed": 11.2,
+          "expGames": 14.1,
+          "teamWins": 8.3,
+          "cols": {
+            "def_qb_hits": 1.3839,
+            "def_tackles_for_loss": 0.6696,
+            "def_fumbles_forced": 0,
+            "def_pass_defended": 0.0268
+          }
+        },
+        {
+          "name": "Josh Sweat",
+          "team": "ARI",
+          "position": "LB",
+          "projected": 10,
+          "gamesPlayed": 15.7,
+          "expGames": 16.3,
+          "teamWins": 6,
+          "cols": {
+            "def_qb_hits": 1.0446,
+            "def_tackles_for_loss": 0.7516,
+            "def_fumbles_forced": 0.1783,
+            "def_pass_defended": 0.1274
+          }
+        }
+      ]
+    }
+  ]
+}

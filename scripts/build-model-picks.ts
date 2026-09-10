@@ -134,7 +134,27 @@ async function main() {
   // Weighted per-game production across the two prior seasons.
   const STATS = ["passing_yards", "rushing_yards", "receiving_yards", "def_sacks"] as const;
   type Stat = (typeof STATS)[number];
-  const totals = new Map<string, { w: number; games: number; s: Record<Stat, number> }>();
+
+  /**
+   * Rate metrics carried alongside the projections for the Advanced board. Not
+   * used to pick anything — these are the columns that say *why* a projection
+   * looks the way it does, which raw yardage never does.
+   *
+   *   epa    expected points added, the closest thing to a value-per-play stat
+   *   cpoe   completion % over expected, given depth and situation
+   *   pacr   passing yards earned per air yard thrown
+   *   racr   receiving yards earned per air yard targeted
+   *   wopr   weighted opportunity: target share and air-yards share combined
+   */
+  const RATES = [
+    "passing_epa", "passing_cpoe", "pacr", "passing_air_yards", "passing_tds", "passing_interceptions", "attempts",
+    "rushing_epa", "rushing_first_downs", "carries", "rushing_tds",
+    "receiving_epa", "racr", "target_share", "air_yards_share", "wopr", "targets", "receiving_tds", "receiving_air_yards",
+    "def_qb_hits", "def_tackles_for_loss", "def_fumbles_forced", "def_pass_defended",
+  ] as const;
+  type Rate = (typeof RATES)[number];
+  const totals = new Map<string, { w: number; games: number; s: Record<Stat, number>; r: Record<Rate, number> }>();
+  const zeroRates = () => Object.fromEntries(RATES.map((k) => [k, 0])) as Record<Rate, number>;
   const seasonWeightSum = Object.values(SEASON_WEIGHTS).reduce((a, b) => a + b, 0);
 
   for (const season of Object.keys(SEASON_WEIGHTS).map(Number).sort()) {
@@ -144,15 +164,20 @@ async function main() {
       if (r.season_type !== "REG") continue;
       const id = r.player_id || r.gsis_id;
       if (!id || !now.has(id)) continue; // only players on a 2026 roster
-      const rec = totals.get(id) ?? { w: 0, games: 0, s: { passing_yards: 0, rushing_yards: 0, receiving_yards: 0, def_sacks: 0 } };
+      const rec = totals.get(id) ?? { w: 0, games: 0, s: { passing_yards: 0, rushing_yards: 0, receiving_yards: 0, def_sacks: 0 }, r: zeroRates() };
       rec.w += weight;
       rec.games += weight;
       for (const k of STATS) rec.s[k] += (Number(r[k]) || 0) * weight;
+      for (const k of RATES) rec.r[k] += (Number(r[k]) || 0) * weight;
       totals.set(id, rec);
     }
   }
 
-  interface Projection { id: string; name: string; team: string; position: string; proj: Record<Stat, number>; teamWins: number; expGames: number }
+  interface Projection {
+    id: string; name: string; team: string; position: string;
+    proj: Record<Stat, number>; teamWins: number; expGames: number;
+    perGame: Record<Rate, number>; totals: Record<Rate, number>; gamesPlayed: number;
+  }
   const projections: Projection[] = [];
   for (const [id, rec] of totals) {
     const who = now.get(id)!;
@@ -165,7 +190,16 @@ async function main() {
     const expGames = DURABILITY_SHRINK * playedPerSeason + (1 - DURABILITY_SHRINK) * GAMES;
     const proj = {} as Record<Stat, number>;
     for (const k of STATS) proj[k] = (rec.s[k] / rec.w) * expGames * lift;
-    projections.push({ id, name: who.name, team: who.team, position: who.position, proj, teamWins: t.exp_wins, expGames });
+    const perGame = {} as Record<Rate, number>;
+    const totalsOut = {} as Record<Rate, number>;
+    for (const k of RATES) {
+      perGame[k] = rec.r[k] / rec.w;
+      totalsOut[k] = rec.r[k] / seasonWeightSum;
+    }
+    projections.push({
+      id, name: who.name, team: who.team, position: who.position, proj, teamWins: t.exp_wins, expGames,
+      perGame, totals: totalsOut, gamesPlayed: playedPerSeason,
+    });
   }
 
   const topBy = (stat: Stat, filter: (p: Projection) => boolean = () => true) =>
@@ -331,6 +365,78 @@ async function main() {
   };
 
   writeFileSync("data/nfl-futures-26-27/model-picks.v2.json", JSON.stringify(doc, null, 2) + "\n");
+
+  // ---- the Advanced board: the projection's own working, for anyone who wants
+  // to argue with it. Rate stats, not just the yardage the pick is made on.
+  const BOARDS: { id: string; label: string; stat: Stat; unit: string; note: string; cols: { key: Rate | "gamesPlayed"; label: string; dp: number }[] }[] = [
+    {
+      id: "passing", label: "Passing", stat: "passing_yards", unit: "yds",
+      note: "EPA is total expected points added passing. CPOE is completion percentage over expected. PACR is passing yards per air yard — a low PACR with high air yards means throwing deep and missing.",
+      cols: [
+        { key: "attempts", label: "Att/g", dp: 1 }, { key: "passing_epa", label: "EPA/g", dp: 2 },
+        { key: "passing_cpoe", label: "CPOE", dp: 1 }, { key: "pacr", label: "PACR", dp: 2 },
+        { key: "passing_air_yards", label: "AirY/g", dp: 0 }, { key: "passing_tds", label: "TD/g", dp: 2 },
+        { key: "passing_interceptions", label: "INT/g", dp: 2 },
+      ],
+    },
+    {
+      id: "rushing", label: "Rushing", stat: "rushing_yards", unit: "yds",
+      note: "Carries per game is the volume the projection leans on. Rushing EPA below zero is normal — most runs lose expected points, which is why bulk rushing rarely wins awards.",
+      cols: [
+        { key: "carries", label: "Car/g", dp: 1 }, { key: "rushing_epa", label: "EPA/g", dp: 2 },
+        { key: "rushing_first_downs", label: "1D/g", dp: 2 }, { key: "rushing_tds", label: "TD/g", dp: 2 },
+      ],
+    },
+    {
+      id: "receiving", label: "Receiving", stat: "receiving_yards", unit: "yds",
+      note: "WOPR combines target share and air-yards share into one opportunity number; above about 0.7 is a true number-one option. RACR is receiving yards per air yard targeted.",
+      cols: [
+        { key: "targets", label: "Tgt/g", dp: 1 }, { key: "target_share", label: "Tgt%", dp: 3 },
+        { key: "air_yards_share", label: "AY%", dp: 3 }, { key: "wopr", label: "WOPR", dp: 2 },
+        { key: "racr", label: "RACR", dp: 2 }, { key: "receiving_epa", label: "EPA/g", dp: 2 },
+        { key: "receiving_tds", label: "TD/g", dp: 2 },
+      ],
+    },
+    {
+      id: "pressure", label: "Pass rush", stat: "def_sacks", unit: "sacks",
+      note: "QB hits per game is the more stable signal: sacks are noisy year to year, pressure is not. A high hit rate with low sacks usually corrects upward.",
+      cols: [
+        { key: "def_qb_hits", label: "Hits/g", dp: 2 }, { key: "def_tackles_for_loss", label: "TFL/g", dp: 2 },
+        { key: "def_fumbles_forced", label: "FF/g", dp: 2 }, { key: "def_pass_defended", label: "PD/g", dp: 2 },
+      ],
+    },
+  ];
+
+  const board = BOARDS.map((b) => ({
+    ...b,
+    rows: projections
+      .slice()
+      .sort((x, y) => y.proj[b.stat] - x.proj[b.stat])
+      .slice(0, 12)
+      .map((p) => ({
+        name: p.name, team: p.team, position: p.position,
+        projected: Math.round(p.proj[b.stat]),
+        gamesPlayed: Number(p.gamesPlayed.toFixed(1)),
+        expGames: Number(p.expGames.toFixed(1)),
+        teamWins: p.teamWins,
+        cols: Object.fromEntries(b.cols.map((c) => [c.key, Number((p.perGame[c.key as Rate] ?? 0).toFixed(4))])),
+      })),
+  }));
+
+  writeFileSync(
+    "data/nfl-futures-26-27/advanced-board.json",
+    JSON.stringify({
+      _readme: [
+        "The projection's working, for arguing with. Written by scripts/build-model-picks.ts",
+        "from the same nflverse weekly stats the picks come from, weighted the same way.",
+        "Every column is PER GAME over the two prior seasons. Nothing here picks anything —",
+        "these are the rate stats that explain why a projection looks the way it does.",
+      ],
+      generatedAt: doc.generatedAt,
+      seasons: SEASON_WEIGHTS,
+      boards: board,
+    }, null, 2) + "\n",
+  );
   process.stdout.write(`\nProjected ${projections.length} players. Wrote ${Object.keys(picks).length} picks.\n\n`);
   for (const [k, v] of Object.entries(picks)) {
     const p = v as { value: string; tier: string; closeCall?: boolean };

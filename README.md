@@ -32,6 +32,7 @@ Pages revalidate hourly. Sheet contents are never committed.
 | `/extravaganza/nfl-futures-26-27/entrants/<slug>` | One entrant's card, every pick graded  |
 | `/extravaganza/nfl-futures-26-27/distribution`    | How the room split, per question       |
 | `/extravaganza/nfl-futures-26-27/model`           | The model's entry vs the field         |
+| `/extravaganza/nfl-futures-26-27/advanced`        | Rate stats behind the projections      |
 | `/extravaganza/nfl-futures-26-27/side-pot`        | Yes/Maybe entrants only                |
 | `/extravaganza/nfl-futures-26-27/admin`           | Fix queue for unresolved answers       |
 
@@ -102,6 +103,17 @@ Every pick carries a `tier` saying how far to trust it:
 The player projection weights the two prior seasons 70/30 toward the most
 recent, converts to a per-game rate, maps each player onto his **2026** roster
 so an offseason move follows him, and lets team strength lift volume gently.
+
+### `advanced-board.json`
+
+Written by the same script. The top twelve projected players per category with
+the rate stats behind them — EPA, CPOE, PACR, RACR, target share, air-yards
+share, WOPR, QB hits, tackles for loss. Every column is per game across the two
+prior seasons, weighted the same way the projection weights them.
+
+Nothing on that page picks anything. It is there because rate stats travel
+between seasons far better than totals do, so it is where you can tell a real
+signal from a player who simply had the ball a lot on a bad team.
 
 ### Fitting the constants
 

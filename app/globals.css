@@ -630,3 +630,9 @@ code {
 .badge.tier-projected { color: var(--turf); border-color: color-mix(in srgb, var(--turf) 55%, transparent); }
 .badge.tier-derived { color: var(--neon-y); border-color: color-mix(in srgb, var(--neon-y) 50%, transparent); }
 .badge.tier-market { color: var(--rust); border-color: color-mix(in srgb, var(--rust) 55%, transparent); }
+
+/* Advanced board: dense, so tighten the cells and let it scroll sideways. */
+table.data.adv { min-width: 860px; font-size: 13px; }
+table.data.adv tbody td { padding: 10px 10px; }
+table.data.adv thead th { padding: 0 10px 10px; }
+tr.adv-pick td { background: color-mix(in srgb, var(--model) 10%, transparent) !important; }

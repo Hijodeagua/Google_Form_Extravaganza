@@ -13,7 +13,7 @@
   "entrantId": "model",
   "displayName": "Can Tre Beat Vegas (model)",
   "version": "nfl-elo-plus-projections-2026-09-10",
-  "generatedAt": "2026-09-10T18:17:46.006Z",
+  "generatedAt": "2026-09-10T18:22:58.150Z",
   "sourceSnapshot": {
     "repo": "Hijodeagua/Can-Tre-Beat-Vegas",
     "file": "web/public/data/nfl/latest.json",

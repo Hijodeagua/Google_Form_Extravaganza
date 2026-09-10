@@ -19,6 +19,7 @@ import entities from "../data/nfl-futures-26-27/entities.json";
 import aliases from "../data/nfl-futures-26-27/aliases.json";
 import results from "../data/nfl-futures-26-27/results-26-27.json";
 import model from "../data/nfl-futures-26-27/model-picks.v2.json";
+import advanced from "../data/nfl-futures-26-27/advanced-board.json";
 
 let passed = 0;
 const failures: string[] = [];
@@ -343,6 +344,22 @@ function entrant(name: string, answers: Record<string, string>, at: number, outc
   check("model: every projected pick carries runner-ups",
     Object.values(model.picks).filter((p) => (p as { tier: string }).tier === "projected")
       .every((p) => ((p as { alternatives?: unknown[] }).alternatives ?? []).length >= 1));
+  // The advanced board must agree with the picks it claims to explain.
+  eq("advanced: one board per stat category", advanced.boards.length, 4);
+  check("advanced: every board is ranked", advanced.boards.every((b) =>
+    b.rows.every((r, i) => i === 0 || r.projected <= b.rows[i - 1].projected)));
+  check("advanced: the top row is the committed pick", (() => {
+    const byStat: Record<string, string> = {
+      passing_yards: "pass_yards", rushing_yards: "rush_yards",
+      receiving_yards: "rec_yards", def_sacks: "sacks",
+    };
+    return advanced.boards.every((b) => {
+      const pick = (model.picks as Record<string, { value: string }>)[byStat[b.stat]];
+      return pick && b.rows[0].name === pick.value;
+    });
+  })());
+  check("advanced: every row carries its columns",
+    advanced.boards.every((b) => b.rows.every((r) => b.cols.every((c) => c.key in r.cols))));
   eq("model: four stat leaders are projected",
     Object.values(model.picks).filter((p) => (p as { tier: string }).tier === "projected").length, 4);
 }
