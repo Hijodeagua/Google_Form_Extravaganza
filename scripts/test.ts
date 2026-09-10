@@ -325,6 +325,15 @@ function entrant(name: string, answers: Record<string, string>, at: number, outc
     Object.values(model.picks).every((p) => TIERS.includes((p as { tier: string }).tier)));
   check("model: every pick explains itself",
     Object.values(model.picks).every((p) => ((p as { basis: string }).basis ?? "").length > 10));
+  // A near-tie presented as a confident call is the failure mode this guards.
+  check("model: a close call is labelled",
+    Object.values(model.picks).every((p) => {
+      const q = p as { basis: string; closeCall?: boolean };
+      return !q.closeCall || /coin flip|only \d/.test(q.basis);
+    }));
+  check("model: every projected pick states its margin",
+    Object.values(model.picks).filter((p) => (p as { tier: string }).tier === "projected")
+      .every((p) => /clear of/.test((p as { basis: string }).basis)));
   eq("model: four stat leaders are projected",
     Object.values(model.picks).filter((p) => (p as { tier: string }).tier === "projected").length, 4);
 }

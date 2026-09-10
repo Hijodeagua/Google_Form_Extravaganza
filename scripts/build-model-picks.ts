@@ -36,11 +36,26 @@ const SEASON = 2026;
 const SEASON_WEIGHTS: Record<number, number> = { 2025: 0.7, 2024: 0.3 };
 const GAMES = 17;
 /**
- * How hard team strength pulls a player's projection. Deliberately gentle: a
- * good offence lifts volume, it does not rewrite who the player is. 0.5 means a
- * team projected for 12 wins lifts its players about 12% over a 9-win team's.
+ * How hard team strength pulls a player's projection.
+ *
+ * Started at 0.5 and came down. At 0.5 the multiplier was deciding the passing
+ * title on its own: Sam Darnold led Matthew Stafford by ten yards in five
+ * thousand, purely because Seattle's win projection moved half a win after one
+ * game. Team quality genuinely affects volume, but far less than that, and for
+ * passing it partly cancels — trailing teams throw more, not less.
  */
-const TEAM_PULL = 0.5;
+const TEAM_PULL = 0.3;
+
+/**
+ * A yards leader has to be on the field. Projecting everyone over a full 17
+ * games hands the title to whoever had the best rate in an injury-shortened
+ * season, so the assumption is shrunk halfway toward what the player has
+ * actually managed recently.
+ */
+const DURABILITY_SHRINK = 0.5;
+
+/** Two projections closer than this are a coin flip, and are labelled as one. */
+const CLOSE_CALL_MARGIN = 0.03;
 
 type Row = Record<string, string>;
 
@@ -113,7 +128,8 @@ async function main() {
   // Weighted per-game production across the two prior seasons.
   const STATS = ["passing_yards", "rushing_yards", "receiving_yards", "def_sacks"] as const;
   type Stat = (typeof STATS)[number];
-  const totals = new Map<string, { w: number; s: Record<Stat, number> }>();
+  const totals = new Map<string, { w: number; games: number; s: Record<Stat, number> }>();
+  const seasonWeightSum = Object.values(SEASON_WEIGHTS).reduce((a, b) => a + b, 0);
 
   for (const season of Object.keys(SEASON_WEIGHTS).map(Number).sort()) {
     const weekly = await getCsv(`${NFLVERSE}/stats_player/stats_player_week_${season}.csv`, `${cacheDir}/wk_${season}.csv`);
@@ -122,14 +138,15 @@ async function main() {
       if (r.season_type !== "REG") continue;
       const id = r.player_id || r.gsis_id;
       if (!id || !now.has(id)) continue; // only players on a 2026 roster
-      const rec = totals.get(id) ?? { w: 0, s: { passing_yards: 0, rushing_yards: 0, receiving_yards: 0, def_sacks: 0 } };
+      const rec = totals.get(id) ?? { w: 0, games: 0, s: { passing_yards: 0, rushing_yards: 0, receiving_yards: 0, def_sacks: 0 } };
       rec.w += weight;
+      rec.games += weight;
       for (const k of STATS) rec.s[k] += (Number(r[k]) || 0) * weight;
       totals.set(id, rec);
     }
   }
 
-  interface Projection { id: string; name: string; team: string; position: string; proj: Record<Stat, number>; teamWins: number }
+  interface Projection { id: string; name: string; team: string; position: string; proj: Record<Stat, number>; teamWins: number; expGames: number }
   const projections: Projection[] = [];
   for (const [id, rec] of totals) {
     const who = now.get(id)!;
@@ -137,9 +154,12 @@ async function main() {
     if (!t || rec.w <= 0) continue;
     // Team strength lifts volume, gently.
     const lift = Math.pow(t.exp_wins / avgWins, TEAM_PULL);
+    // Games a full season would have been, from the same weighting.
+    const playedPerSeason = Math.min(rec.games / seasonWeightSum, GAMES);
+    const expGames = DURABILITY_SHRINK * playedPerSeason + (1 - DURABILITY_SHRINK) * GAMES;
     const proj = {} as Record<Stat, number>;
-    for (const k of STATS) proj[k] = (rec.s[k] / rec.w) * GAMES * lift;
-    projections.push({ id, name: who.name, team: who.team, position: who.position, proj, teamWins: t.exp_wins });
+    for (const k of STATS) proj[k] = (rec.s[k] / rec.w) * expGames * lift;
+    projections.push({ id, name: who.name, team: who.team, position: who.position, proj, teamWins: t.exp_wins, expGames });
   }
 
   const topBy = (stat: Stat, filter: (p: Projection) => boolean = () => true) =>
@@ -147,8 +167,8 @@ async function main() {
 
   const fmt = (n: number) => Math.round(n);
   const picks: Record<string, unknown> = {};
-  const put = (id: string, value: string, basis: string, tier: string, team?: string, confidence: number | null = null) => {
-    picks[id] = { value, team: team ?? null, confidence, basis, tier };
+  const put = (id: string, value: string, basis: string, tier: string, team?: string, confidence: number | null = null, closeCall = false) => {
+    picks[id] = { value, team: team ?? null, confidence, basis, tier, closeCall };
   };
 
   // ---- team-level picks, straight from the Elo sim ----
@@ -181,9 +201,18 @@ async function main() {
     pass_yards: "passing_yards", rush_yards: "rushing_yards", rec_yards: "receiving_yards", sacks: "def_sacks",
   };
   for (const [qid, stat] of Object.entries(leaders)) {
-    const top = topBy(stat)[0];
+    const ranked = topBy(stat);
+    const top = ranked[0];
+    const next = ranked[1];
     const unit = stat === "def_sacks" ? "sacks" : "yards";
-    put(qid, top.name, `projected ${fmt(top.proj[stat])} ${unit} — highest in the league from two prior seasons weighted 70/30 toward 2025, scaled by ${top.team}'s projected ${top.teamWins} wins`, "projected", top.team);
+    // How much daylight is there? Two projections inside a few percent are not
+    // a pick, they are a coin flip, and the page says so rather than pretending.
+    const margin = next ? (top.proj[stat] - next.proj[stat]) / top.proj[stat] : 1;
+    const close = margin < CLOSE_CALL_MARGIN;
+    const gap = close
+      ? `only ${(margin * 100).toFixed(1)}% clear of ${next.name} — effectively a coin flip`
+      : `${(margin * 100).toFixed(0)}% clear of ${next?.name ?? "the field"}`;
+    put(qid, top.name, `projected ${fmt(top.proj[stat])} ${unit} over ${top.expGames.toFixed(1)} games, ${gap}`, "projected", top.team, null, close);
   }
 
   // ---- awards derived from the same projections ----
@@ -191,9 +220,23 @@ async function main() {
   // MVP has gone to a quarterback in 17 of the last 20 seasons, and almost
   // always to one on a contender, so the pick is the best projected passer
   // weighted by his team's title odds rather than raw yardage.
-  const mvp = qbs.slice(0, 8).map((p) => ({ p, score: p.proj.passing_yards / qbs[0].proj.passing_yards + 2 * ((byTeam.get(p.team)?.p_sb ?? 0) / sbChamp.p_sb) }))
-    .sort((a, b) => b.score - a.score)[0].p;
-  put("mvp", mvp.name, `top projected passer weighted by title odds — ${fmt(mvp.proj.passing_yards)} yards on a ${((byTeam.get(mvp.team)?.p_sb ?? 0) * 100).toFixed(0)}% Super Bowl team`, "derived", mvp.team);
+  const mvpRanked = qbs
+    .slice(0, 8)
+    .map((p) => ({ p, score: p.proj.passing_yards / qbs[0].proj.passing_yards + 2 * ((byTeam.get(p.team)?.p_sb ?? 0) / sbChamp.p_sb) }))
+    .sort((a, b) => b.score - a.score);
+  const mvp = mvpRanked[0].p;
+  const mvpMargin = mvpRanked[1] ? (mvpRanked[0].score - mvpRanked[1].score) / mvpRanked[0].score : 1;
+  const mvpClose = mvpMargin < CLOSE_CALL_MARGIN;
+  put(
+    "mvp",
+    mvp.name,
+    `${fmt(mvp.proj.passing_yards)} projected passing yards on a ${((byTeam.get(mvp.team)?.p_sb ?? 0) * 100).toFixed(0)}% Super Bowl team. Award weights title odds twice as heavily as yardage, which is why this is not the projected passing leader` +
+      (mvpClose ? `, and it is only ${(mvpMargin * 100).toFixed(1)}% clear of ${mvpRanked[1].p.name}` : `, ${(mvpMargin * 100).toFixed(0)}% clear of ${mvpRanked[1]?.p.name ?? "the field"}`),
+    "derived",
+    mvp.team,
+    null,
+    mvpClose,
+  );
 
   const skill = projections.filter((p) => p.position !== "QB").map((p) => ({ p, y: p.proj.rushing_yards + p.proj.receiving_yards })).sort((a, b) => b.y - a.y)[0];
   put("opoy", skill.p.name, `most projected yards from scrimmage by a non-quarterback (${fmt(skill.y)})`, "derived", skill.p.team);
@@ -264,6 +307,8 @@ async function main() {
       seasons: SEASON_WEIGHTS,
       games: GAMES,
       teamPull: TEAM_PULL,
+      durabilityShrink: DURABILITY_SHRINK,
+      closeCallMargin: CLOSE_CALL_MARGIN,
       playersProjected: projections.length,
     },
     picks,
@@ -273,8 +318,8 @@ async function main() {
   writeFileSync("data/nfl-futures-26-27/model-picks.v2.json", JSON.stringify(doc, null, 2) + "\n");
   process.stdout.write(`\nProjected ${projections.length} players. Wrote ${Object.keys(picks).length} picks.\n\n`);
   for (const [k, v] of Object.entries(picks)) {
-    const p = v as { value: string; tier: string };
-    process.stdout.write(`  ${k.padEnd(15)} ${p.tier.padEnd(10)} ${p.value}\n`);
+    const p = v as { value: string; tier: string; closeCall?: boolean };
+    process.stdout.write(`  ${k.padEnd(15)} ${p.tier.padEnd(10)} ${p.value}${p.closeCall ? "   [close call]" : ""}\n`);
   }
 }
 

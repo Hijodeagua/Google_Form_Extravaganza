@@ -179,6 +179,7 @@ export default async function ModelPage() {
                       <>
                         <span style={{ color: "var(--model)" }}>{pick.value}</span>{" "}
                         <span className={`badge tier-${pick.tier}`}>{pick.tier}</span>
+                        {pick.closeCall && <span className="badge flag" style={{ marginLeft: 6 }}>coin flip</span>}
                       </>
                     ) : (
                       <span className="abstain">
@@ -201,8 +202,12 @@ export default async function ModelPage() {
         {Math.round((modelEntry.playerModel.seasons["2024"] ?? 0.3) * 100)} toward the most recent, converted to a
         per-game rate and projected over {modelEntry.playerModel.games} games. Each player is mapped to his{" "}
         <b>2026</b> roster, so an offseason move follows him. Team strength then lifts the volume gently — a contender
-        throws and runs more than a bad team, but a good offence does not change who the player is. Nothing is re-run
-        at build time: the picks come from a committed file so they cannot drift after the fact.
+        throws and runs more than a bad team, but a good offence does not change who the player is. A player who missed
+        time is not projected over a full season either — the 17-game assumption is shrunk halfway toward what he
+        actually managed, because a yards leader has to be on the field. Where the top two projections finish within{" "}
+        {Math.round(modelEntry.playerModel.closeCallMargin * 100)}% of each other the pick is marked a{" "}
+        <b>coin flip</b> rather than presented as a call. Nothing is re-run at build time: the picks come from a
+        committed file so they cannot drift after the fact.
       </div>
       <div className="foot" />
     </>

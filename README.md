@@ -100,10 +100,22 @@ Every pick carries a `tier` saying how far to trust it:
 | `market`    | no statistical basis; the price the Form's dropdown carried |
 
 The player projection weights the two prior seasons 70/30 toward the most
-recent, converts to a per-game rate over 17 games, maps each player onto his
-**2026** roster so an offseason move follows him, and lets team strength lift
-volume gently (`TEAM_PULL = 0.5`). A good offence throws and runs more; it does
-not change who the player is.
+recent, converts to a per-game rate, maps each player onto his **2026** roster
+so an offseason move follows him, and lets team strength lift volume gently.
+
+Two guards, both added after the first run produced a nonsense pick:
+
+- **`TEAM_PULL = 0.3`**, down from 0.5. At 0.5 the team multiplier decided the
+  passing title on its own — one quarterback led another by ten yards in five
+  thousand purely because his team's win projection moved half a win after a
+  single game.
+- **`DURABILITY_SHRINK = 0.5`.** Projecting everyone over a full 17 games hands
+  the title to whoever had the best rate in an injury-shortened season, so the
+  17-game assumption is shrunk halfway toward what the player actually managed.
+
+Where the top two projections land within `CLOSE_CALL_MARGIN` (3%) of each
+other, the pick is flagged `closeCall` and the page labels it a coin flip
+instead of presenting it as a call.
 
 ## Scoring
 
