@@ -16,17 +16,19 @@
 @import "tailwindcss";
 
 :root {
-  /* ---- Techno Bowl base ---- */
-  --bg: #0b0a1a;
-  --bg-raise: #14122e;
-  --card: rgba(0, 0, 0, 0.32);
-  --card-2: rgba(255, 255, 255, 0.035);
-  --chip: rgba(255, 255, 255, 0.06);
-  --line: rgba(155, 147, 196, 0.28);
-  --line-soft: rgba(155, 147, 196, 0.16);
-  --ink: #efeaff;
-  --mut: #9b93c4;
-  --mut-2: #6d669a;
+  /* ---- Techno Bowl base, lifted ----
+     Same hue family as the source theme, a few stops off pitch black so the
+     panels read as raised surfaces rather than holes cut in the page. */
+  --bg: #191734;
+  --bg-raise: #232048;
+  --card: rgba(255, 255, 255, 0.048);
+  --card-2: rgba(255, 255, 255, 0.075);
+  --chip: rgba(255, 255, 255, 0.085);
+  --line: rgba(186, 178, 226, 0.3);
+  --line-soft: rgba(186, 178, 226, 0.17);
+  --ink: #f4f1ff;
+  --mut: #b0a9d6;
+  --mut-2: #837cb0;
 
   /* ---- the football half ---- */
   --turf: #2fbf6b;        /* working accent: correct, fills, live state */
@@ -62,8 +64,8 @@ body::before {
   z-index: 0;
   pointer-events: none;
   background:
-    repeating-linear-gradient(90deg, color-mix(in srgb, var(--chalk) 7%, transparent) 0 1px, transparent 1px 9%),
-    radial-gradient(120% 60% at 50% -10%, color-mix(in srgb, var(--turf) 13%, transparent) 0%, transparent 70%);
+    repeating-linear-gradient(90deg, color-mix(in srgb, var(--chalk) 9%, transparent) 0 1px, transparent 1px 9%),
+    radial-gradient(120% 60% at 50% -10%, color-mix(in srgb, var(--turf) 15%, transparent) 0%, transparent 72%);
   -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.35) 60%, transparent 100%);
   mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.35) 60%, transparent 100%);
 }
@@ -112,9 +114,9 @@ header.top {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(11, 10, 26, 0.92);
+  background: rgba(25, 23, 52, 0.92);
   backdrop-filter: blur(14px);
-  border-bottom: 2px solid var(--line);
+  border-bottom: 1.5px solid var(--line);
 }
 .top-inner {
   display: flex;
@@ -152,8 +154,8 @@ header.top {
 
 /* ===== pool nav — a chalk-underlined tab strip that scrolls on a phone ===== */
 .pool-nav {
-  border-bottom: 2px solid var(--line);
-  background: rgba(11, 10, 26, 0.92);
+  border-bottom: 1.5px solid var(--line);
+  background: rgba(25, 23, 52, 0.92);
   backdrop-filter: blur(14px);
   position: sticky;
   top: 58px;
@@ -238,7 +240,7 @@ h1.display {
   text-transform: uppercase;
   color: var(--ink);
   padding-bottom: 12px;
-  border-bottom: 2px solid var(--line);
+  border-bottom: 1.5px solid var(--line);
 }
 @media (min-width: 700px) { .section-h { margin-top: 54px; } }
 .section-sub { color: var(--mut); font-size: 13.5px; margin: 12px 0 18px; line-height: 1.6; }
@@ -247,7 +249,7 @@ h1.display {
 /* ===== season progress, read as field position ===== */
 .progress {
   margin-top: 22px;
-  border: 2px solid var(--line);
+  border: 1.5px solid var(--line);
   background: linear-gradient(180deg, rgba(47, 191, 107, 0.07), rgba(0, 0, 0, 0.3));
   padding: 14px 14px 12px;
 }
@@ -307,7 +309,7 @@ h1.display {
 }
 @media (min-width: 760px) { .pots { grid-template-columns: repeat(3, 1fr); gap: 14px; } }
 .pot {
-  border: 2px solid var(--line);
+  border: 1.5px solid var(--line);
   padding: 16px;
   background: var(--card);
   display: flex;
@@ -331,7 +333,7 @@ h1.display {
   letter-spacing: 0.05em;
   text-transform: uppercase;
   padding: 7px 9px;
-  border: 2px solid var(--line);
+  border: 1.5px solid var(--line);
   color: var(--mut);
 }
 .pot .pstate.won { color: var(--bg); background: var(--neon-y); border-color: var(--neon-y); }
@@ -356,7 +358,7 @@ table.data thead th {
   text-transform: uppercase;
   color: var(--mut-2);
   padding: 0 12px 12px;
-  border-bottom: 2px solid var(--line);
+  border-bottom: 1.5px solid var(--line);
   white-space: nowrap;
 }
 table.data tbody td {
@@ -417,8 +419,8 @@ tr.is-model:hover td { background: color-mix(in srgb, var(--model) 15%, transpar
 .stats { display: grid; gap: 10px; grid-template-columns: repeat(2, 1fr); margin-top: 22px; }
 @media (min-width: 760px) { .stats { grid-template-columns: repeat(4, 1fr); gap: 14px; } }
 .stat {
-  border: 2px solid var(--line);
-  border-top-width: 4px;
+  border: 1.5px solid var(--line);
+  border-top-width: 3px;
   border-top-color: var(--line);
   padding: 14px;
   background: var(--card);
@@ -443,7 +445,7 @@ tr.is-model:hover td { background: color-mix(in srgb, var(--model) 15%, transpar
 .stat.model-accent .n { color: var(--model); }
 
 /* ===== entrant card / pick rows ===== */
-.picks { border: 2px solid var(--line); margin-top: 14px; background: var(--card); }
+.picks { border: 1.5px solid var(--line); margin-top: 14px; background: var(--card); }
 .pick {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -481,14 +483,14 @@ tr.is-model:hover td { background: color-mix(in srgb, var(--model) 15%, transpar
 .pick .actual { display: block; font-size: 12px; font-weight: 400; color: var(--mut); margin-top: 4px; }
 
 /* ===== distribution ===== */
-.dist-q { border: 2px solid var(--line); padding: 15px; margin-bottom: 12px; background: var(--card); }
+.dist-q { border: 1.5px solid var(--line); padding: 15px; margin-bottom: 12px; background: var(--card); }
 .dist-q h3 { font-size: 11px; line-height: 1.5; margin: 0 0 8px; text-transform: uppercase; color: var(--ink); }
 .dist-q .qsub { font-size: 12px; color: var(--mut-2); margin-bottom: 15px; }
 .dbar { display: grid; gap: 6px; margin-bottom: 13px; }
 .dbar .dtop { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
 .dbar .dname { font-size: 14px; font-weight: 700; }
 .dbar .dcount { font-size: 8px; color: var(--mut); white-space: nowrap; }
-.dbar .dtrack { height: 12px; background: rgba(0, 0, 0, 0.45); border: 1px solid var(--line-soft); overflow: hidden; }
+.dbar .dtrack { height: 12px; background: rgba(0, 0, 0, 0.26); border: 1px solid var(--line-soft); overflow: hidden; }
 .dbar .dfill { display: block; height: 100%; background: color-mix(in srgb, var(--turf) 45%, #2b2745); }
 .dbar.consensus .dfill { background: linear-gradient(90deg, var(--turf-deep), var(--turf)); }
 .dbar.island .dfill { background: var(--neon-p); }
@@ -499,7 +501,7 @@ tr.is-model:hover td { background: color-mix(in srgb, var(--model) 15%, transpar
 /* ===== model vs field ===== */
 .vs { display: grid; gap: 12px; grid-template-columns: 1fr; margin-top: 22px; }
 @media (min-width: 820px) { .vs { grid-template-columns: 1fr auto 1fr; gap: 18px; align-items: stretch; } }
-.vs-side { border: 2px solid var(--line); padding: 22px 18px; text-align: center; background: var(--card); }
+.vs-side { border: 1.5px solid var(--line); padding: 22px 18px; text-align: center; background: var(--card); }
 .vs-side.model { border-color: color-mix(in srgb, var(--model) 55%, transparent); }
 .vs-side.field { border-color: color-mix(in srgb, var(--neon-y) 45%, transparent); }
 .vs-side .l { font-size: 7.5px; line-height: 1.7; letter-spacing: 0.06em; text-transform: uppercase; color: var(--mut-2); }
@@ -516,7 +518,7 @@ tr.is-model:hover td { background: color-mix(in srgb, var(--model) 15%, transpar
   text-transform: uppercase;
 }
 
-.verdict { margin-top: 16px; border: 2px solid var(--line); padding: 24px 18px; text-align: center; background: var(--card); }
+.verdict { margin-top: 16px; border: 1.5px solid var(--line); padding: 24px 18px; text-align: center; background: var(--card); }
 .verdict .vt { font-size: clamp(13px, 3.4vw, 22px); line-height: 1.5; text-transform: uppercase; }
 .verdict.win { border-color: var(--model); box-shadow: 0 0 26px color-mix(in srgb, var(--model) 22%, transparent); }
 .verdict.win .vt { color: var(--model); text-shadow: 0 0 16px color-mix(in srgb, var(--model) 50%, transparent); }
@@ -529,8 +531,8 @@ tr.is-model:hover td { background: color-mix(in srgb, var(--model) 15%, transpar
 
 /* ===== notices ===== */
 .notice {
-  border: 2px solid var(--line);
-  border-left-width: 5px;
+  border: 1.5px solid var(--line);
+  border-left-width: 4px;
   border-left-color: var(--neon-y);
   padding: 14px 15px;
   background: rgba(255, 210, 63, 0.05);
@@ -543,7 +545,7 @@ tr.is-model:hover td { background: color-mix(in srgb, var(--model) 15%, transpar
 .notice.warn { border-left-color: var(--rust); background: rgba(255, 159, 69, 0.05); }
 .notice.model { border-left-color: var(--model); background: rgba(65, 224, 255, 0.05); }
 
-.empty { padding: 40px 18px; text-align: center; border: 2px dashed var(--line); margin-top: 20px; }
+.empty { padding: 40px 18px; text-align: center; border: 1.5px dashed var(--line); margin-top: 20px; }
 .empty .e1 { font-family: var(--font-pixel), monospace; font-size: 12px; line-height: 1.6; text-transform: uppercase; }
 .empty .e2 { color: var(--mut); font-size: 13.5px; margin-top: 12px; line-height: 1.6; }
 
@@ -551,7 +553,7 @@ tr.is-model:hover td { background: color-mix(in srgb, var(--model) 15%, transpar
 .cards { display: grid; gap: 14px; grid-template-columns: 1fr; margin-top: 26px; }
 @media (min-width: 760px) { .cards { grid-template-columns: repeat(2, 1fr); gap: 16px; } }
 .tcard {
-  border: 2px solid var(--line);
+  border: 1.5px solid var(--line);
   padding: 20px;
   text-decoration: none;
   background: var(--card);
@@ -579,11 +581,11 @@ tr.is-model:hover td { background: color-mix(in srgb, var(--model) 15%, transpar
 .tcard .tm b { color: var(--neon-y); }
 
 /* ===== footer ===== */
-footer.site { border-top: 2px solid var(--line); margin-top: 40px; }
+footer.site { border-top: 1.5px solid var(--line); margin-top: 40px; }
 footer.site .inner { padding: 24px 0 40px; color: var(--mut-2); font-size: 12.5px; line-height: 1.8; max-width: 740px; }
 
 /* ===== admin ===== */
-.fix { border: 2px solid var(--line); border-left-width: 4px; padding: 13px 15px; margin-bottom: 10px; background: var(--card); }
+.fix { border: 1.5px solid var(--line); border-left-width: 4px; padding: 13px 15px; margin-bottom: 10px; background: var(--card); }
 .fix .fh { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 9px; }
 .fix .fq { font-size: 13px; font-weight: 700; }
 .fix .fw { font-size: 12px; color: var(--mut-2); }
@@ -592,7 +594,7 @@ footer.site .inner { padding: 24px 0 40px; color: var(--mut-2); font-size: 12.5p
 code {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 12.5px;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.3);
   border: 1px solid var(--line-soft);
   padding: 2px 6px;
   color: var(--neon-y);
