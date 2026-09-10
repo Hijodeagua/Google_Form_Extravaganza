@@ -70,6 +70,13 @@ export interface PoolConfig {
   blurb: string;
   season: string;
   sheetId: string;
+  /**
+   * A "Publish to the web -> CSV" URL for the responses tab, which is public
+   * independently of the document's own sharing settings. Preferred over the
+   * gviz endpoint when set: gviz answers 401 unless the whole document is
+   * link-shared, which exposes more than the rows.
+   */
+  publishedCsvUrl?: string;
   /** Header text of the respondent-name column. */
   nameColumn: string[];
   /** Header text of the submission-timestamp column. */

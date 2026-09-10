@@ -1,12 +1,17 @@
 import { parseCsv } from "./csv";
 
 /**
- * Reads a link-shared Google Sheet as CSV through the gviz endpoint.
+ * Reads the Form's responses as CSV, with no auth and so no secret in the repo.
  *
- * Why gviz and not the Sheets API: while the sheet stays link-shared this needs
- * no auth at all, which means no secret in the repo and no service account to
- * rotate. `tqx=out:csv` is the visualization query endpoint; it honours "anyone
- * with the link can view" and returns text/csv.
+ * Two ways in, in order of preference:
+ *
+ * 1. **Publish to the web (`publishedCsvUrl`).** File -> Share -> Publish to
+ *    web -> pick the responses tab -> CSV. The resulting `/pub?output=csv` URL
+ *    is public on its own terms, so the document itself can stay private and
+ *    only the rows are exposed. This is what the NFL pool uses.
+ * 2. **gviz (`/gviz/tq?tqx=out:csv`).** The fallback. Needs the whole document
+ *    set to "anyone with the link can view" — anything less and Google answers
+ *    HTTP 401, which is exactly what happened on the first deploy here.
  *
  * ---------------------------------------------------------------------------
  * FALLBACK PATH, for the day the sheet is locked down
@@ -39,7 +44,7 @@ export interface SheetFetch {
   error?: string;
 }
 
-const csvUrl = (sheetId: string) =>
+const gvizUrl = (sheetId: string) =>
   `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv`;
 
 /**
@@ -59,10 +64,11 @@ export class SheetUnavailableError extends Error {}
  * "last good snapshot" behaviour, without ever writing sheet contents into the
  * repo (which the project rules forbid).
  */
-export async function fetchSheetCsv(sheetId: string): Promise<SheetFetch> {
+export async function fetchSheetCsv(sheetId: string, publishedCsvUrl?: string): Promise<SheetFetch> {
+  const url = publishedCsvUrl || gvizUrl(sheetId);
   let res: Response;
   try {
-    res = await fetch(csvUrl(sheetId), {
+    res = await fetch(url, {
       next: { revalidate: SHEET_REVALIDATE_SECONDS },
       headers: { accept: "text/csv,*/*" },
     });
@@ -70,12 +76,18 @@ export async function fetchSheetCsv(sheetId: string): Promise<SheetFetch> {
     throw new SheetUnavailableError(`Sheet fetch failed: ${(cause as Error).message}`);
   }
 
-  if (!res.ok) throw new SheetUnavailableError(`Sheet fetch returned HTTP ${res.status}`);
+  if (!res.ok) {
+    throw new SheetUnavailableError(
+      res.status === 401 || res.status === 403
+        ? `Sheet fetch returned HTTP ${res.status} — the responses are not publicly readable. Publish the responses tab to the web as CSV and set publishedCsvUrl in the pool config.`
+        : `Sheet fetch returned HTTP ${res.status}.`,
+    );
+  }
 
   const body = await res.text();
   if (looksLikeHtml(body)) {
     throw new SheetUnavailableError(
-      "Sheet returned HTML, not CSV — link sharing is probably off. See the service-account fallback in lib/sheets/fetch.ts.",
+      "Sheet returned HTML, not CSV — the publish-to-web link was revoked, or link sharing is off.",
     );
   }
 

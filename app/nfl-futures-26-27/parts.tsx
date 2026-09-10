@@ -1,18 +1,30 @@
 import type { GradedPick, Outcome } from "@/lib/scoring/engine";
 import type { PotResult } from "@/lib/scoring/pots";
 
-/** Season progress. The honest headline for the first four months. */
+/**
+ * Season progress, read as field position rather than a percentage: the ball
+ * starts on its own goal line and the chalk hashes are every ten yards. It is
+ * the same number either way, but this is a football pool.
+ */
 export function Progress({ resolved, total }: { resolved: number; total: number }) {
   const pct = total ? (resolved / total) * 100 : 0;
+  const yardLine = Math.round(pct);
   return (
     <div className="progress">
-      <span className="lab">
-        <b>{resolved}</b> of {total} outcomes settled
-      </span>
-      <span className="track">
-        <span className="fill" style={{ width: `${Math.max(pct, resolved ? 3 : 0)}%` }} />
-      </span>
-      <span className="lab">{resolved === 0 ? "Season not started" : `${Math.round(pct)}% graded`}</span>
+      <div className="ptop">
+        <span className="lab">
+          <b>{resolved}</b> of {total} outcomes settled
+        </span>
+        <span className={`lab ${resolved === total && total > 0 ? "done" : ""}`}>
+          {resolved === 0 ? "Own goal line" : resolved === total ? "Touchdown" : `${yardLine} yard line`}
+        </span>
+      </div>
+      <div className="yardage">
+        <span className="gained" style={{ width: `${pct}%` }} />
+        <span className="ball" style={{ left: `${Math.min(Math.max(pct, 2), 98)}%` }} aria-hidden>
+          🏈
+        </span>
+      </div>
     </div>
   );
 }

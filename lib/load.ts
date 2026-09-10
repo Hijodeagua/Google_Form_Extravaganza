@@ -134,7 +134,7 @@ export async function loadPool(pool: PoolConfig): Promise<PoolData> {
   let rows: string[][];
   let fetchedAt: string;
   try {
-    ({ rows, fetchedAt } = await fetchSheetCsv(pool.sheetId));
+    ({ rows, fetchedAt } = await fetchSheetCsv(pool.sheetId, pool.publishedCsvUrl));
   } catch (err) {
     if (!(err instanceof SheetUnavailableError)) throw err;
 

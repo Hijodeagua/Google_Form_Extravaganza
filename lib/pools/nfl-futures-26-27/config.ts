@@ -37,6 +37,11 @@ export const NFL_FUTURES_26_27: PoolConfig = {
   blurb: "Friend-group futures pool, graded live against the season — and against the model.",
   season: "2026-27",
   sheetId: "1QOYnNSYzYgkmpiG8_nTSOkpNDsoE1abIVrxBdum7sOE",
+  // Paste the "Publish to the web -> CSV" URL for the responses tab here. It
+  // looks like https://docs.google.com/spreadsheets/d/e/2PACX-.../pub?gid=0&single=true&output=csv
+  // Until it is set, the fetch falls back to gviz, which needs the whole
+  // document link-shared and answers 401 otherwise.
+  publishedCsvUrl: undefined,
   nameColumn: ["name"],
   timestampColumn: ["timestamp"],
   sidePotColumn: {
