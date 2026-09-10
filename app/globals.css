@@ -486,17 +486,38 @@ tr.is-model:hover td { background: color-mix(in srgb, var(--model) 15%, transpar
 .dist-q { border: 1.5px solid var(--line); padding: 15px; margin-bottom: 12px; background: var(--card); }
 .dist-q h3 { font-size: 11px; line-height: 1.5; margin: 0 0 8px; text-transform: uppercase; color: var(--ink); }
 .dist-q .qsub { font-size: 12px; color: var(--mut-2); margin-bottom: 15px; }
-.dbar { display: grid; gap: 6px; margin-bottom: 13px; }
-.dbar .dtop { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
-.dbar .dname { font-size: 14px; font-weight: 700; }
-.dbar .dcount { font-size: 8px; color: var(--mut); white-space: nowrap; }
-.dbar .dtrack { height: 12px; background: rgba(0, 0, 0, 0.26); border: 1px solid var(--line-soft); overflow: hidden; }
-.dbar .dfill { display: block; height: 100%; background: color-mix(in srgb, var(--turf) 45%, #2b2745); }
-.dbar.consensus .dfill { background: linear-gradient(90deg, var(--turf-deep), var(--turf)); }
-.dbar.island .dfill { background: var(--neon-p); }
-.dbar.has-model .dfill { background: linear-gradient(90deg, #1b6f80, var(--model)); }
-.dbar.correct .dfill { background: linear-gradient(90deg, var(--turf-deep), var(--turf)); box-shadow: 0 0 14px color-mix(in srgb, var(--turf) 60%, transparent); }
-.dbar .who { font-size: 12px; color: var(--mut-2); line-height: 1.6; }
+
+/* Donut plus legend: stacked on a phone, side by side once there is room. */
+.pie-wrap { display: grid; gap: 16px; grid-template-columns: 1fr; align-items: center; }
+@media (min-width: 620px) { .pie-wrap { grid-template-columns: 168px 1fr; gap: 22px; } }
+.pie { width: 168px; height: 168px; justify-self: center; display: block; }
+.pie-n {
+  font-family: var(--font-pixel), monospace;
+  font-size: 19px;
+  fill: var(--ink);
+  text-anchor: middle;
+}
+.pie-l {
+  font-family: var(--font-pixel), monospace;
+  font-size: 7px;
+  fill: var(--mut-2);
+  text-anchor: middle;
+  letter-spacing: 0.06em;
+}
+
+.pie-legend { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; }
+.pie-legend li { display: grid; grid-template-columns: 12px 1fr auto; gap: 10px; align-items: start; }
+.pie-legend .sw { width: 12px; height: 12px; margin-top: 3px; border: 1px solid rgba(0, 0, 0, 0.45); }
+.pie-legend .ln { display: grid; gap: 2px; min-width: 0; }
+.pie-legend .lname { font-size: 14px; font-weight: 700; line-height: 1.35; }
+.pie-legend .lwho { font-size: 11.5px; color: var(--mut-2); line-height: 1.5; }
+.pie-legend .lpct {
+  font-family: var(--font-pixel), monospace;
+  font-size: 9px;
+  color: var(--mut);
+  white-space: nowrap;
+  margin-top: 3px;
+}
 
 /* ===== model vs field ===== */
 .vs { display: grid; gap: 12px; grid-template-columns: 1fr; margin-top: 22px; }
@@ -603,3 +624,9 @@ code {
 @media (prefers-reduced-motion: reduce) {
   .tcard, .yardage .gained { transition: none; }
 }
+
+/* Basis tiers on the model page: how much to trust a given pick. */
+.badge.tier-modelled { color: var(--model); border-color: color-mix(in srgb, var(--model) 55%, transparent); }
+.badge.tier-projected { color: var(--turf); border-color: color-mix(in srgb, var(--turf) 55%, transparent); }
+.badge.tier-derived { color: var(--neon-y); border-color: color-mix(in srgb, var(--neon-y) 50%, transparent); }
+.badge.tier-market { color: var(--rust); border-color: color-mix(in srgb, var(--rust) 55%, transparent); }

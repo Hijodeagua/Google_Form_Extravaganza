@@ -76,13 +76,34 @@ identities. There is deliberately **no player or coach roster**: person answers
 are graded against the resolved outcome, so there is nothing here to keep
 current.
 
-### `model-picks.v1.json`
+### `model-picks.v2.json`
 
-The model's locked entry. Read from a committed file and **never regenerated at
-build time** — the point is that the picks were fixed before kickoff like
-everyone else's. Derived from Can-Tre-Beat-Vegas's committed preseason futures
-snapshot (10,000 season replays at 0-0). To lock a new season, bump `version` and
-write a new file.
+The model's locked entry, written by `scripts/build-model-picks.ts`. Read from a
+committed file and **never regenerated at build time** — the point is that the
+picks were fixed on the same deadline as everyone else's.
+
+```bash
+npx tsx scripts/build-model-picks.ts   # by hand, once, before the season
+```
+
+Three public keyless inputs: Can-Tre-Beat-Vegas's committed futures snapshot
+(10,000 Elo season replays), nflverse weekly player stats for the two prior
+seasons, and nflverse 2026 week-1 rosters plus the schedule's coach column.
+
+Every pick carries a `tier` saying how far to trust it:
+
+| Tier        | Meaning                                                    |
+| ----------- | ---------------------------------------------------------- |
+| `modelled`  | straight from the Elo season simulation (team outcomes)     |
+| `projected` | a player projection from two prior seasons of production    |
+| `derived`   | a projection plus a rule of thumb (awards)                  |
+| `market`    | no statistical basis; the price the Form's dropdown carried |
+
+The player projection weights the two prior seasons 70/30 toward the most
+recent, converts to a per-game rate over 17 games, maps each player onto his
+**2026** roster so an offseason move follows him, and lets team strength lift
+volume gently (`TEAM_PULL = 0.5`). A good offence throws and runs more; it does
+not change who the player is.
 
 ## Scoring
 

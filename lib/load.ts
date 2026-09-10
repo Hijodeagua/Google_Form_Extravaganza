@@ -9,7 +9,9 @@ import { readOutcome, scoreEntrant, type Entrant, type Outcome } from "@/lib/sco
 import entitiesJson from "@/data/nfl-futures-26-27/entities.json";
 import aliasesJson from "@/data/nfl-futures-26-27/aliases.json";
 import resultsJson from "@/data/nfl-futures-26-27/results-26-27.json";
-import modelJson from "@/data/nfl-futures-26-27/model-picks.v1.json";
+import modelJson from "@/data/nfl-futures-26-27/model-picks.v2.json";
+
+export type ModelTier = "modelled" | "projected" | "derived" | "market";
 
 export interface ModelEntry {
   entrantId: string;
@@ -17,7 +19,8 @@ export interface ModelEntry {
   version: string;
   generatedAt: string;
   sourceSnapshot: { repo: string; file: string; runDate: string; week: string; sims: number; gamesRemaining: number };
-  picks: Record<string, { value: string; team?: string; confidence: number | null; basis: string }>;
+  playerModel: { source: string; seasons: Record<string, number>; games: number; teamPull: number; playersProjected: number };
+  picks: Record<string, { value: string; team?: string | null; confidence: number | null; basis: string; tier: ModelTier }>;
   abstentions: Record<string, string>;
 }
 
@@ -84,7 +87,11 @@ function buildModelEntrant(pool: PoolConfig, outcomes: Record<string, Outcome>, 
       resolutions[question.id] = {
         raw: pick.value,
         display: pick.value,
-        value: pick.team ?? canonicalKey(pick.value),
+        // The name is always the value; the team rides alongside it. Storing the
+        // team id AS the value made every player pick compare against a
+        // franchise code, so a question four people agreed with the model on
+        // counted as zero agreement.
+        value: canonicalKey(pick.value),
         team: pick.team ?? null,
         status: "resolved",
         method: "exact",

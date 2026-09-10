@@ -200,20 +200,37 @@ export function comparePerson(answerKey: string, outcomeKey: string): { hit: boo
 }
 
 /**
+ * The key two answers to the same question are compared on.
+ *
+ * Team questions compare on the franchise, so "Bills" and "Buffalo Bills" are
+ * one answer. Everything else compares on the name: a player question must NOT
+ * fall back to the team, because the model records a team for its player picks
+ * and the humans do not — comparing those would score five people agreeing on
+ * Myles Garrett as nobody agreeing at all.
+ */
+export function pickKey(domain: Domain, r: Resolution | undefined): string | null {
+  if (!r) return null;
+  if (domain === "team") return r.team ?? null;
+  if (domain === "coach") return r.value ?? r.team ?? null;
+  return r.value ?? null;
+}
+
+/**
  * Cluster raw answers to the same question so the distribution view shows one
  * bar for "Puka Nacua", "Puca Nacua" and "nacua". Runs without any outcome being
  * known, which is the state this page lives in for most of the season.
  */
-export function clusterAnswers(resolutions: Resolution[]): Map<string, Resolution[]> {
+export function clusterAnswers(resolutions: Resolution[], domain: Domain = "person"): Map<string, Resolution[]> {
   const clusters = new Map<string, Resolution[]>();
 
   for (const r of resolutions) {
-    const key = r.team ?? r.value;
+    const key = pickKey(domain, r);
     if (!key) continue;
 
     // Exact key hit first; otherwise look for a cluster close enough to merge.
+    // Franchises are already canonical ids, so they only ever match exactly.
     let target = clusters.has(key) ? key : null;
-    if (!target && !r.team) {
+    if (!target && domain !== "team") {
       for (const existing of clusters.keys()) {
         const whole = diceCoefficient(key, existing);
         const bySurname = !key.includes(" ") || !existing.includes(" ") ? diceCoefficient(surname(key), surname(existing)) : 0;

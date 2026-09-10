@@ -68,6 +68,7 @@ export default async function StandingsPage() {
             <tr>
               <th style={{ width: 34 }}>#</th>
               <th>Entrant</th>
+              <th>Side pot</th>
               <th className="num">Points</th>
               <th className="num">Divisions</th>
               <th className="num">Awards</th>
@@ -84,11 +85,19 @@ export default async function StandingsPage() {
                       {entrant.name}
                     </Link>
                     {entrant.isModel && <span className="badge model">model</span>}
-                    {entrant.optedIntoSidePot && <span className="badge pot">side pot</span>}
                     {entrant.flaggedCount > 0 && <span className="badge flag">{entrant.flaggedCount} flagged</span>}
                   </div>
                   {!preseason && tied && separatedBy && (
                     <div className="sep-note">Tied — separated on {separatedBy}</div>
+                  )}
+                </td>
+                <td>
+                  {entrant.isModel ? (
+                    <span className="t-dim">—</span>
+                  ) : entrant.optedIntoSidePot ? (
+                    <span className="badge pot">{entrant.sidePotAnswer}</span>
+                  ) : (
+                    <span className="t-dim">{entrant.sidePotAnswer || "No"}</span>
                   )}
                 </td>
                 <td className="num">

@@ -1,18 +1,10 @@
 import { NFL_FUTURES_26_27 as POOL } from "@/lib/pools/nfl-futures-26-27/config";
 import { loadPool } from "@/lib/load";
-import { clusterAnswers, clusterLabel } from "@/lib/resolve/match";
+import { clusterAnswers, clusterLabel, pickKey } from "@/lib/resolve/match";
 import type { Resolution } from "@/lib/resolve/types";
-import { Progress } from "../parts";
+import { PickPie, Progress, type Slice } from "../parts";
 
 export const revalidate = 3600;
-
-interface Bar {
-  key: string;
-  label: string;
-  names: string[];
-  modelPicked: boolean;
-  correct: boolean | null;
-}
 
 export default async function DistributionPage() {
   const data = await loadPool(POOL);
@@ -23,7 +15,8 @@ export default async function DistributionPage() {
     return acc;
   }, {});
 
-  function bars(questionId: string): { bars: Bar[]; noAnswer: string[] } {
+  function bars(questionId: string): { bars: Slice[]; noAnswer: string[] } {
+    const question = POOL.questions.find((q) => q.id === questionId)!;
     // Cluster the humans, then work out which cluster each entrant landed in by
     // resolution identity — the cluster map holds the same objects.
     const owner = new Map<Resolution, string>();
@@ -33,7 +26,7 @@ export default async function DistributionPage() {
     for (const e of field) {
       const r = e.picks[questionId]?.resolution;
       if (!r) continue;
-      if (!r.team && !r.value) {
+      if (!pickKey(question.domain, r)) {
         noAnswer.push(e.name);
         continue;
       }
@@ -41,11 +34,10 @@ export default async function DistributionPage() {
       resolutions.push(r);
     }
 
-    const modelResolution = data.model?.picks[questionId]?.resolution;
-    const modelKey = modelResolution?.team ?? modelResolution?.value ?? null;
-    const outcome = data.outcomes[POOL.questions.find((q) => q.id === questionId)?.gradeAgainst ?? questionId];
+    const modelKey = pickKey(question.domain, data.model?.picks[questionId]?.resolution);
+    const outcome = data.outcomes[question.gradeAgainst ?? questionId];
 
-    const clustered = [...clusterAnswers(resolutions).entries()]
+    const clustered = [...clusterAnswers(resolutions, question.domain).entries()]
       .map(([key, members]) => {
         const names = members.map((m) => owner.get(m) ?? "");
         // A cluster is the right answer if any of its members graded correct.
@@ -55,12 +47,13 @@ export default async function DistributionPage() {
         return {
           key,
           label: clusterLabel(members),
+          count: names.length,
           names,
           modelPicked: modelKey !== null && key === modelKey,
           correct: outcome && !outcome.pending ? anyCorrect : null,
         };
       })
-      .sort((a, b) => b.names.length - a.names.length || a.label.localeCompare(b.label));
+      .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
 
     return { bars: clustered, noAnswer };
   }
@@ -72,7 +65,7 @@ export default async function DistributionPage() {
         <h1 className="display">Pick distribution</h1>
         <p>
           Every question, and who went with the crowd versus who is out on an island. Spellings are collapsed, so
-          &ldquo;Puka Nacua&rdquo;, &ldquo;Puca Nacua&rdquo; and &ldquo;nacua&rdquo; are one bar. The{" "}
+          &ldquo;Puka Nacua&rdquo;, &ldquo;Puca Nacua&rdquo; and &ldquo;nacua&rdquo; are one slice. The{" "}
           <span style={{ color: "var(--model)" }}>model&apos;s pick</span> is highlighted where it made one.
         </p>
         <Progress resolved={data.resolvedCount} total={data.totalQuestions} />
@@ -83,8 +76,7 @@ export default async function DistributionPage() {
           <h2 className="section-h">{section}</h2>
           {questions.map((question) => {
             const { bars: rows, noAnswer } = bars(question.id);
-            const total = rows.reduce((n, r) => n + r.names.length, 0);
-            const maxCount = Math.max(1, ...rows.map((r) => r.names.length));
+            const total = rows.reduce((n, r) => n + r.count, 0);
             const modelAbstained = data.model?.picks[question.id]?.resolution.status === "abstained";
 
             return (
@@ -99,40 +91,7 @@ export default async function DistributionPage() {
                 {rows.length === 0 ? (
                   <div className="t-dim" style={{ fontSize: 13 }}>Nobody answered this one.</div>
                 ) : (
-                  rows.map((row) => {
-                    const share = total ? row.names.length / total : 0;
-                    const classes = [
-                      "dbar",
-                      row.correct === true ? "correct" : "",
-                      row.modelPicked ? "has-model" : "",
-                      row.names.length === 1 && total > 2 ? "island" : "",
-                      share > 0.5 && total > 2 ? "consensus" : "",
-                    ]
-                      .filter(Boolean)
-                      .join(" ");
-
-                    return (
-                      <div key={row.key} className={classes}>
-                        <div className="dtop">
-                          <span className="dname">
-                            {row.label}
-                            {row.correct === true && <span className="t-ok"> ✓</span>}
-                            {row.modelPicked && <span className="badge model" style={{ marginLeft: 8 }}>model</span>}
-                            {row.names.length === 1 && total > 2 && (
-                              <span className="badge" style={{ marginLeft: 8 }}>alone</span>
-                            )}
-                          </span>
-                          <span className="dcount">
-                            {row.names.length} · {Math.round(share * 100)}%
-                          </span>
-                        </div>
-                        <span className="dtrack">
-                          <span className="dfill" style={{ width: `${(row.names.length / maxCount) * 100}%` }} />
-                        </span>
-                        <div className="who">{row.names.join(", ")}</div>
-                      </div>
-                    );
-                  })
+                  <PickPie slices={rows} total={total} />
                 )}
 
                 {noAnswer.length > 0 && (

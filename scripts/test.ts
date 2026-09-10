@@ -10,7 +10,7 @@
 import { parseCsv } from "../lib/sheets/csv";
 import { mapColumns } from "../lib/sheets/headers";
 import { canonicalKey, displayValue, isMultiAnswer, isNonAnswer } from "../lib/resolve/normalize";
-import { resolveAnswer, clusterAnswers, clusterLabel, type AliasMap, type ResolverContext, type TeamEntity } from "../lib/resolve/match";
+import { resolveAnswer, clusterAnswers, clusterLabel, pickKey, type AliasMap, type ResolverContext, type TeamEntity } from "../lib/resolve/match";
 import { readOutcome, scoreEntrant, type Entrant, type Outcome } from "../lib/scoring/engine";
 import { rank } from "../lib/scoring/tiebreak";
 import { resolvePots } from "../lib/scoring/pots";
@@ -18,6 +18,7 @@ import { NFL_FUTURES_26_27 as POOL } from "../lib/pools/nfl-futures-26-27/config
 import entities from "../data/nfl-futures-26-27/entities.json";
 import aliases from "../data/nfl-futures-26-27/aliases.json";
 import results from "../data/nfl-futures-26-27/results-26-27.json";
+import model from "../data/nfl-futures-26-27/model-picks.v2.json";
 
 let passed = 0;
 const failures: string[] = [];
@@ -264,12 +265,37 @@ function entrant(name: string, answers: Record<string, string>, at: number, outc
 /* ---------------------------------------------------------- clustering --- */
 {
   const spellings = ["Puka Nacua", "Puca Nacua", "nacua", "Puka Nacua"].map((s) => resolve(s, "rec_yards"));
-  const clusters = clusterAnswers(spellings);
+  const clusters = clusterAnswers(spellings, "person");
   eq("cluster: three spellings collapse to one bar", clusters.size, 1);
   eq("cluster: labelled by the commonest spelling", clusterLabel([...clusters.values()][0]), "Puka Nacua");
 
   const distinct = ["Josh Allen", "Lamar Jackson", "Patrick Mahomes"].map((s) => resolve(s, "mvp"));
-  eq("cluster: different players stay apart", clusterAnswers(distinct).size, 3);
+  eq("cluster: different players stay apart", clusterAnswers(distinct, "person").size, 3);
+
+  // The model records a team alongside its player picks; humans do not. If
+  // clustering keyed on that team the model would sit alone in every player
+  // question, reporting agreement as zero.
+  const modelPick = { ...resolve("Myles Garrett", "dpoy"), team: "CLE" };
+  const field = ["Myles Garrett (favorite)", "Garret", "Will Anderson Jr. (+500)"].map((x) => resolve(x, "dpoy"));
+  const merged = clusterAnswers([modelPick, ...field], "person");
+  const withModel = [...merged.values()].find((m) => m.includes(modelPick))!;
+  eq("cluster: model joins the humans who agree", withModel.length, 3);
+}
+
+/* ---------------------------------------------------- comparison keys ---- */
+{
+  // A player question must compare on the name. The model carries a team for
+  // its player picks and the humans do not, so falling back to the team scored
+  // five people agreeing on Myles Garrett as nobody agreeing at all.
+  const human = resolve("Myles Garrett (favorite)", "dpoy");
+  const modelLike = { ...resolve("Myles Garrett", "dpoy"), team: "CLE" };
+  eq("key: player question ignores the team", pickKey("person", modelLike), pickKey("person", human));
+
+  const a = resolve("Buffalo Bills", "afc_east");
+  const b = resolve("Bills", "afc_east");
+  eq("key: team question uses the franchise", pickKey("team", a), pickKey("team", b));
+  eq("key: team question is the id", pickKey("team", a), "BUF");
+  eq("key: missing resolution has no key", pickKey("person", undefined), null);
 }
 
 /* --------------------------------------------------- shipped data files -- */
@@ -287,6 +313,20 @@ function entrant(name: string, answers: Record<string, string>, at: number, outc
   })());
   eq("pool: 16 scoring points on offer", POOL.questions.filter((x) => x.bucket === "division" || x.bucket === "award").reduce((n, x) => n + x.points, 0), 16);
   eq("pool: max total with the bonus", POOL.maxPoints, 18);
+
+  // The model must have a position on every question — a pick or a stated
+  // abstention. A question it simply forgot would score zero in silence.
+  const covered = new Set([...Object.keys(model.picks), ...Object.keys(model.abstentions)]);
+  const wanted = POOL.questions.map((x) => x.id);
+  check("model: covers every question", wanted.every((id) => covered.has(id)), wanted.filter((id) => !covered.has(id)).join(","));
+  check("model: nothing covered twice", !Object.keys(model.picks).some((id) => id in model.abstentions));
+  const TIERS = ["modelled", "projected", "derived", "market"];
+  check("model: every pick declares a basis tier",
+    Object.values(model.picks).every((p) => TIERS.includes((p as { tier: string }).tier)));
+  check("model: every pick explains itself",
+    Object.values(model.picks).every((p) => ((p as { basis: string }).basis ?? "").length > 10));
+  eq("model: four stat leaders are projected",
+    Object.values(model.picks).filter((p) => (p as { tier: string }).tier === "projected").length, 4);
 }
 
 console.log(`\n${passed} passed, ${failures.length} failed`);

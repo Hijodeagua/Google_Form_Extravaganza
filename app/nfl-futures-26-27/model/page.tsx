@@ -1,5 +1,6 @@
 import { NFL_FUTURES_26_27 as POOL } from "@/lib/pools/nfl-futures-26-27/config";
 import { loadPool } from "@/lib/load";
+import { clusterAnswers, pickKey } from "@/lib/resolve/match";
 import { Progress } from "../parts";
 
 export const revalidate = 3600;
@@ -19,28 +20,29 @@ export default async function ModelPage() {
     .map((question) => {
       const mp = model.picks[question.id];
       if (!mp || mp.resolution.status === "abstained") return null;
-      const modelKey = mp.resolution.team ?? mp.resolution.value;
+      // Cluster the model in with the humans rather than comparing raw keys, so
+      // "Garret", "Garrett" and "Myles garret" count as agreeing with the model
+      // here exactly as they merge into one slice on the distribution page.
+      const answered = humans
+        .map((e) => e.picks[question.id]?.resolution)
+        .filter((r): r is NonNullable<typeof r> => !!r && pickKey(question.domain, r) !== null);
+      const clusters = clusterAnswers([mp.resolution, ...answered], question.domain);
 
-      const answers = humans
-        .map((e) => ({ entrant: e, r: e.picks[question.id]?.resolution }))
-        .filter((a) => a.r && (a.r.team || a.r.value));
-
-      const agreeing = answers.filter((a) => (a.r!.team ?? a.r!.value) === modelKey);
-      // Consensus = the single most popular human answer for this question.
-      const tally = new Map<string, number>();
-      for (const a of answers) {
-        const k = a.r!.team ?? a.r!.value!;
-        tally.set(k, (tally.get(k) ?? 0) + 1);
-      }
-      const topCount = Math.max(0, ...tally.values());
-      const withCrowd = (tally.get(modelKey ?? "") ?? 0) === topCount && topCount > 0;
+      const modelCluster = [...clusters.values()].find((members) => members.includes(mp.resolution)) ?? [];
+      const agreeing = modelCluster.filter((m) => m !== mp.resolution);
+      // Consensus = the biggest cluster of human answers.
+      const topCount = Math.max(
+        0,
+        ...[...clusters.values()].map((members) => members.filter((m) => m !== mp.resolution).length),
+      );
+      const withCrowd = agreeing.length === topCount && topCount > 0;
 
       return {
         question,
         pick: mp,
         label: mp.resolution.display,
         agreeing: agreeing.length,
-        total: answers.length,
+        total: answered.length,
         withCrowd,
       };
     })
@@ -56,10 +58,12 @@ export default async function ModelPage() {
         <div className="kicker">Machine against the room</div>
         <h1 className="display">Model vs field</h1>
         <p>
-          The <b>Can Tre Beat Vegas</b> Elo filled out the same form. Its picks come from{" "}
-          <b>{modelEntry.sourceSnapshot.sims.toLocaleString()} season replays</b> taken at 0-0 with all{" "}
-          {modelEntry.sourceSnapshot.gamesRemaining} games still to play, and were locked and committed on{" "}
-          {modelEntry.sourceSnapshot.runDate} — the same deadline everyone else had.
+          The <b>Can Tre Beat Vegas</b> Elo filled out the same form. Team outcomes come from{" "}
+          <b>{modelEntry.sourceSnapshot.sims.toLocaleString()} season replays</b> run on{" "}
+          {modelEntry.sourceSnapshot.runDate} with {modelEntry.sourceSnapshot.gamesRemaining} of the season&apos;s 272
+          games still to play. Player picks are projected from{" "}
+          <b>{modelEntry.playerModel.playersProjected.toLocaleString()} players&apos;</b> production over the two prior
+          seasons. Every pick is locked in a committed file.
         </p>
         <div className="meth">
           Version {modelEntry.version} · generated {new Date(modelEntry.generatedAt).toISOString().slice(0, 10)} · never
@@ -73,7 +77,8 @@ export default async function ModelPage() {
           <div className="l">The model</div>
           <div className="big">{model.points}</div>
           <div className="s">
-            {model.divisionsCorrect}/8 divisions · abstained on {Object.keys(modelEntry.abstentions).length} questions
+            {model.divisionsCorrect}/8 divisions · answers {Object.keys(modelEntry.picks).length} of{" "}
+            {Object.keys(modelEntry.picks).length + Object.keys(modelEntry.abstentions).length} questions
           </div>
         </div>
         <div className="vs-mid">versus</div>
@@ -96,8 +101,7 @@ export default async function ModelPage() {
                 : `${fieldBest - model.points} POINT${fieldBest - model.points === 1 ? "" : "S"} BEHIND THE LEADER`}
           </div>
           <div className="vs2">
-            {model.points} points, ahead of {beatenByModel} of {humans.length} entries. It gave up{" "}
-            {Object.keys(modelEntry.abstentions).length} questions without answering.
+            {model.points} points, ahead of {beatenByModel} of {humans.length} entries.
           </div>
         </div>
       ) : (
@@ -145,34 +149,60 @@ export default async function ModelPage() {
         </table>
       </div>
 
-      <h2 className="section-h">What it refused to answer</h2>
+      <h2 className="section-h">How each pick was made</h2>
       <p className="section-sub">
-        The Elo rates teams, not players. Rather than invent a confident pick it takes the zero, and those zeros are
-        counted against it in the standings like anyone else&apos;s blank.
+        Not every answer is worth the same trust, so each one carries the method behind it. Team outcomes come from the
+        Elo season simulation. Stat leaders are projected from {modelEntry.playerModel.playersProjected.toLocaleString()}{" "}
+        players&apos; production over the two prior seasons. Awards are those projections plus a rule of thumb. Where
+        there is no statistical basis at all, the model takes the market price rather than inventing one.
       </p>
-      <div className="picks">
-        {Object.entries(modelEntry.abstentions).map(([id, why]) => {
-          const question = POOL.questions.find((q) => q.id === id);
-          return (
-            <div key={id} className="pick">
-              <div className="q">{question?.label ?? id}</div>
-              <div className="a none">
-                <span className="abstain">
-                  <span className="strike">abstained</span> — {why}
-                </span>
-              </div>
-              <div className="g t-dim">0 pts</div>
-            </div>
-          );
-        })}
-      </div>
 
+      <div className="tscroll">
+        <table className="data">
+          <thead>
+            <tr>
+              <th>Question</th>
+              <th>Pick</th>
+              <th>Basis</th>
+            </tr>
+          </thead>
+          <tbody>
+            {POOL.questions.map((question) => {
+              const pick = modelEntry.picks[question.id];
+              const abstained = modelEntry.abstentions[question.id];
+              if (!pick && !abstained) return null;
+              return (
+                <tr key={question.id}>
+                  <td className="t-mut">{question.label}</td>
+                  <td style={{ fontWeight: 600 }}>
+                    {pick ? (
+                      <>
+                        <span style={{ color: "var(--model)" }}>{pick.value}</span>{" "}
+                        <span className={`badge tier-${pick.tier}`}>{pick.tier}</span>
+                      </>
+                    ) : (
+                      <span className="abstain">
+                        <span className="strike">abstained</span>
+                      </span>
+                    )}
+                  </td>
+                  <td className="t-mut" style={{ fontSize: 12.5, lineHeight: 1.55 }}>
+                    {pick ? pick.basis : abstained}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
       <div className="notice model">
-        <b>How these picks were made.</b> Division winners, conference titles, the two 1 seeds and the Super Bowl
-        champion are the highest-probability team in{" "}
-        {modelEntry.sourceSnapshot.sims.toLocaleString()} simulated seasons. Most wins and worst record are the highest
-        and lowest expected win totals. Nothing was re-run for this page — the picks are read from a committed file so
-        they cannot drift after the fact.
+        <b>The player projections.</b> Two prior seasons of {modelEntry.playerModel.source}, weighted{" "}
+        {Math.round((modelEntry.playerModel.seasons["2025"] ?? 0.7) * 100)}/
+        {Math.round((modelEntry.playerModel.seasons["2024"] ?? 0.3) * 100)} toward the most recent, converted to a
+        per-game rate and projected over {modelEntry.playerModel.games} games. Each player is mapped to his{" "}
+        <b>2026</b> roster, so an offseason move follows him. Team strength then lifts the volume gently — a contender
+        throws and runs more than a bad team, but a good offence does not change who the player is. Nothing is re-run
+        at build time: the picks come from a committed file so they cannot drift after the fact.
       </div>
       <div className="foot" />
     </>
