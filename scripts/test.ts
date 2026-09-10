@@ -52,7 +52,11 @@ const resolve = (raw: string, id: string) => resolveAnswer(raw, q(id).domain, id
   eq("strips (favorite)", displayValue("Myles Garrett (favorite)"), "Myles Garrett");
   eq("strips position+team+odds", displayValue("Carnell Tate, WR, Titans (+600)"), "Carnell Tate");
   eq("strips trailing space", displayValue("Tua "), "Tua");
-  eq("keeps a real comma", displayValue("Smith, Jones and Brown"), "Smith, Jones and Brown");
+  eq("cuts commentary after a comma", displayValue("Tua, duh"), "Tua");
+  eq("cuts a spaced-dash team suffix", displayValue("David Bailey - Jets"), "David Bailey");
+  eq("keeps a hyphenated name", displayValue("Amon-Ra St. Brown"), "Amon-Ra St. Brown");
+  eq("strips a leading hedge", displayValue("Should be Mike McCarthy"), "Mike McCarthy");
+  eq("leaves a normal answer alone", displayValue("Dan Quinn"), "Dan Quinn");
   eq("drops Jr.", canonicalKey("Rueben Bain Jr."), "rueben bain");
   eq("lowercases", canonicalKey("gibbs"), "gibbs");
   check("??? is a non-answer", isNonAnswer("???"));
@@ -165,6 +169,20 @@ function entrant(name: string, answers: Record<string, string>, at: number, outc
   const d = entrant("Di", { mvp: "Lamar Jackson" }, 400, outcomes);
   eq("grade: different player misses", d.picks.mvp.grade, "wrong");
   check("grade: different player is not flagged", !d.picks.mvp.flagged);
+
+  // Real strings from the sheet that used to grade wrong in silence.
+  const e = entrant("Ed", { mvp: "Josh Allen beast mode post-injury", coy: "Should be Dave Canales", sb_mvp: "Allen, duh" }, 450, outcomes);
+  eq("grade: name with commentary still hits", e.picks.mvp.grade, "correct");
+  eq("grade: hedged coach name hits", e.picks.coy.grade, "correct");
+
+  // A double misspelling is too far to score, but must not be silently wrong.
+  const f = entrant("Fay", { mvp: "Jesh Allan" }, 460, outcomes);
+  eq("near-miss: still scores zero", f.picks.mvp.grade, "wrong");
+  check("near-miss: is flagged for review", f.picks.mvp.flagged);
+  check("near-miss: says what it was close to", (f.picks.mvp.note ?? "").includes("Close to"));
+
+  const g = entrant("Gil", { mvp: "Xavier Worthy" }, 470, outcomes);
+  check("far miss: not flagged", !g.picks.mvp.flagged);
 
   // Nothing resolved: the state the page lives in for four months.
   const empty = Object.fromEntries(POOL.questions.filter((x) => !x.gradeAgainst).map((x) => [x.id, readOutcome(x, { value: null }, ctx)]));

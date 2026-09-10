@@ -49,3 +49,11 @@ export interface Resolution {
  * Below it, the answer is left unresolved rather than guessed at.
  */
 export const FUZZY_THRESHOLD = 0.72;
+
+/**
+ * A person answer that misses the outcome but scores at least this is close
+ * enough that a mangled spelling is the likely cause rather than a genuinely
+ * different pick. It still scores zero, but it is flagged for review instead of
+ * quietly counting as wrong — "Sequan barkly" against Saquon Barkley lands here.
+ */
+export const NEAR_MISS_THRESHOLD = 0.5;

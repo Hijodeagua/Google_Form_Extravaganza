@@ -2,7 +2,7 @@ import type { PoolConfig, Question } from "@/lib/pools/types";
 import { scoresToTotal } from "@/lib/pools/types";
 import { canonicalKey } from "@/lib/resolve/normalize";
 import { comparePerson, type ResolverContext } from "@/lib/resolve/match";
-import type { Resolution } from "@/lib/resolve/types";
+import { NEAR_MISS_THRESHOLD, type Resolution } from "@/lib/resolve/types";
 
 /**
  * `pending` is the state this pool lives in for months, so it is a first-class
@@ -163,11 +163,15 @@ export function gradePick(question: Question, resolution: Resolution, outcome: O
 
   const cmp = comparePerson(resolution.value ?? "", outcome.key);
   const fuzzy = cmp.hit && cmp.method === "fuzzy";
-  return award(
-    cmp.hit,
-    fuzzy ? `Fuzzy match to "${outcome.display}" (${cmp.confidence.toFixed(2)}) — confirm in /admin` : undefined,
-    base.flagged || fuzzy,
-  );
+  const nearMiss = !cmp.hit && cmp.confidence >= NEAR_MISS_THRESHOLD;
+
+  const note = fuzzy
+    ? `Fuzzy match to "${outcome.display}" (${cmp.confidence.toFixed(2)}) — confirm in /admin`
+    : nearMiss
+      ? `Close to "${outcome.display}" (${cmp.confidence.toFixed(2)}) but not close enough to score. If this was meant to be the right answer, add it to aliases.json.`
+      : undefined;
+
+  return award(cmp.hit, note, base.flagged || fuzzy || nearMiss);
 }
 
 /** Grade an entrant's whole card and roll up their totals. */

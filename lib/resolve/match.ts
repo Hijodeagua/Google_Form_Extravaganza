@@ -182,9 +182,19 @@ export function comparePerson(answerKey: string, outcomeKey: string): { hit: boo
     return { hit: true, confidence: 0.95, method: "surname" };
   }
 
-  const whole = diceCoefficient(answerKey, outcomeKey);
-  const surnames = diceCoefficient(surname(answerKey), surname(outcomeKey));
-  const score = Math.max(whole, answerKey.includes(" ") ? 0 : surnames);
+  // Names run two or three words. Anything longer is a name with commentary
+  // stuck to it ("Micah Parson beast mode post-injury"), so the leading words
+  // get a look of their own.
+  const words = answerKey.split(" ");
+  const candidates = words.length > 3 ? [answerKey, words.slice(0, 2).join(" "), words.slice(0, 3).join(" ")] : [answerKey];
+
+  let score = 0;
+  for (const candidate of candidates) {
+    score = Math.max(score, diceCoefficient(candidate, outcomeKey));
+    if (!candidate.includes(" ")) score = Math.max(score, diceCoefficient(surname(candidate), surname(outcomeKey)));
+    if (candidate.includes(" ")) score = Math.max(score, diceCoefficient(surname(candidate), surname(outcomeKey)) * 0.95);
+  }
+
   if (score >= FUZZY_THRESHOLD) return { hit: true, confidence: score, method: "fuzzy" };
   return { hit: false, confidence: score, method: "none" };
 }

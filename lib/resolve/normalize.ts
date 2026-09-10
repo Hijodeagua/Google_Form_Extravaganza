@@ -15,6 +15,15 @@
  *   "Emmitt Smith or OJ Simpson"         two names, one box
  */
 
+/**
+ * Hedges people type in front of an answer. Stripped so "Should be Mike
+ * McCarthy" grades as Mike McCarthy.
+ */
+const LEAD_HEDGES = [
+  "should be", "probably", "prob", "maybe", "i think", "i say", "gonna be",
+  "has to be", "gotta be", "my pick is", "definitely", "obviously",
+];
+
 /** Position codes that appear in Form autocomplete strings like ", WR, Titans". */
 const POSITIONS = new Set([
   "qb", "rb", "wr", "te", "fb", "ol", "ot", "og", "g", "c",
@@ -43,21 +52,36 @@ export function stripParentheticals(raw: string): string {
 }
 
 /**
- * Drops a ", POSITION, Team" suffix. Only fires when the segment right after the
- * first comma is a known position code, so a genuinely comma-containing answer is
- * left alone.
+ * Drops everything after the first comma or dash.
+ *
+ * Every answer in this pool names a person or a franchise, and neither contains
+ * a comma, so whatever follows one is always trailing detail rather than part of
+ * the answer. Real examples this has to cut: the Form's own autocomplete format
+ * ("Carnell Tate, WR, Titans"), a hand-typed team ("David Bailey - Jets"), and
+ * plain editorialising ("Tua, duh").
+ *
+ * The dash rule is deliberately narrower than the comma one: it only fires on a
+ * spaced dash, so a hyphenated name like Amon-Ra survives.
  */
 export function stripPositionSuffix(raw: string): string {
-  const parts = raw.split(",").map((p) => p.trim());
-  if (parts.length >= 2 && POSITIONS.has(parts[1].toLowerCase().replace(/[^a-z]/g, ""))) {
-    return parts[0];
+  let out = raw.split(",")[0].trim();
+  out = out.split(/\s+[-–—]\s+/)[0].trim();
+  return out;
+}
+
+/** Removes a leading hedge: "Should be Mike McCarthy" -> "Mike McCarthy". */
+export function stripLeadHedge(raw: string): string {
+  const trimmed = raw.trim();
+  const lower = trimmed.toLowerCase();
+  for (const hedge of LEAD_HEDGES) {
+    if (lower.startsWith(hedge + " ")) return trimmed.slice(hedge.length).trim();
   }
-  return raw;
+  return trimmed;
 }
 
 /** Raw answer -> the string a human would consider "the actual answer". */
 export function displayValue(raw: string): string {
-  return stripPositionSuffix(stripParentheticals(raw)).trim();
+  return stripLeadHedge(stripPositionSuffix(stripParentheticals(raw))).trim();
 }
 
 /** Comparison key: lowercase, unaccented, punctuation-free, suffix-free. */

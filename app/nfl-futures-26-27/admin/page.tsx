@@ -11,12 +11,13 @@ interface Item {
   raw: string;
   key: string;
   note: string;
-  kind: "unresolved" | "multi" | "flagged" | "abstained" | "watch";
+  kind: "unresolved" | "multi" | "near-miss" | "flagged" | "abstained" | "watch";
 }
 
 const KIND_LABEL: Record<Item["kind"], string> = {
   unresolved: "could not resolve",
   multi: "two answers in one box",
+  "near-miss": "close, but scored zero",
   flagged: "graded on a judgement call",
   abstained: "non-answer",
   watch: "worth a look",
@@ -37,9 +38,14 @@ export default async function AdminPage() {
       if (!pick) continue;
       const r = pick.resolution;
 
+      // A near-miss scored zero on a spelling the resolver could not quite reach.
+      // It is the case most worth a human's eye, so it gets its own bucket.
+      const nearMiss = pick.flagged && pick.grade === "wrong" && r.status === "resolved";
+
       const kind: Item["kind"] | null =
         r.status === "unresolved" ? "unresolved"
         : r.status === "multi" ? "multi"
+        : nearMiss ? "near-miss"
         : r.status === "flagged" || pick.flagged ? "flagged"
         : r.status === "abstained" ? "abstained"
         : null;
@@ -87,7 +93,7 @@ export default async function AdminPage() {
     }
   }
 
-  const order: Item["kind"][] = ["unresolved", "multi", "flagged", "watch", "abstained"];
+  const order: Item["kind"][] = ["near-miss", "unresolved", "multi", "flagged", "watch", "abstained"];
   const all = [...items, ...watch].sort((a, b) => order.indexOf(a.kind) - order.indexOf(b.kind));
   const counts = order.map((k) => ({ kind: k, n: all.filter((i) => i.kind === k).length }));
 
@@ -107,7 +113,7 @@ export default async function AdminPage() {
 
       <div className="stats">
         {counts.map(({ kind, n }) => (
-          <div key={kind} className={`stat ${kind === "unresolved" && n > 0 ? "accent" : ""}`}>
+          <div key={kind} className={`stat ${(kind === "unresolved" || kind === "near-miss") && n > 0 ? "accent" : ""}`}>
             <div className="l">{KIND_LABEL[kind]}</div>
             <div className="n">{n}</div>
             <div className="s">
@@ -146,7 +152,7 @@ export default async function AdminPage() {
       {all.map((item, i) => (
         <div key={`${item.entrant}-${item.questionId}-${i}`} className="fix">
           <div className="fh">
-            <span className={`badge ${item.kind === "unresolved" || item.kind === "multi" ? "flag" : ""}`}>
+            <span className={`badge ${item.kind === "unresolved" || item.kind === "multi" || item.kind === "near-miss" ? "flag" : ""}`}>
               {KIND_LABEL[item.kind]}
             </span>
             <span className="fq">{item.question}</span>
