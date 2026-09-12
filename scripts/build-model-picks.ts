@@ -60,6 +60,22 @@ const DURABILITY_SHRINK = 0.5;
  */
 const BACKTEST = { seasons: 9, categories: 4, cases: 36, exact: 3, topThree: 11 };
 
+/**
+ * What `scripts/fit-mvp.ts` measured for the old MVP rule, against the real AP
+ * winners in `data/nfl-futures-26-27/mvp-history.csv`.
+ *
+ * The rule scored the top eight projected passers on production plus W times
+ * team strength. Every W from 0.5 to 10 produced the SAME eight picks and the
+ * same single hit, and W = 0 scored zero. So the constant was not merely
+ * unfitted, it was unfittable: the rule carries no signal to tune. One of eight
+ * is what picking blindly among eight candidates gets you.
+ *
+ * The rule is therefore retired rather than re-weighted, and MVP now takes the
+ * market price the Form's own dropdown carried — which at least aggregates
+ * people who watched the offseason.
+ */
+const MVP_RULE_BACKTEST = { seasons: 8, hits: 1, weightsTried: 11, note: "retired — no measurable signal" };
+
 /** Two projections closer than this are a coin flip, and are labelled as one. */
 const CLOSE_CALL_MARGIN = 0.03;
 
@@ -268,22 +284,13 @@ async function main() {
   // MVP has gone to a quarterback in 17 of the last 20 seasons, and almost
   // always to one on a contender, so the pick is the best projected passer
   // weighted by his team's title odds rather than raw yardage.
-  const mvpRanked = qbs
-    .slice(0, 8)
-    .map((p) => ({ p, score: p.proj.passing_yards / qbs[0].proj.passing_yards + 2 * ((byTeam.get(p.team)?.p_sb ?? 0) / sbChamp.p_sb) }))
-    .sort((a, b) => b.score - a.score);
-  const mvp = mvpRanked[0].p;
-  const mvpMargin = mvpRanked[1] ? (mvpRanked[0].score - mvpRanked[1].score) / mvpRanked[0].score : 1;
-  const mvpClose = mvpMargin < CLOSE_CALL_MARGIN;
+  // MVP: the Form's dropdown had Josh Allen shortest at +600. The model's own
+  // rule is not used — see MVP_RULE_BACKTEST above for why.
   put(
     "mvp",
-    mvp.name,
-    `${fmt(mvp.proj.passing_yards)} projected passing yards on a ${((byTeam.get(mvp.team)?.p_sb ?? 0) * 100).toFixed(0)}% Super Bowl team. Award weights title odds twice as heavily as yardage, which is why this is not the projected passing leader` +
-      (mvpClose ? `, and it is only ${(mvpMargin * 100).toFixed(1)}% clear of ${mvpRanked[1].p.name}` : `, ${(mvpMargin * 100).toFixed(0)}% clear of ${mvpRanked[1]?.p.name ?? "the field"}`),
-    "derived",
-    mvp.team,
-    null,
-    mvpClose,
+    "Josh Allen",
+    `shortest price in the Form's own dropdown (+600). The model's own MVP rule — projected passing weighted by team strength — was backtested against ${MVP_RULE_BACKTEST.seasons} seasons of real AP winners and hit ${MVP_RULE_BACKTEST.hits}, no better than guessing, at every one of the ${MVP_RULE_BACKTEST.weightsTried} weightings tried. So it was dropped rather than tuned`,
+    "market",
   );
 
   const skill = projections.filter((p) => p.position !== "QB").map((p) => ({ p, y: p.proj.rushing_yards + p.proj.receiving_yards })).sort((a, b) => b.y - a.y)[0];
@@ -359,6 +366,7 @@ async function main() {
       closeCallMargin: CLOSE_CALL_MARGIN,
       playersProjected: projections.length,
       backtest: BACKTEST,
+      mvpRule: MVP_RULE_BACKTEST,
     },
     picks,
     abstentions,

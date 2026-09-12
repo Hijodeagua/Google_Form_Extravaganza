@@ -345,6 +345,12 @@ function entrant(name: string, answers: Record<string, string>, at: number, outc
     Object.values(model.picks).filter((p) => (p as { tier: string }).tier === "projected")
       .every((p) => ((p as { alternatives?: unknown[] }).alternatives ?? []).length >= 1));
   // The advanced board must agree with the picks it claims to explain.
+  // MVP must not quietly go back to a rule the backtest retired.
+  eq("model: MVP comes from the market, not the retired rule",
+    (model.picks as Record<string, { tier: string }>).mvp.tier, "market");
+  check("model: the retired MVP rule is recorded",
+    ((model.playerModel as { mvpRule?: { hits: number } }).mvpRule?.hits ?? -1) >= 0);
+
   eq("advanced: one board per stat category", advanced.boards.length, 4);
   check("advanced: every board is ranked", advanced.boards.every((b) =>
     b.rows.every((r, i) => i === 0 || r.projected <= b.rows[i - 1].projected)));

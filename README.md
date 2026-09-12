@@ -115,6 +115,26 @@ Nothing on that page picks anything. It is there because rate stats travel
 between seasons far better than totals do, so it is where you can tell a real
 signal from a player who simply had the ball a lot on a bad team.
 
+### `mvp-history.csv` and the retired MVP rule
+
+The AP MVP winners, 1957-2024, used as the training label for
+`scripts/fit-mvp.ts`. Wikipedia is blocked by this network's egress policy, so
+the list was assembled from three independent public datasets and cross-checked
+against each other — they overlap on 12 seasons and agree on all 12. Provenance
+is in the file header.
+
+The result killed the rule it was meant to tune. The old MVP pick scored the top
+eight projected passers on production plus `W` times team strength. Measured
+against 8 seasons with no lookahead it hit **1 of 8**, which is what guessing
+among eight candidates gets you, and **every `W` from 0.5 to 10 produced
+identical picks**. The constant was not merely unfitted, it was unfittable: the
+rule carried no signal to tune.
+
+So MVP now takes the market price the Form's own dropdown carried. Worth noting
+what this cost: an earlier version of the fit scored 2 of 8, until the starter
+filter was found to be reading the target season's pass attempts. Removing that
+lookahead halved the score.
+
 ### Fitting the constants
 
 `scripts/fit-projection.ts` rebuilds the projection for every season since 2017

@@ -20,7 +20,8 @@ export interface ModelEntry {
   generatedAt: string;
   sourceSnapshot: { repo: string; file: string; runDate: string; week: string; sims: number; gamesRemaining: number };
   playerModel: { source: string; seasons: Record<string, number>; games: number; teamPull: number; durabilityShrink: number; closeCallMargin: number; playersProjected: number;
-    backtest: { seasons: number; categories: number; cases: number; exact: number; topThree: number } };
+    backtest: { seasons: number; categories: number; cases: number; exact: number; topThree: number };
+    mvpRule: { seasons: number; hits: number; weightsTried: number; note: string } };
   picks: Record<string, { value: string; team?: string | null; confidence: number | null; basis: string; tier: ModelTier; closeCall?: boolean; alternatives?: { name: string; team: string; value: number }[] }>;
   abstentions: Record<string, string>;
 }

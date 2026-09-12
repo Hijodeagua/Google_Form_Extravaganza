@@ -187,6 +187,14 @@ export default async function ModelPage() {
       </div>
 
       <div className="notice warn">
+        <b>The MVP rule was tested and thrown away.</b> It scored the best projected passers on production plus team
+        strength. Measured against {modelEntry.playerModel.mvpRule.seasons} seasons of real AP winners it hit{" "}
+        {modelEntry.playerModel.mvpRule.hits} — no better than picking blindly among the eight candidates — and every
+        one of the {modelEntry.playerModel.mvpRule.weightsTried} weightings tried produced the same picks. A constant
+        that changes nothing is not worth tuning, so MVP now takes the market price instead.
+      </div>
+
+      <div className="notice warn">
         <b>Read the stat-leader picks as a shortlist, not a call.</b> Naming the exact season leader lands about one
         time in twelve. The useful number is the other one: the player who actually led was inside this model&apos;s top
         three about a third of the time, against roughly one in two hundred for a guess. The runner-ups are listed

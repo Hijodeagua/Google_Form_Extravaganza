@@ -12,15 +12,15 @@
   ],
   "entrantId": "model",
   "displayName": "Can Tre Beat Vegas (model)",
-  "version": "nfl-elo-plus-projections-2026-09-10",
-  "generatedAt": "2026-09-10T18:22:58.150Z",
+  "version": "nfl-elo-plus-projections-2026-09-12",
+  "generatedAt": "2026-09-12T03:42:40.283Z",
   "sourceSnapshot": {
     "repo": "Hijodeagua/Can-Tre-Beat-Vegas",
     "file": "web/public/data/nfl/latest.json",
-    "runDate": "2026-09-10",
+    "runDate": "2026-09-11",
     "week": "Week 1",
     "sims": 10000,
-    "gamesRemaining": 271
+    "gamesRemaining": 270
   },
   "playerModel": {
     "source": "nflverse stats_player_week + weekly_rosters",
@@ -39,22 +39,19 @@
       "cases": 36,
       "exact": 3,
       "topThree": 11
+    },
+    "mvpRule": {
+      "seasons": 8,
+      "hits": 1,
+      "weightsTried": 11,
+      "note": "retired — no measurable signal"
     }
   },
   "picks": {
     "nfc_west": {
       "value": "Seattle Seahawks",
       "team": "SEA",
-      "confidence": 0.5626,
-      "basis": "highest division-title probability across 10,000 season replays",
-      "tier": "modelled",
-      "closeCall": false,
-      "alternatives": []
-    },
-    "afc_south": {
-      "value": "Houston Texans",
-      "team": "HOU",
-      "confidence": 0.488,
+      "confidence": 0.5729,
       "basis": "highest division-title probability across 10,000 season replays",
       "tier": "modelled",
       "closeCall": false,
@@ -63,7 +60,16 @@
     "afc_west": {
       "value": "Denver Broncos",
       "team": "DEN",
-      "confidence": 0.5279,
+      "confidence": 0.5296,
+      "basis": "highest division-title probability across 10,000 season replays",
+      "tier": "modelled",
+      "closeCall": false,
+      "alternatives": []
+    },
+    "afc_south": {
+      "value": "Houston Texans",
+      "team": "HOU",
+      "confidence": 0.4914,
       "basis": "highest division-title probability across 10,000 season replays",
       "tier": "modelled",
       "closeCall": false,
@@ -72,7 +78,7 @@
     "afc_east": {
       "value": "Buffalo Bills",
       "team": "BUF",
-      "confidence": 0.4858,
+      "confidence": 0.4831,
       "basis": "highest division-title probability across 10,000 season replays",
       "tier": "modelled",
       "closeCall": false,
@@ -81,16 +87,7 @@
     "nfc_east": {
       "value": "Philadelphia Eagles",
       "team": "PHI",
-      "confidence": 0.498,
-      "basis": "highest division-title probability across 10,000 season replays",
-      "tier": "modelled",
-      "closeCall": false,
-      "alternatives": []
-    },
-    "nfc_north": {
-      "value": "Detroit Lions",
-      "team": "DET",
-      "confidence": 0.3033,
+      "confidence": 0.5039,
       "basis": "highest division-title probability across 10,000 season replays",
       "tier": "modelled",
       "closeCall": false,
@@ -99,7 +96,16 @@
     "afc_north": {
       "value": "Baltimore Ravens",
       "team": "BAL",
-      "confidence": 0.3781,
+      "confidence": 0.3872,
+      "basis": "highest division-title probability across 10,000 season replays",
+      "tier": "modelled",
+      "closeCall": false,
+      "alternatives": []
+    },
+    "nfc_north": {
+      "value": "Detroit Lions",
+      "team": "DET",
+      "confidence": 0.3027,
       "basis": "highest division-title probability across 10,000 season replays",
       "tier": "modelled",
       "closeCall": false,
@@ -108,7 +114,7 @@
     "nfc_south": {
       "value": "Tampa Bay Buccaneers",
       "team": "TB",
-      "confidence": 0.3101,
+      "confidence": 0.3094,
       "basis": "highest division-title probability across 10,000 season replays",
       "tier": "modelled",
       "closeCall": false,
@@ -117,7 +123,7 @@
     "afc_one_seed": {
       "value": "Houston Texans",
       "team": "HOU",
-      "confidence": 0.1753,
+      "confidence": 0.1744,
       "basis": "highest #1-seed probability in the conference",
       "tier": "modelled",
       "closeCall": false,
@@ -126,7 +132,7 @@
     "afc_champ": {
       "value": "Houston Texans",
       "team": "HOU",
-      "confidence": 0.146,
+      "confidence": 0.1479,
       "basis": "highest conference-title probability",
       "tier": "modelled",
       "closeCall": false,
@@ -135,7 +141,7 @@
     "nfc_one_seed": {
       "value": "Seattle Seahawks",
       "team": "SEA",
-      "confidence": 0.2996,
+      "confidence": 0.3112,
       "basis": "highest #1-seed probability in the conference",
       "tier": "modelled",
       "closeCall": false,
@@ -144,7 +150,7 @@
     "nfc_champ": {
       "value": "Seattle Seahawks",
       "team": "SEA",
-      "confidence": 0.2606,
+      "confidence": 0.2614,
       "basis": "highest conference-title probability",
       "tier": "modelled",
       "closeCall": false,
@@ -163,7 +169,7 @@
       "value": "Las Vegas Raiders",
       "team": "LV",
       "confidence": null,
-      "basis": "lowest expected wins (5.3)",
+      "basis": "lowest expected wins (5.4)",
       "tier": "modelled",
       "closeCall": false,
       "alternatives": []
@@ -171,7 +177,7 @@
     "sb_champ": {
       "value": "Seattle Seahawks",
       "team": "SEA",
-      "confidence": 0.1528,
+      "confidence": 0.1547,
       "basis": "highest Super Bowl probability",
       "tier": "modelled",
       "closeCall": false,
@@ -181,19 +187,19 @@
       "value": "Jared Goff",
       "team": "DET",
       "confidence": null,
-      "basis": "projected 4784 yards over 17.0 games, only 1.2% clear of Matthew Stafford — effectively a coin flip",
+      "basis": "projected 4783 yards over 17.0 games, 4% clear of Sam Darnold",
       "tier": "projected",
-      "closeCall": true,
+      "closeCall": false,
       "alternatives": [
-        {
-          "name": "Matthew Stafford",
-          "team": "LA",
-          "value": 4728
-        },
         {
           "name": "Sam Darnold",
           "team": "SEA",
-          "value": 4614
+          "value": 4613
+        },
+        {
+          "name": "Matthew Stafford",
+          "team": "LA",
+          "value": 4555
         }
       ]
     },
@@ -201,7 +207,7 @@
       "value": "Derrick Henry",
       "team": "BAL",
       "confidence": null,
-      "basis": "projected 1756 yards over 17.0 games, 12% clear of Jonathan Taylor",
+      "basis": "projected 1761 yards over 17.0 games, 12% clear of Jonathan Taylor",
       "tier": "projected",
       "closeCall": false,
       "alternatives": [
@@ -221,14 +227,14 @@
       "value": "Jaxon Smith-Njigba",
       "team": "SEA",
       "confidence": null,
-      "basis": "projected 1781 yards over 17.0 games, 3% clear of Puka Nacua",
+      "basis": "projected 1781 yards over 17.0 games, 7% clear of Puka Nacua",
       "tier": "projected",
       "closeCall": false,
       "alternatives": [
         {
           "name": "Puka Nacua",
           "team": "LA",
-          "value": 1723
+          "value": 1660
         },
         {
           "name": "Ja'Marr Chase",
@@ -241,7 +247,7 @@
       "value": "Myles Garrett",
       "team": "LA",
       "confidence": null,
-      "basis": "projected 22 sacks over 16.7 games, 29% clear of Danielle Hunter",
+      "basis": "projected 21 sacks over 16.7 games, 26% clear of Danielle Hunter",
       "tier": "projected",
       "closeCall": false,
       "alternatives": [
@@ -258,11 +264,11 @@
       ]
     },
     "mvp": {
-      "value": "Sam Darnold",
-      "team": "SEA",
+      "value": "Josh Allen",
+      "team": null,
       "confidence": null,
-      "basis": "4614 projected passing yards on a 15% Super Bowl team. Award weights title odds twice as heavily as yardage, which is why this is not the projected passing leader, 38% clear of Matthew Stafford",
-      "tier": "derived",
+      "basis": "shortest price in the Form's own dropdown (+600). The model's own MVP rule — projected passing weighted by team strength — was backtested against 8 seasons of real AP winners and hit 1, no better than guessing, at every one of the 11 weightings tried. So it was dropped rather than tuned",
+      "tier": "market",
       "closeCall": false,
       "alternatives": []
     },
@@ -270,7 +276,7 @@
       "value": "Bijan Robinson",
       "team": "ATL",
       "confidence": null,
-      "basis": "most projected yards from scrimmage by a non-quarterback (2152)",
+      "basis": "most projected yards from scrimmage by a non-quarterback (2143)",
       "tier": "derived",
       "closeCall": false,
       "alternatives": []
@@ -279,7 +285,7 @@
       "value": "Myles Garrett",
       "team": "LA",
       "confidence": null,
-      "basis": "projected sack leader (22)",
+      "basis": "projected sack leader (21)",
       "tier": "derived",
       "closeCall": false,
       "alternatives": []
@@ -297,7 +303,7 @@
       "value": "Jared Goff",
       "team": "DET",
       "confidence": null,
-      "basis": "best projected passer outside the six title favourites (4784 yards)",
+      "basis": "best projected passer outside the six title favourites (4783 yards)",
       "tier": "derived",
       "closeCall": false,
       "alternatives": []
@@ -315,7 +321,7 @@
       "value": "Klint Kubliak",
       "team": "LV",
       "confidence": null,
-      "basis": "coaches the lowest-projected team in the league (5.3 wins)",
+      "basis": "coaches the lowest-projected team in the league (5.4 wins)",
       "tier": "derived",
       "closeCall": false,
       "alternatives": []

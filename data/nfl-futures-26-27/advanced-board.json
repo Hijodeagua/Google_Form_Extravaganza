@@ -5,7 +5,7 @@
     "Every column is PER GAME over the two prior seasons. Nothing here picks anything —",
     "these are the rate stats that explain why a projection looks the way it does."
   ],
-  "generatedAt": "2026-09-10T18:22:58.150Z",
+  "generatedAt": "2026-09-12T03:42:40.283Z",
   "seasons": {
     "2024": 0.3,
     "2025": 0.7
@@ -59,7 +59,7 @@
           "name": "Jared Goff",
           "team": "DET",
           "position": "QB",
-          "projected": 4784,
+          "projected": 4783,
           "gamesPlayed": 17,
           "expGames": 17,
           "teamWins": 9.8,
@@ -74,28 +74,10 @@
           }
         },
         {
-          "name": "Matthew Stafford",
-          "team": "LA",
-          "position": "QB",
-          "projected": 4728,
-          "gamesPlayed": 16.7,
-          "expGames": 16.8,
-          "teamWins": 10.3,
-          "cols": {
-            "attempts": 34.3114,
-            "passing_epa": 6.8966,
-            "passing_cpoe": 0.98,
-            "pacr": 0.9307,
-            "passing_air_yards": 301.2156,
-            "passing_tds": 2.2874,
-            "passing_interceptions": 0.479
-          }
-        },
-        {
           "name": "Sam Darnold",
           "team": "SEA",
           "position": "QB",
-          "projected": 4614,
+          "projected": 4613,
           "gamesPlayed": 17,
           "expGames": 17,
           "teamWins": 12.3,
@@ -110,10 +92,28 @@
           }
         },
         {
+          "name": "Matthew Stafford",
+          "team": "LA",
+          "position": "QB",
+          "projected": 4555,
+          "gamesPlayed": 16.7,
+          "expGames": 16.8,
+          "teamWins": 9.1,
+          "cols": {
+            "attempts": 34.3114,
+            "passing_epa": 6.8966,
+            "passing_cpoe": 0.98,
+            "pacr": 0.9307,
+            "passing_air_yards": 301.2156,
+            "passing_tds": 2.2874,
+            "passing_interceptions": 0.479
+          }
+        },
+        {
           "name": "Bo Nix",
           "team": "DEN",
           "position": "QB",
-          "projected": 4139,
+          "projected": 4138,
           "gamesPlayed": 17,
           "expGames": 17,
           "teamWins": 10.5,
@@ -131,7 +131,7 @@
           "name": "Drake Maye",
           "team": "NE",
           "position": "QB",
-          "projected": 4047,
+          "projected": 4046,
           "gamesPlayed": 15.8,
           "expGames": 16.4,
           "teamWins": 9.6,
@@ -149,7 +149,7 @@
           "name": "Josh Allen",
           "team": "BUF",
           "position": "QB",
-          "projected": 4040,
+          "projected": 4039,
           "gamesPlayed": 16,
           "expGames": 16.5,
           "teamWins": 10.4,
@@ -167,10 +167,10 @@
           "name": "Dak Prescott",
           "team": "DAL",
           "position": "QB",
-          "projected": 4000,
+          "projected": 3984,
           "gamesPlayed": 14.3,
           "expGames": 15.6,
-          "teamWins": 7.6,
+          "teamWins": 7.5,
           "cols": {
             "attempts": 35.3706,
             "passing_epa": 5.4032,
@@ -185,7 +185,7 @@
           "name": "Patrick Mahomes",
           "team": "KC",
           "position": "QB",
-          "projected": 3936,
+          "projected": 3935,
           "gamesPlayed": 14.6,
           "expGames": 15.8,
           "teamWins": 8.1,
@@ -203,10 +203,10 @@
           "name": "Baker Mayfield",
           "team": "TB",
           "position": "QB",
-          "projected": 3908,
+          "projected": 3921,
           "gamesPlayed": 17,
           "expGames": 17,
-          "teamWins": 8.3,
+          "teamWins": 8.4,
           "cols": {
             "attempts": 32.4176,
             "passing_epa": 2.0642,
@@ -221,7 +221,7 @@
           "name": "Caleb Williams",
           "team": "CHI",
           "position": "QB",
-          "projected": 3862,
+          "projected": 3861,
           "gamesPlayed": 17,
           "expGames": 17,
           "teamWins": 8.8,
@@ -239,7 +239,7 @@
           "name": "Justin Herbert",
           "team": "LAC",
           "position": "QB",
-          "projected": 3851,
+          "projected": 3850,
           "gamesPlayed": 16.3,
           "expGames": 16.6,
           "teamWins": 8.5,
@@ -257,7 +257,7 @@
           "name": "Trevor Lawrence",
           "team": "JAX",
           "position": "QB",
-          "projected": 3819,
+          "projected": 3818,
           "gamesPlayed": 14.9,
           "expGames": 15.9,
           "teamWins": 9.8,
@@ -306,10 +306,10 @@
           "name": "Derrick Henry",
           "team": "BAL",
           "position": "RB",
-          "projected": 1756,
+          "projected": 1761,
           "gamesPlayed": 17,
           "expGames": 17,
-          "teamWins": 9.6,
+          "teamWins": 9.7,
           "cols": {
             "carries": 18.3765,
             "rushing_epa": 1.0938,
@@ -366,10 +366,10 @@
           "name": "Bijan Robinson",
           "team": "ATL",
           "position": "RB",
-          "projected": 1456,
+          "projected": 1450,
           "gamesPlayed": 17,
           "expGames": 17,
-          "teamWins": 8.2,
+          "teamWins": 8.1,
           "cols": {
             "carries": 17.1824,
             "rushing_epa": -0.1881,
@@ -378,25 +378,10 @@
           }
         },
         {
-          "name": "Kyren Williams",
-          "team": "LA",
-          "position": "RB",
-          "projected": 1353,
-          "gamesPlayed": 16.7,
-          "expGames": 16.8,
-          "teamWins": 10.3,
-          "cols": {
-            "carries": 16.5329,
-            "rushing_epa": -0.2162,
-            "rushing_first_downs": 4.6287,
-            "rushing_tds": 0.6707
-          }
-        },
-        {
           "name": "Jahmyr Gibbs",
           "team": "DET",
           "position": "RB",
-          "projected": 1336,
+          "projected": 1335,
           "gamesPlayed": 17,
           "expGames": 17,
           "teamWins": 9.8,
@@ -405,6 +390,21 @@
             "rushing_epa": 0.509,
             "rushing_first_downs": 3.5412,
             "rushing_tds": 0.8176
+          }
+        },
+        {
+          "name": "Kyren Williams",
+          "team": "LA",
+          "position": "RB",
+          "projected": 1304,
+          "gamesPlayed": 16.7,
+          "expGames": 16.8,
+          "teamWins": 9.1,
+          "cols": {
+            "carries": 16.5329,
+            "rushing_epa": -0.2162,
+            "rushing_first_downs": 4.6287,
+            "rushing_tds": 0.6707
           }
         },
         {
@@ -426,15 +426,30 @@
           "name": "Josh Jacobs",
           "team": "GB",
           "position": "RB",
-          "projected": 1108,
+          "projected": 1111,
           "gamesPlayed": 15.6,
           "expGames": 16.3,
-          "teamWins": 8.8,
+          "teamWins": 8.9,
           "cols": {
             "carries": 16.2885,
             "rushing_epa": -1.0544,
             "rushing_first_downs": 3.8718,
             "rushing_tds": 0.8718
+          }
+        },
+        {
+          "name": "Christian McCaffrey",
+          "team": "SF",
+          "position": "RB",
+          "projected": 1110,
+          "gamesPlayed": 13.1,
+          "expGames": 15,
+          "teamWins": 10.7,
+          "cols": {
+            "carries": 17.7634,
+            "rushing_epa": -1.1911,
+            "rushing_first_downs": 4.0687,
+            "rushing_tds": 0.5344
           }
         },
         {
@@ -456,30 +471,15 @@
           "name": "Rico Dowdle",
           "team": "PIT",
           "position": "RB",
-          "projected": 1098,
+          "projected": 1094,
           "gamesPlayed": 16.7,
           "expGames": 16.8,
-          "teamWins": 8.8,
+          "teamWins": 8.7,
           "cols": {
             "carries": 14.1138,
             "rushing_epa": -0.2858,
             "rushing_first_downs": 3.0898,
             "rushing_tds": 0.2874
-          }
-        },
-        {
-          "name": "D'Andre Swift",
-          "team": "CHI",
-          "position": "RB",
-          "projected": 1082,
-          "gamesPlayed": 16.3,
-          "expGames": 16.6,
-          "teamWins": 8.8,
-          "cols": {
-            "carries": 14.2331,
-            "rushing_epa": -0.053,
-            "rushing_first_downs": 3.454,
-            "rushing_tds": 0.4969
           }
         }
       ]
@@ -550,10 +550,10 @@
           "name": "Puka Nacua",
           "team": "LA",
           "position": "WR",
-          "projected": 1723,
+          "projected": 1660,
           "gamesPlayed": 14.5,
           "expGames": 15.7,
-          "teamWins": 10.3,
+          "teamWins": 9.1,
           "cols": {
             "targets": 10.2069,
             "target_share": 0.3066,
@@ -622,10 +622,10 @@
           "name": "George Pickens",
           "team": "DAL",
           "position": "WR",
-          "projected": 1263,
+          "projected": 1258,
           "gamesPlayed": 16.1,
           "expGames": 16.5,
-          "teamWins": 7.6,
+          "teamWins": 7.5,
           "cols": {
             "targets": 7.8758,
             "target_share": 0.2362,
@@ -655,31 +655,13 @@
           }
         },
         {
-          "name": "CeeDee Lamb",
-          "team": "DAL",
-          "position": "WR",
-          "projected": 1210,
-          "gamesPlayed": 13.6,
-          "expGames": 15.3,
-          "teamWins": 7.6,
-          "cols": {
-            "targets": 9.375,
-            "target_share": 0.2614,
-            "air_yards_share": 0.3212,
-            "wopr": 0.617,
-            "racr": 0.942,
-            "receiving_epa": 1.9286,
-            "receiving_tds": 0.2868
-          }
-        },
-        {
           "name": "Zay Flowers",
           "team": "BAL",
           "position": "WR",
-          "projected": 1209,
+          "projected": 1212,
           "gamesPlayed": 17,
           "expGames": 17,
-          "teamWins": 9.6,
+          "teamWins": 9.7,
           "cols": {
             "targets": 6.9059,
             "target_share": 0.2854,
@@ -688,6 +670,24 @@
             "racr": 1.1735,
             "receiving_epa": 2.698,
             "receiving_tds": 0.2765
+          }
+        },
+        {
+          "name": "CeeDee Lamb",
+          "team": "DAL",
+          "position": "WR",
+          "projected": 1205,
+          "gamesPlayed": 13.6,
+          "expGames": 15.3,
+          "teamWins": 7.5,
+          "cols": {
+            "targets": 9.375,
+            "target_share": 0.2614,
+            "air_yards_share": 0.3212,
+            "wopr": 0.617,
+            "racr": 0.942,
+            "receiving_epa": 1.9286,
+            "receiving_tds": 0.2868
           }
         },
         {
@@ -730,10 +730,10 @@
           "name": "Drake London",
           "team": "ATL",
           "position": "WR",
-          "projected": 1145,
+          "projected": 1141,
           "gamesPlayed": 13.5,
           "expGames": 15.2,
-          "teamWins": 8.2,
+          "teamWins": 8.1,
           "cols": {
             "targets": 9.3185,
             "target_share": 0.2916,
@@ -779,10 +779,10 @@
           "name": "Myles Garrett",
           "team": "LA",
           "position": "LB",
-          "projected": 22,
+          "projected": 21,
           "gamesPlayed": 16.4,
           "expGames": 16.7,
-          "teamWins": 10.3,
+          "teamWins": 9.1,
           "cols": {
             "def_qb_hits": 2.1768,
             "def_tackles_for_loss": 1.811,
@@ -842,7 +842,7 @@
           "projected": 14,
           "gamesPlayed": 13.7,
           "expGames": 15.3,
-          "teamWins": 8.8,
+          "teamWins": 8.9,
           "cols": {
             "def_qb_hits": 1.8832,
             "def_tackles_for_loss": 0.8759,
@@ -896,33 +896,33 @@
           }
         },
         {
-          "name": "Byron Young",
-          "team": "LA",
-          "position": "LB",
-          "projected": 11,
-          "gamesPlayed": 17,
-          "expGames": 17,
-          "teamWins": 10.3,
-          "cols": {
-            "def_qb_hits": 1.4235,
-            "def_tackles_for_loss": 0.7059,
-            "def_fumbles_forced": 0.0588,
-            "def_pass_defended": 0.0176
-          }
-        },
-        {
           "name": "Trey Hendrickson",
           "team": "BAL",
           "position": "LB",
           "projected": 11,
           "gamesPlayed": 10,
           "expGames": 13.5,
-          "teamWins": 9.6,
+          "teamWins": 9.7,
           "cols": {
             "def_qb_hits": 1.64,
             "def_tackles_for_loss": 0.78,
             "def_fumbles_forced": 0.13,
             "def_pass_defended": 0.25
+          }
+        },
+        {
+          "name": "Byron Young",
+          "team": "LA",
+          "position": "LB",
+          "projected": 11,
+          "gamesPlayed": 17,
+          "expGames": 17,
+          "teamWins": 9.1,
+          "cols": {
+            "def_qb_hits": 1.4235,
+            "def_tackles_for_loss": 0.7059,
+            "def_fumbles_forced": 0.0588,
+            "def_pass_defended": 0.0176
           }
         },
         {
@@ -932,7 +932,7 @@
           "projected": 11,
           "gamesPlayed": 11.2,
           "expGames": 14.1,
-          "teamWins": 8.3,
+          "teamWins": 8.4,
           "cols": {
             "def_qb_hits": 1.3839,
             "def_tackles_for_loss": 0.6696,
