@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Inter, Press_Start_2P } from "next/font/google";
 import "./globals.css";
+import { THEME_BOOTSTRAP, ThemeToggle } from "./theme";
 
 /**
  * Same pairing as Can-Tre-Beat-Vegas's Techno Bowl theme: Press Start 2P for
@@ -23,7 +24,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${app.variable} ${pixel.variable}`}>
+    <html lang="en" className={`${app.variable} ${pixel.variable}`} suppressHydrationWarning>
+      <head>
+        {/* Set the theme before first paint so light-mode readers never see a
+            dark flash on load. */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP }} />
+      </head>
       <body>
         <header className="top">
           <div className="wrap top-inner">
@@ -31,7 +37,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <span className="em" />
               EXTRAVAGANZA
             </Link>
-            <span className="brand sub">FORM-DRIVEN TRACKERS</span>
+            <div className="top-right">
+              <span className="brand sub">FORM-DRIVEN TRACKERS</span>
+              <ThemeToggle />
+            </div>
           </div>
         </header>
         <main className="wrap">{children}</main>

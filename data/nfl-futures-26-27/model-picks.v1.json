@@ -1,0 +1,125 @@
+{
+  "_readme": [
+    "THE MODEL'S ENTRY — locked, versioned, committed. Regenerate only by running",
+    "scripts/build-model-picks.ts by hand. Never at build time.",
+    "",
+    "Eight division winners and the Super Bowl champion, and nothing else. Every",
+    "number is the share of full simulated seasons — remaining schedule plus the",
+    "complete playoff bracket — in which that team won the thing."
+  ],
+  "entrantId": "model",
+  "displayName": "Can Tre Beat Vegas (model)",
+  "version": "v1",
+  "asOf": "2026-09-12",
+  "generatedAt": "2026-09-13T17:01:20.793Z",
+  "simulation": {
+    "repo": "Hijodeagua/Can-Tre-Beat-Vegas",
+    "file": "web/public/data/nfl/history/2026-09-12.json",
+    "sims": 10000,
+    "gamesPlayed": 2,
+    "gamesRemaining": 270,
+    "week": "Week 1",
+    "method": "Elo Monte Carlo. Each replay plays every remaining regular-season game, then the full seven-team-per-conference bracket — wild card, divisional, conference title, and a neutral-site Super Bowl — with ratings updating inside the replay as it goes."
+  },
+  "picks": {
+    "nfc_west": {
+      "value": "Seattle Seahawks",
+      "team": "SEA",
+      "confidence": 0.5729,
+      "basis": "won NFC West in 57% of 10,000 simulated seasons, ahead of San Francisco 49ers on 29%",
+      "runnerUp": {
+        "value": "San Francisco 49ers",
+        "team": "SF",
+        "confidence": 0.2883
+      }
+    },
+    "afc_west": {
+      "value": "Denver Broncos",
+      "team": "DEN",
+      "confidence": 0.5296,
+      "basis": "won AFC West in 53% of 10,000 simulated seasons, ahead of Los Angeles Chargers on 24%",
+      "runnerUp": {
+        "value": "Los Angeles Chargers",
+        "team": "LAC",
+        "confidence": 0.2351
+      }
+    },
+    "afc_south": {
+      "value": "Houston Texans",
+      "team": "HOU",
+      "confidence": 0.4914,
+      "basis": "won AFC South in 49% of 10,000 simulated seasons, ahead of Jacksonville Jaguars on 33%",
+      "runnerUp": {
+        "value": "Jacksonville Jaguars",
+        "team": "JAX",
+        "confidence": 0.3258
+      }
+    },
+    "afc_east": {
+      "value": "Buffalo Bills",
+      "team": "BUF",
+      "confidence": 0.4831,
+      "basis": "won AFC East in 48% of 10,000 simulated seasons, ahead of New England Patriots on 36%",
+      "runnerUp": {
+        "value": "New England Patriots",
+        "team": "NE",
+        "confidence": 0.3596
+      }
+    },
+    "nfc_east": {
+      "value": "Philadelphia Eagles",
+      "team": "PHI",
+      "confidence": 0.5039,
+      "basis": "won NFC East in 50% of 10,000 simulated seasons, ahead of Dallas Cowboys on 18%",
+      "runnerUp": {
+        "value": "Dallas Cowboys",
+        "team": "DAL",
+        "confidence": 0.184
+      }
+    },
+    "afc_north": {
+      "value": "Baltimore Ravens",
+      "team": "BAL",
+      "confidence": 0.3872,
+      "basis": "won AFC North in 39% of 10,000 simulated seasons, ahead of Pittsburgh Steelers on 26%",
+      "runnerUp": {
+        "value": "Pittsburgh Steelers",
+        "team": "PIT",
+        "confidence": 0.2606
+      }
+    },
+    "nfc_north": {
+      "value": "Detroit Lions",
+      "team": "DET",
+      "confidence": 0.3027,
+      "basis": "won NFC North in 30% of 10,000 simulated seasons, ahead of Minnesota Vikings on 28%",
+      "runnerUp": {
+        "value": "Minnesota Vikings",
+        "team": "MIN",
+        "confidence": 0.2805
+      }
+    },
+    "nfc_south": {
+      "value": "Tampa Bay Buccaneers",
+      "team": "TB",
+      "confidence": 0.3094,
+      "basis": "won NFC South in 31% of 10,000 simulated seasons, ahead of Atlanta Falcons on 29%",
+      "runnerUp": {
+        "value": "Atlanta Falcons",
+        "team": "ATL",
+        "confidence": 0.287
+      }
+    },
+    "sb_champ": {
+      "value": "Seattle Seahawks",
+      "team": "SEA",
+      "confidence": 0.1547,
+      "basis": "lifted the trophy in 15% of 10,000 full playthroughs — every remaining game plus the whole bracket — ahead of Denver Broncos on 8%",
+      "runnerUp": {
+        "value": "Denver Broncos",
+        "team": "DEN",
+        "confidence": 0.0761
+      }
+    }
+  }
+}

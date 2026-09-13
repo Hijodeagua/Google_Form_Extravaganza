@@ -25,16 +25,20 @@ Pages revalidate hourly. Sheet contents are never committed.
 
 ## Routes
 
-| Path                                     | What                                            |
-| ---------------------------------------- | ----------------------------------------------- |
-| `/extravaganza`                          | Index of trackers                               |
-| `/extravaganza/nfl-futures-26-27`        | How the room split, per question — the landing page |
-| `/extravaganza/nfl-futures-26-27/standings`       | Standings, pots, tiebreaks             |
-| `/extravaganza/nfl-futures-26-27/entrants/<slug>` | One entrant's card, every pick graded  |
-| `/extravaganza/nfl-futures-26-27/model`           | The model's entry vs the field         |
-| `/extravaganza/nfl-futures-26-27/advanced`        | Rate stats behind the projections      |
-| `/extravaganza/nfl-futures-26-27/side-pot`        | Yes/Maybe entrants only                |
-| `/extravaganza/nfl-futures-26-27/admin`           | Fix queue for unresolved answers       |
+| Path                                      | What                                          |
+| ----------------------------------------- | --------------------------------------------- |
+| `/extravaganza`                           | Index of trackers                             |
+| `/extravaganza/nfl-futures-26-27`         | Pick distribution — how the room split        |
+| `/extravaganza/nfl-futures-26-27/model`   | Tre model picks: divisions and the champion   |
+
+`main` is deliberately just these two pages. Standings, entrant detail, the side
+pot, the admin fix queue and the advanced board are all built and working on the
+`future/full-tracker` branch — see [docs/FUTURE-WORK.md](docs/FUTURE-WORK.md)
+for what each one does and why it is parked.
+
+Both pages read the viewer's colour scheme and can be toggled between light and
+dark from the header. The choice is remembered per browser and applied before
+first paint, so there is no flash on load.
 
 ## Running a season
 

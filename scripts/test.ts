@@ -12,14 +12,11 @@ import { mapColumns } from "../lib/sheets/headers";
 import { canonicalKey, displayValue, isMultiAnswer, isNonAnswer, nameKey } from "../lib/resolve/normalize";
 import { resolveAnswer, clusterAnswers, clusterLabel, pickKey, type AliasMap, type ResolverContext, type TeamEntity } from "../lib/resolve/match";
 import { readOutcome, scoreEntrant, type Entrant, type Outcome } from "../lib/scoring/engine";
-import { rank } from "../lib/scoring/tiebreak";
-import { resolvePots } from "../lib/scoring/pots";
 import { NFL_FUTURES_26_27 as POOL } from "../lib/pools/nfl-futures-26-27/config";
+import model from "../data/nfl-futures-26-27/model-picks.v1.json";
 import entities from "../data/nfl-futures-26-27/entities.json";
 import aliases from "../data/nfl-futures-26-27/aliases.json";
 import results from "../data/nfl-futures-26-27/results-26-27.json";
-import model from "../data/nfl-futures-26-27/model-picks.v2.json";
-import advanced from "../data/nfl-futures-26-27/advanced-board.json";
 
 let passed = 0;
 const failures: string[] = [];
@@ -206,70 +203,6 @@ function entrant(name: string, answers: Record<string, string>, at: number, outc
   eq("void: drops out", v.picks.first_fired.grade, "void");
 }
 
-/* ---------------------------------------------------------- tiebreaks ---- */
-{
-  const outcomes: Record<string, Outcome> = {
-    afc_east: outcome("afc_east", "Buffalo Bills"),
-    nfc_east: outcome("nfc_east", "Philadelphia Eagles"),
-    mvp: outcome("mvp", "Josh Allen"),
-    opoy: outcome("opoy", "Bijan Robinson"),
-    sb_points: outcome("sb_points", 50),
-  };
-
-  // Same points; A has more awards, so awards separate them.
-  const byAwards = [
-    entrant("MoreAwards", { mvp: "Josh Allen", opoy: "Bijan Robinson", sb_points: "10" }, 100, outcomes),
-    entrant("MoreDivs", { afc_east: "Buffalo Bills", nfc_east: "Philadelphia Eagles", sb_points: "49" }, 200, outcomes),
-  ];
-  const r1 = rank(byAwards, POOL.tiebreaks, outcomes);
-  eq("tiebreak: equal points", r1[0].entrant.points, r1[1].entrant.points);
-  eq("tiebreak: most awards wins", r1[0].entrant.name, "MoreAwards");
-  eq("tiebreak: reports the rule", r1[0].separatedBy, "most awards correct");
-
-  // Same points and same awards: combined points, closest without going over.
-  const byPoints = [
-    entrant("Over", { mvp: "Josh Allen", sb_points: "51" }, 100, outcomes),
-    entrant("Under", { mvp: "Josh Allen", sb_points: "47" }, 200, outcomes),
-    entrant("Exact", { mvp: "Josh Allen", sb_points: "50" }, 300, outcomes),
-  ];
-  const r2 = rank(byPoints, POOL.tiebreaks, outcomes);
-  eq("tiebreak: exact beats under", r2[0].entrant.name, "Exact");
-  eq("tiebreak: under beats over", r2[1].entrant.name, "Under");
-  eq("tiebreak: over sorts last", r2[2].entrant.name, "Over");
-  eq("tiebreak: names the separator", r2[0].separatedBy, "combined points, closest without going over");
-
-  // Everyone over: fall back to closest absolute, then earliest submission.
-  const allOver = [
-    entrant("Way over", { mvp: "Josh Allen", sb_points: "90" }, 100, outcomes),
-    entrant("Just over", { mvp: "Josh Allen", sb_points: "52" }, 200, outcomes),
-  ];
-  const r3 = rank(allOver, POOL.tiebreaks, outcomes);
-  eq("tiebreak: all-over falls back to closest", r3[0].entrant.name, "Just over");
-
-  const identical = [
-    entrant("Later", { mvp: "Josh Allen", sb_points: "50" }, 900, outcomes),
-    entrant("Earlier", { mvp: "Josh Allen", sb_points: "50" }, 100, outcomes),
-  ];
-  eq("tiebreak: earliest submission last resort", rank(identical, POOL.tiebreaks, outcomes)[0].entrant.name, "Earlier");
-}
-
-/* --------------------------------------------------------------- pots ---- */
-{
-  const pending = Object.fromEntries(POOL.questions.filter((x) => !x.gradeAgainst).map((x) => [x.id, readOutcome(x, { value: null }, ctx)]));
-  const e = [entrant("Solo", { sb_champ: "Buffalo Bills", mvp: "Josh Allen" }, 100, pending)];
-  const pendingPots = resolvePots(POOL, e, pending);
-  eq("pots: pending before anything resolves", pendingPots.find((p) => p.config.id === "sb")!.state, "pending");
-  check("pots: no crash with nothing resolved", pendingPots.every((p) => p.contenders.length >= 0));
-
-  const settled = { ...pending, sb_champ: outcome("sb_champ", "Kansas City Chiefs"), mvp: outcome("mvp", "Josh Allen") };
-  const e2 = [entrant("Missed", { sb_champ: "Buffalo Bills", mvp: "Josh Allen" }, 100, settled)];
-  const pots = resolvePots(POOL, e2, settled);
-  eq("pots: nobody hit it -> rollover", pots.find((p) => p.config.id === "sb")!.state, "rollover");
-  eq("pots: rollover has no leader", pots.find((p) => p.config.id === "sb")!.leader, null);
-  eq("pots: a hit pot is won", pots.find((p) => p.config.id === "mvp")!.state, "won");
-  eq("pots: winner named", pots.find((p) => p.config.id === "mvp")!.leader!.entrant.name, "Missed");
-}
-
 /* ---------------------------------------------------------- clustering --- */
 {
   const spellings = ["Puka Nacua", "Puca Nacua", "nacua", "Puka Nacua"].map((s) => resolve(s, "rec_yards"));
@@ -322,59 +255,27 @@ function entrant(name: string, answers: Record<string, string>, at: number, outc
   eq("pool: 16 scoring points on offer", POOL.questions.filter((x) => x.bucket === "division" || x.bucket === "award").reduce((n, x) => n + x.points, 0), 16);
   eq("pool: max total with the bonus", POOL.maxPoints, 18);
 
-  // The model must have a position on every question — a pick or a stated
-  // abstention. A question it simply forgot would score zero in silence.
-  const covered = new Set([...Object.keys(model.picks), ...Object.keys(model.abstentions)]);
-  const wanted = POOL.questions.map((x) => x.id);
-  check("model: covers every question", wanted.every((id) => covered.has(id)), wanted.filter((id) => !covered.has(id)).join(","));
-  check("model: nothing covered twice", !Object.keys(model.picks).some((id) => id in model.abstentions));
-  const TIERS = ["modelled", "projected", "derived", "market"];
-  check("model: every pick declares a basis tier",
-    Object.values(model.picks).every((p) => TIERS.includes((p as { tier: string }).tier)));
+  // The model ships nine picks and nothing else: eight divisions and the champion.
+  const picked = Object.keys(model.picks);
+  eq("model: nine picks", picked.length, 9);
+  check("model: the eight divisions are covered",
+    POOL.questions.filter((q) => q.bucket === "division").every((q) => picked.includes(q.id)));
+  check("model: the champion is covered", picked.includes("sb_champ"));
+  check("model: every pick is a real question",
+    picked.every((id) => POOL.questions.some((q) => q.id === id)));
+  check("model: every confidence is a probability",
+    Object.values(model.picks).every((p) => p.confidence > 0 && p.confidence <= 1));
+  check("model: every pick beats its own runner-up",
+    Object.values(model.picks).every((p) => p.confidence >= p.runnerUp.confidence));
   check("model: every pick explains itself",
-    Object.values(model.picks).every((p) => ((p as { basis: string }).basis ?? "").length > 10));
-  // A near-tie presented as a confident call is the failure mode this guards.
-  check("model: a close call is labelled",
-    Object.values(model.picks).every((p) => {
-      const q = p as { basis: string; closeCall?: boolean };
-      return !q.closeCall || /coin flip|only \d/.test(q.basis);
-    }));
-  check("model: every projected pick states its margin",
-    Object.values(model.picks).filter((p) => (p as { tier: string }).tier === "projected")
-      .every((p) => /clear of/.test((p as { basis: string }).basis)));
-  // The measured accuracy has to travel with the picks. A page claiming a hit
-  // rate it never measured is worse than one that says nothing.
-  const bt = (model.playerModel as { backtest?: { cases: number; exact: number; topThree: number } }).backtest;
-  check("model: carries its backtest", !!bt);
-  check("model: backtest is internally consistent",
-    !!bt && bt.exact <= bt.topThree && bt.topThree <= bt.cases && bt.cases > 0);
-  check("model: every projected pick carries runner-ups",
-    Object.values(model.picks).filter((p) => (p as { tier: string }).tier === "projected")
-      .every((p) => ((p as { alternatives?: unknown[] }).alternatives ?? []).length >= 1));
-  // The advanced board must agree with the picks it claims to explain.
-  // MVP must not quietly go back to a rule the backtest retired.
-  eq("model: MVP comes from the market, not the retired rule",
-    (model.picks as Record<string, { tier: string }>).mvp.tier, "market");
-  check("model: the retired MVP rule is recorded",
-    ((model.playerModel as { mvpRule?: { hits: number } }).mvpRule?.hits ?? -1) >= 0);
+    Object.values(model.picks).every((p) => p.basis.includes("simulated") || p.basis.includes("playthroughs")));
+  eq("model: version is v1", model.version, "v1");
+  eq("model: locked 2026-09-12", model.asOf, "2026-09-12");
+  eq("model: ten thousand replays", model.simulation.sims, 10000);
 
-  eq("advanced: one board per stat category", advanced.boards.length, 4);
-  check("advanced: every board is ranked", advanced.boards.every((b) =>
-    b.rows.every((r, i) => i === 0 || r.projected <= b.rows[i - 1].projected)));
-  check("advanced: the top row is the committed pick", (() => {
-    const byStat: Record<string, string> = {
-      passing_yards: "pass_yards", rushing_yards: "rush_yards",
-      receiving_yards: "rec_yards", def_sacks: "sacks",
-    };
-    return advanced.boards.every((b) => {
-      const pick = (model.picks as Record<string, { value: string }>)[byStat[b.stat]];
-      return pick && b.rows[0].name === pick.value;
-    });
-  })());
-  check("advanced: every row carries its columns",
-    advanced.boards.every((b) => b.rows.every((r) => b.cols.every((c) => c.key in r.cols))));
-  eq("model: four stat leaders are projected",
-    Object.values(model.picks).filter((p) => (p as { tier: string }).tier === "projected").length, 4);
+  eq("pool: 16 scoring points on offer", POOL.questions.filter((x) => x.bucket === "division" || x.bucket === "award").reduce((n, x) => n + x.points, 0), 16);
+  eq("pool: max total with the bonus", POOL.maxPoints, 18);
+
 }
 
 console.log(`\n${passed} passed, ${failures.length} failed`);

@@ -5,11 +5,7 @@ import { usePathname } from "next/navigation";
 
 const TABS = [
   { href: "", label: "Pick distribution" },
-  { href: "/standings", label: "Standings" },
-  { href: "/model", label: "Model vs field" },
-  { href: "/advanced", label: "Advanced" },
-  { href: "/side-pot", label: "Side pot" },
-  { href: "/admin", label: "Admin" },
+  { href: "/model", label: "Tre model picks" },
 ];
 
 export function PoolNav({ base }: { base: string }) {
@@ -19,13 +15,7 @@ export function PoolNav({ base }: { base: string }) {
       <div className="inner">
         {TABS.map((t) => {
           const href = `${base}${t.href}`;
-          // Standings owns the entrant pages, so it stays lit while reading one.
-          const active =
-            t.href === ""
-              ? path === base
-              : t.href === "/standings"
-                ? path.startsWith(href) || path.startsWith(`${base}/entrants`)
-                : path.startsWith(href);
+          const active = t.href === "" ? path === base : path.startsWith(href);
           return (
             <Link key={t.href} href={href} className={active ? "active" : ""}>
               {t.label}

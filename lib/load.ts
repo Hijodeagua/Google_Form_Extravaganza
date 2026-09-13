@@ -9,21 +9,16 @@ import { readOutcome, scoreEntrant, type Entrant, type Outcome } from "@/lib/sco
 import entitiesJson from "@/data/nfl-futures-26-27/entities.json";
 import aliasesJson from "@/data/nfl-futures-26-27/aliases.json";
 import resultsJson from "@/data/nfl-futures-26-27/results-26-27.json";
-import modelJson from "@/data/nfl-futures-26-27/model-picks.v2.json";
-
-export type ModelTier = "modelled" | "projected" | "derived" | "market";
+import modelJson from "@/data/nfl-futures-26-27/model-picks.v1.json";
 
 export interface ModelEntry {
   entrantId: string;
   displayName: string;
   version: string;
+  asOf: string;
   generatedAt: string;
-  sourceSnapshot: { repo: string; file: string; runDate: string; week: string; sims: number; gamesRemaining: number };
-  playerModel: { source: string; seasons: Record<string, number>; games: number; teamPull: number; durabilityShrink: number; closeCallMargin: number; playersProjected: number;
-    backtest: { seasons: number; categories: number; cases: number; exact: number; topThree: number };
-    mvpRule: { seasons: number; hits: number; weightsTried: number; note: string } };
-  picks: Record<string, { value: string; team?: string | null; confidence: number | null; basis: string; tier: ModelTier; closeCall?: boolean; alternatives?: { name: string; team: string; value: number }[] }>;
-  abstentions: Record<string, string>;
+  simulation: { repo: string; file: string; sims: number; gamesPlayed: number; gamesRemaining: number; week: string; method: string };
+  picks: Record<string, { value: string; team: string; confidence: number; basis: string }>;
 }
 
 export interface PoolData {
@@ -100,15 +95,16 @@ function buildModelEntrant(pool: PoolConfig, outcomes: Record<string, Outcome>, 
         note: pick.basis,
       };
     } else {
-      // An abstention is a real answer here, rendered as such — not a blank.
+      // The model only answers the nine questions the simulation produces. On
+      // everything else it has nothing to say, and says so.
       resolutions[question.id] = {
         raw: "",
-        display: "abstained",
+        display: "no pick",
         value: null,
         status: "abstained",
         method: "none",
         confidence: 0,
-        note: entry.abstentions[question.id] ?? "No signal",
+        note: "Not simulated — the model only answers division winners and the champion",
       };
     }
   }
