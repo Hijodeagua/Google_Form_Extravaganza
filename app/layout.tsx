@@ -46,9 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main className="wrap">{children}</main>
         <footer className="site">
           <div className="wrap inner">
-            Responses are read straight from the Google Form&apos;s sheet and re-read hourly. Outcomes are entered by hand
-            as the season resolves; anything still undecided shows as pending, never as a miss. No analytics, and no
-            entrant name ever leaves this page.
+            Responses are read straight from the Google Form&apos;s sheet and re-read hourly.
           </div>
         </footer>
       </body>

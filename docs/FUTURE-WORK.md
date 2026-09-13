@@ -13,6 +13,13 @@ git checkout future/full-tracker -- app/nfl-futures-26-27/standings
 
 …and re-add the tab in `app/nfl-futures-26-27/nav.tsx`.
 
+The **styles for all of these pages are still in `app/globals.css` on `main`** —
+the pot cards, the data tables, the stat tiles, the pick rows, the model-vs-field
+panels and the admin fix queue. They are inert with nothing using them, and they
+were left in on purpose so restoring a page is just the page file. The only
+block actually deleted was the yardage progress bar, which was cut from the
+distribution page on request.
+
 ---
 
 ## Standings

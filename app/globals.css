@@ -109,6 +109,21 @@ body > * { position: relative; z-index: 1; }
 
 a { color: inherit; }
 
+/* Links inside running copy have to look like links. Turf green reads against
+   both grounds, where the neon accents do not. */
+.hero p a,
+.notice a,
+footer.site a {
+  color: var(--turf);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1.5px;
+  font-weight: 600;
+}
+.hero p a:hover,
+.notice a:hover,
+footer.site a:hover { color: var(--neon-y); }
+
 /* The pixel face. Only ever applied with an explicit small-to-large size. */
 .pixel,
 .kicker,
@@ -304,60 +319,6 @@ h1.display {
 @media (min-width: 700px) { .section-h { margin-top: 54px; } }
 .section-sub { color: var(--mut); font-size: 13.5px; margin: 12px 0 18px; line-height: 1.6; }
 .foot { height: 70px; }
-
-/* ===== season progress, read as field position ===== */
-.progress {
-  margin-top: 22px;
-  border: 1.5px solid var(--line);
-  background: linear-gradient(180deg, rgba(47, 191, 107, 0.07), rgba(0, 0, 0, 0.3));
-  padding: 14px 14px 12px;
-}
-.progress .ptop {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-bottom: 11px;
-}
-.progress .lab {
-  font-size: 8px;
-  line-height: 1.6;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--mut);
-}
-@media (min-width: 700px) { .progress .lab { font-size: 9px; } }
-.progress .lab b { color: var(--neon-y); }
-.progress .lab.done { color: var(--turf); }
-
-/* The playing surface: chalk hashes every ten yards, turf fill from the goal
-   line. Named `.yardage`, not `.field`, because a bare `.field` also matched the
-   "Best human" panel (`.vs-side.field`) and clamped it to 22px. */
-.yardage {
-  position: relative;
-  height: 22px;
-  border: 1px solid var(--line-soft);
-  background:
-    repeating-linear-gradient(90deg, color-mix(in srgb, var(--chalk) 22%, transparent) 0 1px, transparent 1px 10%),
-    rgba(0, 0, 0, 0.4);
-  overflow: hidden;
-}
-.yardage .gained {
-  display: block;
-  height: 100%;
-  background: linear-gradient(90deg, var(--turf-deep), var(--turf));
-  box-shadow: 0 0 16px color-mix(in srgb, var(--turf) 60%, transparent);
-  transition: width 0.4s ease;
-}
-.yardage .ball {
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 13px;
-  line-height: 1;
-  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.8));
-}
 
 /* ===== pot cards, as scoreboard panels ===== */
 .pots {

@@ -2,7 +2,7 @@ import { NFL_FUTURES_26_27 as POOL } from "@/lib/pools/nfl-futures-26-27/config"
 import { loadPool } from "@/lib/load";
 import { clusterAnswers, clusterLabel, pickKey } from "@/lib/resolve/match";
 import type { Resolution } from "@/lib/resolve/types";
-import { PickPie, Progress, type Slice } from "./parts";
+import { PickPie, type Slice } from "./parts";
 
 export const revalidate = 3600;
 
@@ -64,11 +64,20 @@ export default async function DistributionPage() {
         <div className="kicker">How the room split</div>
         <h1 className="display">Pick distribution</h1>
         <p>
-          Every question, and who went with the crowd versus who is out on an island. Spellings are collapsed, so
-          &ldquo;Puka Nacua&rdquo;, &ldquo;Puca Nacua&rdquo; and &ldquo;nacua&rdquo; are one slice. The{" "}
-          <span style={{ color: "var(--model)" }}>model&apos;s pick</span> is highlighted where it made one.
+          Used answers from the Google Form. Mostly just piped the answers straight in, with some light edits. Still
+          tweaking a few of the model answers. The model is based on simulations from an{" "}
+          <a href="https://en.wikipedia.org/wiki/Elo_rating_system" target="_blank" rel="noreferrer noopener">
+            Elo
+          </a>{" "}
+          based model, run on every NFL game from 1999 to 2025.
         </p>
-        <Progress resolved={data.resolvedCount} total={data.totalQuestions} />
+        <p>
+          Found a bug or something off?{" "}
+          <a href="https://forms.gle/X7zzeaww3fgGnyvNA" target="_blank" rel="noreferrer noopener">
+            Let me know here
+          </a>
+          .
+        </p>
       </section>
 
       {Object.entries(sections).map(([section, questions]) => (
