@@ -26,7 +26,7 @@ export default async function SidePotPage() {
         <p>
           The {inPot.length} {inPot.length === 1 ? "entry" : "entries"} who opted in, scored among themselves. The three
           pots are resolved inside this group, separately from the{" "}
-          <Link href="/nfl-futures-26-27" style={{ color: "var(--gold)" }}>
+          <Link href="/nfl-futures-26-27/standings" style={{ color: "var(--gold)" }}>
             main standings
           </Link>
           .

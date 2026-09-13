@@ -84,6 +84,23 @@ export function displayValue(raw: string): string {
   return stripLeadHedge(stripPositionSuffix(stripParentheticals(raw))).trim();
 }
 
+/**
+ * Comparison key for a PERSON'S NAME, as opposed to an answer.
+ *
+ * Deliberately does none of the answer cleaning: an entrant called "Tre - Me"
+ * is not naming a player on a team, so cutting at the dash the way
+ * `canonicalKey` does would slug him to "tre" and, worse, collide him in the
+ * de-duplication map with anyone else whose name starts the same way.
+ */
+export function nameKey(raw: string): string {
+  return raw
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
 /** Comparison key: lowercase, unaccented, punctuation-free, suffix-free. */
 export function canonicalKey(raw: string): string {
   const base = displayValue(raw)

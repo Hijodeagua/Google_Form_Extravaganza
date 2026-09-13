@@ -26,7 +26,7 @@ export default async function EntrantPage({ params }: { params: Promise<{ slug: 
     <>
       <section className="hero">
         <div className="kicker">
-          <Link href="/nfl-futures-26-27" style={{ color: "var(--gold)" }}>
+          <Link href="/nfl-futures-26-27/standings" style={{ color: "var(--gold)" }}>
             ← Standings
           </Link>
         </div>

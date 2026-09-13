@@ -1,142 +1,109 @@
-import Link from "next/link";
 import { NFL_FUTURES_26_27 as POOL } from "@/lib/pools/nfl-futures-26-27/config";
 import { loadPool } from "@/lib/load";
-import { rank } from "@/lib/scoring/tiebreak";
-import { resolvePots } from "@/lib/scoring/pots";
-import { PotCard, Progress } from "./parts";
+import { clusterAnswers, clusterLabel, pickKey } from "@/lib/resolve/match";
+import type { Resolution } from "@/lib/resolve/types";
+import { PickPie, Progress, type Slice } from "./parts";
 
 export const revalidate = 3600;
 
-export default async function StandingsPage() {
+export default async function DistributionPage() {
   const data = await loadPool(POOL);
-  const ranked = rank(data.entrants, POOL.tiebreaks, data.outcomes);
-  const pots = resolvePots(POOL, data.entrants, data.outcomes);
-  const preseason = data.resolvedCount === 0;
+  const field = data.humans;
 
-  const flagged = data.entrants.reduce((n, e) => n + e.flaggedCount, 0);
-  const needsFixing = data.entrants.reduce((n, e) => n + e.unresolvedCount, 0);
+  const sections = POOL.questions.reduce<Record<string, typeof POOL.questions>>((acc, q) => {
+    (acc[q.section] ??= []).push(q);
+    return acc;
+  }, {});
+
+  function bars(questionId: string): { bars: Slice[]; noAnswer: string[] } {
+    const question = POOL.questions.find((q) => q.id === questionId)!;
+    // Cluster the humans, then work out which cluster each entrant landed in by
+    // resolution identity — the cluster map holds the same objects.
+    const owner = new Map<Resolution, string>();
+    const resolutions: Resolution[] = [];
+    const noAnswer: string[] = [];
+
+    for (const e of field) {
+      const r = e.picks[questionId]?.resolution;
+      if (!r) continue;
+      if (!pickKey(question.domain, r)) {
+        noAnswer.push(e.name);
+        continue;
+      }
+      owner.set(r, e.name);
+      resolutions.push(r);
+    }
+
+    const modelKey = pickKey(question.domain, data.model?.picks[questionId]?.resolution);
+    const outcome = data.outcomes[question.gradeAgainst ?? questionId];
+
+    const clustered = [...clusterAnswers(resolutions, question.domain).entries()]
+      .map(([key, members]) => {
+        const names = members.map((m) => owner.get(m) ?? "");
+        // A cluster is the right answer if any of its members graded correct.
+        const anyCorrect = field.some(
+          (e) => members.includes(e.picks[questionId]?.resolution) && e.picks[questionId]?.grade === "correct",
+        );
+        return {
+          key,
+          label: clusterLabel(members),
+          count: names.length,
+          names,
+          modelPicked: modelKey !== null && key === modelKey,
+          correct: outcome && !outcome.pending ? anyCorrect : null,
+        };
+      })
+      .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
+
+    return { bars: clustered, noAnswer };
+  }
 
   return (
     <>
       <section className="hero">
-        <div className="kicker">2026-27 season · Super Bowl LXI</div>
-        <h1 className="display">Standings</h1>
+        <div className="kicker">How the room split</div>
+        <h1 className="display">Pick distribution</h1>
         <p>
-          Sixteen points on offer: <b>eight division winners</b> and <b>eight awards</b>, one point each, plus{" "}
-          <b>two bonus points</b> if a Dark Horse MVP pick turns out to be the actual MVP. Ties break on awards
-          correct, then combined Super Bowl points, closest without going over.
+          Every question, and who went with the crowd versus who is out on an island. Spellings are collapsed, so
+          &ldquo;Puka Nacua&rdquo;, &ldquo;Puca Nacua&rdquo; and &ldquo;nacua&rdquo; are one slice. The{" "}
+          <span style={{ color: "var(--model)" }}>model&apos;s pick</span> is highlighted where it made one.
         </p>
-        <div className="meth">
-          Seeding, stat leaders and the hot-seat questions are scored and shown, but kept out of the total.
-        </div>
         <Progress resolved={data.resolvedCount} total={data.totalQuestions} />
       </section>
 
-      <div className="pots">
-        {pots.map((pot) => (
-          <PotCard key={pot.config.id} pot={pot} />
-        ))}
-      </div>
+      {Object.entries(sections).map(([section, questions]) => (
+        <div key={section}>
+          <h2 className="section-h">{section}</h2>
+          {questions.map((question) => {
+            const { bars: rows, noAnswer } = bars(question.id);
+            const total = rows.reduce((n, r) => n + r.count, 0);
+            const modelAbstained = data.model?.picks[question.id]?.resolution.status === "abstained";
 
-      {data.unavailable && (
-        <div className="notice warn">
-          <b>Responses could not be read on this render.</b> {data.unavailable} The next hourly revalidation will fill
-          the table in.
-        </div>
-      )}
+            return (
+              <div key={question.id} className="dist-q">
+                <h3>{question.label}</h3>
+                <div className="qsub">
+                  {total} {total === 1 ? "answer" : "answers"} · {rows.length} distinct
+                  {rows.length === 1 && total > 1 && " · unanimous"}
+                  {modelAbstained && " · model abstained"}
+                </div>
 
-      {preseason && !data.unavailable && (
-        <div className="notice">
-          <b>Nothing has been decided yet.</b> Every pick below is locked and every outcome is still open, so the table
-          reads 0 across the board — that is the correct answer, not a bug. Points start appearing as outcomes are
-          filled into the resolution key. In the meantime, the{" "}
-          <Link href="/nfl-futures-26-27/distribution" style={{ color: "var(--gold)" }}>
-            pick distribution
-          </Link>{" "}
-          is the interesting page.
-        </div>
-      )}
+                {rows.length === 0 ? (
+                  <div className="t-dim" style={{ fontSize: 13 }}>Nobody answered this one.</div>
+                ) : (
+                  <PickPie slices={rows} total={total} />
+                )}
 
-      <h2 className="section-h">The table</h2>
-      <p className="section-sub">
-        {data.entrants.length} entries, including the model. Tap a name for every pick and how it graded.
-      </p>
-
-      <div className="tscroll">
-        <table className="data">
-          <thead>
-            <tr>
-              <th style={{ width: 34 }}>#</th>
-              <th>Entrant</th>
-              <th>Side pot</th>
-              <th className="num">Points</th>
-              <th className="num">Divisions</th>
-              <th className="num">Awards</th>
-              <th className="num">All correct</th>
-            </tr>
-          </thead>
-          <tbody>
-            {ranked.map(({ entrant, rank: position, tied, separatedBy }) => (
-              <tr key={entrant.id} className={entrant.isModel ? "is-model" : ""}>
-                <td className="rk">{position}</td>
-                <td>
-                  <div className="stand-name">
-                    <Link className="nm" href={`/nfl-futures-26-27/entrants/${entrant.id}`}>
-                      {entrant.name}
-                    </Link>
-                    {entrant.isModel && <span className="badge model">model</span>}
-                    {entrant.flaggedCount > 0 && <span className="badge flag">{entrant.flaggedCount} flagged</span>}
+                {noAnswer.length > 0 && (
+                  <div className="who" style={{ marginTop: 10 }}>
+                    <span className="t-dim">No answer: {noAnswer.join(", ")}</span>
                   </div>
-                  {!preseason && tied && separatedBy && (
-                    <div className="sep-note">Tied — separated on {separatedBy}</div>
-                  )}
-                </td>
-                <td>
-                  {entrant.isModel ? (
-                    <span className="t-dim">—</span>
-                  ) : entrant.optedIntoSidePot ? (
-                    <span className="badge pot">{entrant.sidePotAnswer}</span>
-                  ) : (
-                    <span className="t-dim">{entrant.sidePotAnswer || "No"}</span>
-                  )}
-                </td>
-                <td className="num">
-                  <span className={`stand-pts ${entrant.points === 0 ? "zero" : ""}`}>
-                    {entrant.points}
-                    <small>/{POOL.maxPoints}</small>
-                  </span>
-                </td>
-                <td className="num t-mut">{entrant.divisionsCorrect}/8</td>
-                <td className="num t-mut">{entrant.awardsCorrect}/8</td>
-                <td className="num t-mut">
-                  {entrant.gradedCount === 0 ? (
-                    <span className="t-dim">—</span>
-                  ) : (
-                    <>
-                      {entrant.totalCorrect}
-                      <span className="t-dim">/{entrant.gradedCount}</span>
-                    </>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {(flagged > 0 || needsFixing > 0) && (
-        <div className="notice warn">
-          <b>
-            {flagged} answer{flagged === 1 ? "" : "s"} graded on a judgement call
-          </b>
-          {needsFixing > 0 && ` and ${needsFixing} that could not be resolved at all`}. Nothing here is scored on a
-          guess without saying so —{" "}
-          <Link href="/nfl-futures-26-27/admin" style={{ color: "var(--gold)" }}>
-            review them
-          </Link>
-          .
+                )}
+              </div>
+            );
+          })}
         </div>
-      )}
+      ))}
       <div className="foot" />
     </>
   );

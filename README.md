@@ -28,9 +28,9 @@ Pages revalidate hourly. Sheet contents are never committed.
 | Path                                     | What                                            |
 | ---------------------------------------- | ----------------------------------------------- |
 | `/extravaganza`                          | Index of trackers                               |
-| `/extravaganza/nfl-futures-26-27`        | Standings, pots, tiebreaks                      |
+| `/extravaganza/nfl-futures-26-27`        | How the room split, per question — the landing page |
+| `/extravaganza/nfl-futures-26-27/standings`       | Standings, pots, tiebreaks             |
 | `/extravaganza/nfl-futures-26-27/entrants/<slug>` | One entrant's card, every pick graded  |
-| `/extravaganza/nfl-futures-26-27/distribution`    | How the room split, per question       |
 | `/extravaganza/nfl-futures-26-27/model`           | The model's entry vs the field         |
 | `/extravaganza/nfl-futures-26-27/advanced`        | Rate stats behind the projections      |
 | `/extravaganza/nfl-futures-26-27/side-pot`        | Yes/Maybe entrants only                |

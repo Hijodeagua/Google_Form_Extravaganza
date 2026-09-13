@@ -1,7 +1,7 @@
 import type { PoolConfig } from "@/lib/pools/types";
 import { fetchSheetCsv, SheetUnavailableError } from "@/lib/sheets/fetch";
 import { mapColumns, type ColumnMap } from "@/lib/sheets/headers";
-import { canonicalKey } from "@/lib/resolve/normalize";
+import { canonicalKey, nameKey } from "@/lib/resolve/normalize";
 import { resolveAnswer, type AliasMap, type ResolverContext, type TeamEntity } from "@/lib/resolve/match";
 import type { Resolution } from "@/lib/resolve/types";
 import { readOutcome, scoreEntrant, type Entrant, type Outcome } from "@/lib/scoring/engine";
@@ -47,8 +47,7 @@ export interface PoolData {
   unavailable: string | null;
 }
 
-export const slugify = (name: string) =>
-  canonicalKey(name).replace(/\s+/g, "-") || "entrant";
+export const slugify = (name: string) => nameKey(name).replace(/\s+/g, "-") || "entrant";
 
 /** Google Forms writes "9/9/2026 13:20:46" — US month/day, 24h clock, no zone. */
 function parseTimestamp(raw: string): number {
@@ -189,7 +188,7 @@ export async function loadPool(pool: PoolConfig): Promise<PoolData> {
     const name = (row[columns.name] ?? "").trim();
     if (!name) continue;
     const at = parseTimestamp(row[columns.timestamp] ?? "");
-    const key = canonicalKey(name);
+    const key = nameKey(name);
     const prev = latest.get(key);
     if (prev && prev.at >= at) {
       superseded.push({ name, submittedAt: row[columns.timestamp] ?? "" });

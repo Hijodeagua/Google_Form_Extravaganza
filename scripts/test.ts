@@ -9,7 +9,7 @@
  */
 import { parseCsv } from "../lib/sheets/csv";
 import { mapColumns } from "../lib/sheets/headers";
-import { canonicalKey, displayValue, isMultiAnswer, isNonAnswer } from "../lib/resolve/normalize";
+import { canonicalKey, displayValue, isMultiAnswer, isNonAnswer, nameKey } from "../lib/resolve/normalize";
 import { resolveAnswer, clusterAnswers, clusterLabel, pickKey, type AliasMap, type ResolverContext, type TeamEntity } from "../lib/resolve/match";
 import { readOutcome, scoreEntrant, type Entrant, type Outcome } from "../lib/scoring/engine";
 import { rank } from "../lib/scoring/tiebreak";
@@ -66,6 +66,13 @@ const resolve = (raw: string, id: string) => resolveAnswer(raw, q(id).domain, id
   check("a real name is not a non-answer", !isNonAnswer("Josh Allen"));
   check("detects two-in-one", isMultiAnswer("Emmitt Smith or OJ Simpson"));
   check("does not trip on names containing 'or'", !isMultiAnswer("Baker Mayfield"));
+
+  // An entrant's name is not an answer: the dash and comma cutting that turns
+  // "David Bailey - Jets" into "David Bailey" must not touch it.
+  eq("name key keeps everything after a dash", nameKey("Tre - Me"), "tre me");
+  eq("name key keeps everything after a comma", nameKey("Watterson, Shawn"), "watterson shawn");
+  eq("name key still normalizes case and accents", nameKey("José  GARCÍA"), "jose garcia");
+  check("two similar names stay distinct", nameKey("Tre - Me") !== nameKey("Tre - Other"));
 }
 
 /* ------------------------------------------------------------- headers --- */
