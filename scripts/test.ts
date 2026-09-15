@@ -14,6 +14,7 @@ import { resolveAnswer, clusterAnswers, clusterLabel, pickKey, type AliasMap, ty
 import { readOutcome, scoreEntrant, type Entrant, type Outcome } from "../lib/scoring/engine";
 import { NFL_FUTURES_26_27 as POOL } from "../lib/pools/nfl-futures-26-27/config";
 import model from "../data/nfl-futures-26-27/model-picks.v1.json";
+import edh from "../data/edh-survey/findings.json";
 import entities from "../data/nfl-futures-26-27/entities.json";
 import aliases from "../data/nfl-futures-26-27/aliases.json";
 import results from "../data/nfl-futures-26-27/results-26-27.json";
@@ -252,6 +253,25 @@ function entrant(name: string, answers: Record<string, string>, at: number, outc
     for (const t of entities.teams) for (const a of t.aliases) { if (seen.has(a)) return false; seen.add(a); }
     return true;
   })());
+  // The survey page is built from committed aggregates. Guard their shape and
+  // the invariants a reader would notice if broken.
+  eq("edh: two parts", edh.parts.length, 2);
+  eq("edh: part ids", edh.parts.map((p) => p.id).join(","), "one,two");
+  check("edh: every question has items", edh.parts.every((p) => p.questions.every((q) => q.items.length > 0)));
+  check("edh: no question claims more answers than responses",
+    edh.parts.every((p) => p.questions.every((q) => q.answered <= edh.responses)));
+  check("edh: single-choice percentages sum to about 100",
+    edh.parts.every((p) => p.questions.filter((q) => q.kind === "single" || q.kind === "years" || q.kind === "scale")
+      .every((q) => { const s = q.items.reduce((n, i) => n + i.pct, 0); return s >= 97 && s <= 103; })));
+  check("edh: single-choice counts sum to answered",
+    edh.parts.every((p) => p.questions.filter((q) => q.kind === "single" || q.kind === "years" || q.kind === "scale")
+      .every((q) => q.items.reduce((n, i) => n + i.count, 0) === q.answered)));
+  check("edh: the No votes survived", (() => {
+    const again = edh.parts[1].questions.find((q) => q.id === "again");
+    return !!again && again.items.some((i) => i.label === "No" && i.count > 0);
+  })());
+  check("edh: no raw response text is committed", !JSON.stringify(edh).includes("Timestamp"));
+
   eq("pool: 16 scoring points on offer", POOL.questions.filter((x) => x.bucket === "division" || x.bucket === "award").reduce((n, x) => n + x.points, 0), 16);
   eq("pool: max total with the bonus", POOL.maxPoints, 18);
 
@@ -272,6 +292,25 @@ function entrant(name: string, answers: Record<string, string>, at: number, outc
   eq("model: version is v1", model.version, "v1");
   eq("model: locked 2026-09-12", model.asOf, "2026-09-12");
   eq("model: ten thousand replays", model.simulation.sims, 10000);
+
+  // The survey page is built from committed aggregates. Guard their shape and
+  // the invariants a reader would notice if broken.
+  eq("edh: two parts", edh.parts.length, 2);
+  eq("edh: part ids", edh.parts.map((p) => p.id).join(","), "one,two");
+  check("edh: every question has items", edh.parts.every((p) => p.questions.every((q) => q.items.length > 0)));
+  check("edh: no question claims more answers than responses",
+    edh.parts.every((p) => p.questions.every((q) => q.answered <= edh.responses)));
+  check("edh: single-choice percentages sum to about 100",
+    edh.parts.every((p) => p.questions.filter((q) => q.kind === "single" || q.kind === "years" || q.kind === "scale")
+      .every((q) => { const s = q.items.reduce((n, i) => n + i.pct, 0); return s >= 97 && s <= 103; })));
+  check("edh: single-choice counts sum to answered",
+    edh.parts.every((p) => p.questions.filter((q) => q.kind === "single" || q.kind === "years" || q.kind === "scale")
+      .every((q) => q.items.reduce((n, i) => n + i.count, 0) === q.answered)));
+  check("edh: the No votes survived", (() => {
+    const again = edh.parts[1].questions.find((q) => q.id === "again");
+    return !!again && again.items.some((i) => i.label === "No" && i.count > 0);
+  })());
+  check("edh: no raw response text is committed", !JSON.stringify(edh).includes("Timestamp"));
 
   eq("pool: 16 scoring points on offer", POOL.questions.filter((x) => x.bucket === "division" || x.bucket === "award").reduce((n, x) => n + x.points, 0), 16);
   eq("pool: max total with the bonus", POOL.maxPoints, 18);

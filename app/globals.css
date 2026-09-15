@@ -714,3 +714,39 @@ tr.adv-pick td { background: color-mix(in srgb, var(--model) 10%, transparent) !
 .div-card .dc-row { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
 .div-card .dc-pct { font-family: var(--font-pixel), monospace; font-size: 13px; color: var(--turf); }
 .div-card .dc-next { font-size: 11.5px; color: var(--mut-2); }
+
+/* ===== survey findings ===== */
+.dist-q .finding {
+  font-size: 15.5px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.5;
+  margin: 2px 0 6px;
+}
+.dbar { display: grid; gap: 6px; margin-bottom: 12px; }
+.dbar .dtop { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.dbar .dname { font-size: 14px; font-weight: 600; }
+.dbar .dcount { font-family: var(--font-pixel), monospace; font-size: 8px; color: var(--mut); white-space: nowrap; }
+.dbar .dtrack { display: block; height: 10px; background: color-mix(in srgb, var(--chalk) 12%, transparent); border: 1px solid var(--line-soft); overflow: hidden; }
+.dbar .dfill { display: block; height: 100%; background: color-mix(in srgb, var(--turf) 55%, var(--mut-2)); }
+.dbar.consensus .dfill { background: linear-gradient(90deg, var(--turf-deep), var(--turf)); }
+
+/* Fill-out-the-form call to action, shown only when a form URL is configured. */
+.cta-form {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  padding: 11px 14px;
+  font-family: var(--font-pixel), monospace;
+  font-size: 8.5px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--bg);
+  background: var(--neon-y);
+  border: 1.5px solid var(--neon-y);
+  text-decoration: none;
+  box-shadow: 0 0 16px color-mix(in srgb, var(--neon-y) 30%, transparent);
+}
+.cta-form:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+:root[data-theme="light"] .cta-form { color: #fff; }

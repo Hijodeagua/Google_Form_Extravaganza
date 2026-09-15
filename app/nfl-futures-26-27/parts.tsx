@@ -4,7 +4,6 @@ export interface Slice {
   key: string;
   label: string;
   count: number;
-  names: string[];
   modelPicked: boolean;
   correct: boolean | null;
 }
@@ -94,7 +93,9 @@ export function PickPie({ slices, total }: { slices: Slice[]; total: number }) {
                 {d.modelPicked && <span className="badge model" style={{ marginLeft: 7 }}>model</span>}
                 {d.count === 1 && total > 2 && <span className="badge" style={{ marginLeft: 7 }}>alone</span>}
               </span>
-              <span className="lwho">{d.names.join(", ")}</span>
+              <span className="lwho">
+                {d.count} {d.count === 1 ? "pick" : "picks"}
+              </span>
             </span>
             <span className="lpct">{Math.round(d.pct)}%</span>
           </li>

@@ -1,0 +1,613 @@
+{
+  "title": "The EDH Survey",
+  "subtitle": "What 358 Commander players said about how they got here and how they play.",
+  "responses": 358,
+  "collected": "January 2025",
+  "sheetId": "1naPb5Gwe44dzbJSrMaOnrqxHr_SPsLAfcLqQSzTNU-o",
+  "generatedAt": "2026-09-15T22:12:15.820Z",
+  "parts": [
+    {
+      "id": "one",
+      "title": "Part one: the players",
+      "kicker": "Who answered",
+      "blurb": "When they started, what they started on, and how deep in they are now.",
+      "questions": [
+        {
+          "id": "start_magic",
+          "label": "What year did you first start playing Magic?",
+          "kind": "years",
+          "answered": 347,
+          "items": [
+            {
+              "label": "Before 2000",
+              "count": 47,
+              "pct": 14
+            },
+            {
+              "label": "2000 to 2009",
+              "count": 72,
+              "pct": 21
+            },
+            {
+              "label": "2010 to 2014",
+              "count": 68,
+              "pct": 20
+            },
+            {
+              "label": "2015 to 2019",
+              "count": 69,
+              "pct": 20
+            },
+            {
+              "label": "2020 to 2022",
+              "count": 42,
+              "pct": 12
+            },
+            {
+              "label": "2023 or later",
+              "count": 49,
+              "pct": 14
+            }
+          ],
+          "median": 2013
+        },
+        {
+          "id": "start_edh",
+          "label": "What year did you first start playing Commander?",
+          "kind": "years",
+          "answered": 346,
+          "items": [
+            {
+              "label": "Before 2000",
+              "count": 0,
+              "pct": 0
+            },
+            {
+              "label": "2000 to 2009",
+              "count": 16,
+              "pct": 5
+            },
+            {
+              "label": "2010 to 2014",
+              "count": 62,
+              "pct": 18
+            },
+            {
+              "label": "2015 to 2019",
+              "count": 94,
+              "pct": 27
+            },
+            {
+              "label": "2020 to 2022",
+              "count": 84,
+              "pct": 24
+            },
+            {
+              "label": "2023 or later",
+              "count": 90,
+              "pct": 26
+            }
+          ],
+          "median": 2020
+        },
+        {
+          "id": "first_format",
+          "label": "What was your first Magic format?",
+          "kind": "single",
+          "answered": 355,
+          "items": [
+            {
+              "label": "Kitchen table",
+              "count": 177,
+              "pct": 50
+            },
+            {
+              "label": "Commander",
+              "count": 93,
+              "pct": 26
+            },
+            {
+              "label": "Standard",
+              "count": 53,
+              "pct": 15
+            },
+            {
+              "label": "Limited",
+              "count": 13,
+              "pct": 4
+            },
+            {
+              "label": "Modern",
+              "count": 7,
+              "pct": 2
+            },
+            {
+              "label": "Other",
+              "count": 12,
+              "pct": 3
+            }
+          ],
+          "distinct": 17
+        },
+        {
+          "id": "favorite_format",
+          "label": "What is your favorite Magic format?",
+          "kind": "single",
+          "answered": 352,
+          "items": [
+            {
+              "label": "Commander",
+              "count": 299,
+              "pct": 85
+            },
+            {
+              "label": "Limited",
+              "count": 17,
+              "pct": 5
+            },
+            {
+              "label": "Pauper",
+              "count": 7,
+              "pct": 2
+            },
+            {
+              "label": "Cube",
+              "count": 5,
+              "pct": 1
+            },
+            {
+              "label": "Legacy",
+              "count": 5,
+              "pct": 1
+            },
+            {
+              "label": "Standard",
+              "count": 5,
+              "pct": 1
+            },
+            {
+              "label": "Other",
+              "count": 14,
+              "pct": 4
+            }
+          ],
+          "distinct": 15
+        },
+        {
+          "id": "decks",
+          "label": "How many Commander decks do you own?",
+          "kind": "single",
+          "answered": 356,
+          "items": [
+            {
+              "label": "1 deck",
+              "count": 2,
+              "pct": 1
+            },
+            {
+              "label": "2 decks",
+              "count": 7,
+              "pct": 2
+            },
+            {
+              "label": "3 decks",
+              "count": 19,
+              "pct": 5
+            },
+            {
+              "label": "4 decks",
+              "count": 22,
+              "pct": 6
+            },
+            {
+              "label": "5 decks",
+              "count": 30,
+              "pct": 8
+            },
+            {
+              "label": "6 to 10",
+              "count": 126,
+              "pct": 35
+            },
+            {
+              "label": "10 to 20",
+              "count": 93,
+              "pct": 26
+            },
+            {
+              "label": "20 or more",
+              "count": 57,
+              "pct": 16
+            }
+          ],
+          "distinct": 8
+        }
+      ]
+    },
+    {
+      "id": "two",
+      "title": "Part two: how they play",
+      "kicker": "The format",
+      "blurb": "What they run, what they fear, how they build, and who they watch.",
+      "questions": [
+        {
+          "id": "favorite_commander",
+          "label": "Who is your favorite commander?",
+          "kind": "open",
+          "answered": 349,
+          "items": [
+            {
+              "label": "Amalia Benavides Aguirre",
+              "count": 3,
+              "pct": 1
+            },
+            {
+              "label": "Chatterfang",
+              "count": 3,
+              "pct": 1
+            },
+            {
+              "label": "Edgar Markov",
+              "count": 3,
+              "pct": 1
+            },
+            {
+              "label": "Obeka, Brute Chronologist",
+              "count": 3,
+              "pct": 1
+            },
+            {
+              "label": "Veyran, Voice of Duality",
+              "count": 3,
+              "pct": 1
+            },
+            {
+              "label": "Xyris",
+              "count": 3,
+              "pct": 1
+            },
+            {
+              "label": "Other",
+              "count": 331,
+              "pct": 95
+            }
+          ],
+          "distinct": 320,
+          "note": "320 different commanders named by 349 people. Nobody's favourite was named more than three times."
+        },
+        {
+          "id": "strongest",
+          "label": "Who is the strongest commander in the format?",
+          "kind": "single",
+          "answered": 278,
+          "items": [
+            {
+              "label": "Tymna (any partner)",
+              "count": 59,
+              "pct": 21
+            },
+            {
+              "label": "Atraxa",
+              "count": 23,
+              "pct": 8
+            },
+            {
+              "label": "Urza, Lord High Artificer",
+              "count": 20,
+              "pct": 7
+            },
+            {
+              "label": "Yuriko",
+              "count": 18,
+              "pct": 6
+            },
+            {
+              "label": "Kinnan",
+              "count": 13,
+              "pct": 5
+            },
+            {
+              "label": "Kenrith",
+              "count": 10,
+              "pct": 4
+            },
+            {
+              "label": "Rograkh / Silas",
+              "count": 9,
+              "pct": 3
+            },
+            {
+              "label": "Edgar Markov",
+              "count": 8,
+              "pct": 3
+            },
+            {
+              "label": "Other",
+              "count": 118,
+              "pct": 42
+            }
+          ],
+          "distinct": 109
+        },
+        {
+          "id": "power",
+          "label": "How do you judge the power level of a deck? (pick two)",
+          "kind": "multi",
+          "answered": 353,
+          "items": [
+            {
+              "label": "Fast mana beyond Sol Ring",
+              "count": 156,
+              "pct": 44
+            },
+            {
+              "label": "Number of combos",
+              "count": 139,
+              "pct": 39
+            },
+            {
+              "label": "Number of tutors",
+              "count": 119,
+              "pct": 34
+            },
+            {
+              "label": "The commander itself",
+              "count": 109,
+              "pct": 31
+            },
+            {
+              "label": "History with the deck",
+              "count": 100,
+              "pct": 28
+            },
+            {
+              "label": "History with the pilot",
+              "count": 100,
+              "pct": 28
+            },
+            {
+              "label": "Theme or archetype",
+              "count": 48,
+              "pct": 14
+            },
+            {
+              "label": "Wrote their own answer",
+              "count": 44,
+              "pct": 12
+            }
+          ],
+          "note": "Percentages are of respondents, and each picked up to two, so they do not sum to 100."
+        },
+        {
+          "id": "choose",
+          "label": "How do you usually choose a commander?",
+          "kind": "single",
+          "answered": 354,
+          "items": [
+            {
+              "label": "Theme",
+              "count": 258,
+              "pct": 73
+            },
+            {
+              "label": "Wrote their own answer",
+              "count": 61,
+              "pct": 17
+            },
+            {
+              "label": "Found the card in a pack",
+              "count": 18,
+              "pct": 5
+            },
+            {
+              "label": "Interesting mechanics",
+              "count": 10,
+              "pct": 3
+            },
+            {
+              "label": "Power level",
+              "count": 7,
+              "pct": 2
+            }
+          ],
+          "distinct": 5
+        },
+        {
+          "id": "build",
+          "label": "How do you usually build the 99?",
+          "kind": "single",
+          "answered": 356,
+          "items": [
+            {
+              "label": "Search Scryfall",
+              "count": 123,
+              "pct": 35
+            },
+            {
+              "label": "EDHREC",
+              "count": 105,
+              "pct": 29
+            },
+            {
+              "label": "From my own collection",
+              "count": 72,
+              "pct": 20
+            },
+            {
+              "label": "Wrote their own answer",
+              "count": 25,
+              "pct": 7
+            },
+            {
+              "label": "A decklist found online",
+              "count": 16,
+              "pct": 4
+            },
+            {
+              "label": "All of the above",
+              "count": 15,
+              "pct": 4
+            }
+          ],
+          "distinct": 6
+        },
+        {
+          "id": "cedh",
+          "label": "Do you play cEDH? (1 = never)",
+          "kind": "scale",
+          "answered": 353,
+          "items": [
+            {
+              "label": "1, never",
+              "count": 210,
+              "pct": 59
+            },
+            {
+              "label": "2",
+              "count": 59,
+              "pct": 17
+            },
+            {
+              "label": "3",
+              "count": 32,
+              "pct": 9
+            },
+            {
+              "label": "4",
+              "count": 25,
+              "pct": 7
+            },
+            {
+              "label": "5 or more",
+              "count": 27,
+              "pct": 8
+            }
+          ],
+          "note": "Asked as a scale where 1 means never."
+        },
+        {
+          "id": "creator",
+          "label": "Favorite EDH content creator?",
+          "kind": "single",
+          "answered": 286,
+          "items": [
+            {
+              "label": "Commander at Home",
+              "count": 38,
+              "pct": 13
+            },
+            {
+              "label": "The Command Zone",
+              "count": 27,
+              "pct": 9
+            },
+            {
+              "label": "Tolarian Community College",
+              "count": 27,
+              "pct": 9
+            },
+            {
+              "label": "MTGGoldfish",
+              "count": 25,
+              "pct": 9
+            },
+            {
+              "label": "Play to Win",
+              "count": 19,
+              "pct": 7
+            },
+            {
+              "label": "Salubrious Snail",
+              "count": 17,
+              "pct": 6
+            },
+            {
+              "label": "MTG Muddstah",
+              "count": 9,
+              "pct": 3
+            },
+            {
+              "label": "The Trinket Mage",
+              "count": 8,
+              "pct": 3
+            },
+            {
+              "label": "Other",
+              "count": 116,
+              "pct": 41
+            }
+          ],
+          "distinct": 97
+        },
+        {
+          "id": "shoutout",
+          "label": "A creator that deserves a shout-out?",
+          "kind": "single",
+          "answered": 228,
+          "items": [
+            {
+              "label": "Salubrious Snail",
+              "count": 14,
+              "pct": 6
+            },
+            {
+              "label": "Tolarian Community College",
+              "count": 13,
+              "pct": 6
+            },
+            {
+              "label": "Play to Win",
+              "count": 8,
+              "pct": 4
+            },
+            {
+              "label": "The Command Zone",
+              "count": 8,
+              "pct": 4
+            },
+            {
+              "label": "The Trinket Mage",
+              "count": 8,
+              "pct": 4
+            },
+            {
+              "label": "Maldhound",
+              "count": 6,
+              "pct": 3
+            },
+            {
+              "label": "Other",
+              "count": 171,
+              "pct": 75
+            }
+          ],
+          "distinct": 138
+        },
+        {
+          "id": "again",
+          "label": "Would you answer another poll like this?",
+          "kind": "single",
+          "answered": 351,
+          "items": [
+            {
+              "label": "Yes",
+              "count": 218,
+              "pct": 62
+            },
+            {
+              "label": "Depends on the theme",
+              "count": 118,
+              "pct": 34
+            },
+            {
+              "label": "No",
+              "count": 15,
+              "pct": 4
+            }
+          ],
+          "distinct": 3
+        }
+      ]
+    }
+  ]
+}

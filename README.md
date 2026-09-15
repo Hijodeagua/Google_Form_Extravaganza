@@ -30,6 +30,7 @@ Pages revalidate hourly. Sheet contents are never committed.
 | `/extravaganza`                           | Index of trackers                             |
 | `/extravaganza/nfl-futures-26-27`         | Pick distribution — how the room split        |
 | `/extravaganza/nfl-futures-26-27/model`   | Tre model picks: divisions and the champion   |
+| `/extravaganza/edh-survey`                | The EDH Survey findings, in two parts         |
 
 `main` is deliberately just these two pages. Standings, entrant detail, the side
 pot, the admin fix queue and the advanced board are all built and working on the
@@ -138,6 +139,24 @@ So MVP now takes the market price the Form's own dropdown carried. Worth noting
 what this cost: an earlier version of the fit scored 2 of 8, until the starter
 filter was found to be reading the target season's pass attempts. Removing that
 lookahead halved the score.
+
+### `data/edh-survey/findings.json`
+
+Aggregates from The EDH Survey (358 responses, January 2025), written by
+`scripts/build-edh-findings.ts`. Only counts are committed; individual
+responses never leave the sheet. Free-text answers are folded together where
+they clearly mean the same thing, one-off write-ins fold into Other, and
+non-answers are dropped before percentages are taken.
+
+```bash
+npx tsx scripts/build-edh-findings.ts path/to/answers.csv   # or no arg to fetch via gviz
+```
+
+### Form links
+
+`lib/forms.ts` holds every Google Form the site points at. A page only renders
+its "fill out the form" button when the URL is set, so an empty entry hides the
+button instead of shipping a dead link.
 
 ### Fitting the constants
 

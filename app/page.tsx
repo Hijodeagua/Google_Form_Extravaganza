@@ -21,6 +21,19 @@ export default function Home() {
       </section>
 
       <div className="cards">
+        <Link href="/edh-survey" className="tcard">
+          <div className="tt">The EDH Survey</div>
+          <div className="tb">What 358 Commander players said about how they got here and how they play. Findings only, in two parts.</div>
+          <div className="tm">
+            <span>
+              <b>358</b> responses
+            </span>
+            <span>
+              <b>14</b> questions
+            </span>
+            <span>January 2025</span>
+          </div>
+        </Link>
         {POOLS.map((pool) => (
           <Link key={pool.slug} href={`/${pool.slug}`} className="tcard">
             <div className="tt">{pool.title}</div>

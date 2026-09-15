@@ -3,6 +3,7 @@ import { loadPool } from "@/lib/load";
 import { clusterAnswers, clusterLabel, pickKey } from "@/lib/resolve/match";
 import type { Resolution } from "@/lib/resolve/types";
 import { PickPie, type Slice } from "./parts";
+import { FORMS } from "@/lib/forms";
 
 export const revalidate = 3600;
 
@@ -48,7 +49,6 @@ export default async function DistributionPage() {
           key,
           label: clusterLabel(members),
           count: names.length,
-          names,
           modelPicked: modelKey !== null && key === modelKey,
           correct: outcome && !outcome.pending ? anyCorrect : null,
         };
@@ -73,11 +73,16 @@ export default async function DistributionPage() {
         </p>
         <p>
           Found a bug or something off?{" "}
-          <a href="https://forms.gle/X7zzeaww3fgGnyvNA" target="_blank" rel="noreferrer noopener">
+          <a href={FORMS.feedback} target="_blank" rel="noreferrer noopener">
             Let me know here
           </a>
           .
         </p>
+        {FORMS.nflFutures && (
+          <a className="cta-form" href={FORMS.nflFutures} target="_blank" rel="noreferrer noopener">
+            Fill out the futures form →
+          </a>
+        )}
       </section>
 
       {Object.entries(sections).map(([section, questions]) => (
@@ -105,7 +110,9 @@ export default async function DistributionPage() {
 
                 {noAnswer.length > 0 && (
                   <div className="who" style={{ marginTop: 10 }}>
-                    <span className="t-dim">No answer: {noAnswer.join(", ")}</span>
+                    <span className="t-dim">
+                      {noAnswer.length} {noAnswer.length === 1 ? "person" : "people"} left this blank
+                    </span>
                   </div>
                 )}
               </div>

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Inter, Press_Start_2P } from "next/font/google";
 import "./globals.css";
 import { THEME_BOOTSTRAP, ThemeToggle } from "./theme";
+import { SiteNav } from "./nav";
 
 /**
  * Same pairing as Can-Tre-Beat-Vegas's Techno Bowl theme: Press Start 2P for
@@ -43,7 +44,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
           </div>
         </header>
-        <main className="wrap">{children}</main>
+        <main className="wrap">
+          <SiteNav />
+          {children}
+        </main>
         <footer className="site">
           <div className="wrap inner">
             Responses are read straight from the Google Form&apos;s sheet and re-read hourly.
