@@ -1,0 +1,514 @@
+{
+  "title": "Could you beat it in a fight?",
+  "subtitle": "Fifteen animals, two questions. Which ones would you beat with your bare hands, and which ones would you beat with a knife.",
+  "responses": 113,
+  "collected": "Open since 2021",
+  "sheetId": "1jvDUnZAW1UUEYSnmCoSFjZA_ZzaPKs6enx04rll1eNs",
+  "generatedAt": "2026-09-16T00:01:15.491Z",
+  "groups": {
+    "all": 113,
+    "men": 54,
+    "women": 52,
+    "other": 7
+  },
+  "perPerson": {
+    "unarmed": {
+      "median": 4,
+      "mean": 4.7,
+      "everything": 1,
+      "none": 0,
+      "writeIns": 0
+    },
+    "knife": {
+      "median": 7,
+      "mean": 7.2,
+      "everything": 3,
+      "none": 0,
+      "writeIns": 0
+    },
+    "fewerWithKnife": 1,
+    "sameWithKnife": 15
+  },
+  "animals": [
+    {
+      "id": "house cat",
+      "label": "House cat",
+      "unarmed": {
+        "all": {
+          "count": 95,
+          "pct": 84
+        },
+        "men": {
+          "count": 48,
+          "pct": 89
+        },
+        "women": {
+          "count": 40,
+          "pct": 77
+        }
+      },
+      "knife": {
+        "all": {
+          "count": 99,
+          "pct": 88
+        },
+        "men": {
+          "count": 50,
+          "pct": 93
+        },
+        "women": {
+          "count": 42,
+          "pct": 81
+        }
+      }
+    },
+    {
+      "id": "rat",
+      "label": "Rat",
+      "unarmed": {
+        "all": {
+          "count": 92,
+          "pct": 81
+        },
+        "men": {
+          "count": 48,
+          "pct": 89
+        },
+        "women": {
+          "count": 37,
+          "pct": 71
+        }
+      },
+      "knife": {
+        "all": {
+          "count": 97,
+          "pct": 86
+        },
+        "men": {
+          "count": 49,
+          "pct": 91
+        },
+        "women": {
+          "count": 41,
+          "pct": 79
+        }
+      }
+    },
+    {
+      "id": "medium sized dog",
+      "label": "Medium sized dog",
+      "unarmed": {
+        "all": {
+          "count": 85,
+          "pct": 75
+        },
+        "men": {
+          "count": 48,
+          "pct": 89
+        },
+        "women": {
+          "count": 30,
+          "pct": 58
+        }
+      },
+      "knife": {
+        "all": {
+          "count": 99,
+          "pct": 88
+        },
+        "men": {
+          "count": 50,
+          "pct": 93
+        },
+        "women": {
+          "count": 42,
+          "pct": 81
+        }
+      }
+    },
+    {
+      "id": "goose",
+      "label": "Goose",
+      "unarmed": {
+        "all": {
+          "count": 85,
+          "pct": 75
+        },
+        "men": {
+          "count": 43,
+          "pct": 80
+        },
+        "women": {
+          "count": 35,
+          "pct": 67
+        }
+      },
+      "knife": {
+        "all": {
+          "count": 97,
+          "pct": 86
+        },
+        "men": {
+          "count": 48,
+          "pct": 89
+        },
+        "women": {
+          "count": 42,
+          "pct": 81
+        }
+      }
+    },
+    {
+      "id": "large dog",
+      "label": "Large dog",
+      "unarmed": {
+        "all": {
+          "count": 34,
+          "pct": 30
+        },
+        "men": {
+          "count": 19,
+          "pct": 35
+        },
+        "women": {
+          "count": 10,
+          "pct": 19
+        }
+      },
+      "knife": {
+        "all": {
+          "count": 87,
+          "pct": 77
+        },
+        "men": {
+          "count": 49,
+          "pct": 91
+        },
+        "women": {
+          "count": 31,
+          "pct": 60
+        }
+      }
+    },
+    {
+      "id": "eagle",
+      "label": "Eagle",
+      "unarmed": {
+        "all": {
+          "count": 33,
+          "pct": 29
+        },
+        "men": {
+          "count": 20,
+          "pct": 37
+        },
+        "women": {
+          "count": 8,
+          "pct": 15
+        }
+      },
+      "knife": {
+        "all": {
+          "count": 67,
+          "pct": 59
+        },
+        "men": {
+          "count": 40,
+          "pct": 74
+        },
+        "women": {
+          "count": 22,
+          "pct": 42
+        }
+      }
+    },
+    {
+      "id": "kangaroo",
+      "label": "Kangaroo",
+      "unarmed": {
+        "all": {
+          "count": 28,
+          "pct": 25
+        },
+        "men": {
+          "count": 11,
+          "pct": 20
+        },
+        "women": {
+          "count": 15,
+          "pct": 29
+        }
+      },
+      "knife": {
+        "all": {
+          "count": 51,
+          "pct": 45
+        },
+        "men": {
+          "count": 31,
+          "pct": 57
+        },
+        "women": {
+          "count": 15,
+          "pct": 29
+        }
+      }
+    },
+    {
+      "id": "chimpanzee",
+      "label": "Chimpanzee",
+      "unarmed": {
+        "all": {
+          "count": 19,
+          "pct": 17
+        },
+        "men": {
+          "count": 9,
+          "pct": 17
+        },
+        "women": {
+          "count": 9,
+          "pct": 17
+        }
+      },
+      "knife": {
+        "all": {
+          "count": 54,
+          "pct": 48
+        },
+        "men": {
+          "count": 32,
+          "pct": 59
+        },
+        "women": {
+          "count": 18,
+          "pct": 35
+        }
+      }
+    },
+    {
+      "id": "king cobra",
+      "label": "King cobra",
+      "unarmed": {
+        "all": {
+          "count": 18,
+          "pct": 16
+        },
+        "men": {
+          "count": 9,
+          "pct": 17
+        },
+        "women": {
+          "count": 7,
+          "pct": 13
+        }
+      },
+      "knife": {
+        "all": {
+          "count": 38,
+          "pct": 34
+        },
+        "men": {
+          "count": 17,
+          "pct": 31
+        },
+        "women": {
+          "count": 16,
+          "pct": 31
+        }
+      }
+    },
+    {
+      "id": "wolf",
+      "label": "Wolf",
+      "unarmed": {
+        "all": {
+          "count": 14,
+          "pct": 12
+        },
+        "men": {
+          "count": 9,
+          "pct": 17
+        },
+        "women": {
+          "count": 3,
+          "pct": 6
+        }
+      },
+      "knife": {
+        "all": {
+          "count": 42,
+          "pct": 37
+        },
+        "men": {
+          "count": 30,
+          "pct": 56
+        },
+        "women": {
+          "count": 8,
+          "pct": 15
+        }
+      }
+    },
+    {
+      "id": "crocodile",
+      "label": "Crocodile",
+      "unarmed": {
+        "all": {
+          "count": 13,
+          "pct": 12
+        },
+        "men": {
+          "count": 8,
+          "pct": 15
+        },
+        "women": {
+          "count": 4,
+          "pct": 8
+        }
+      },
+      "knife": {
+        "all": {
+          "count": 33,
+          "pct": 29
+        },
+        "men": {
+          "count": 21,
+          "pct": 39
+        },
+        "women": {
+          "count": 11,
+          "pct": 21
+        }
+      }
+    },
+    {
+      "id": "grizzly bear",
+      "label": "Grizzly bear",
+      "unarmed": {
+        "all": {
+          "count": 5,
+          "pct": 4
+        },
+        "men": {
+          "count": 1,
+          "pct": 2
+        },
+        "women": {
+          "count": 4,
+          "pct": 8
+        }
+      },
+      "knife": {
+        "all": {
+          "count": 11,
+          "pct": 10
+        },
+        "men": {
+          "count": 2,
+          "pct": 4
+        },
+        "women": {
+          "count": 9,
+          "pct": 17
+        }
+      }
+    },
+    {
+      "id": "gorilla",
+      "label": "Gorilla",
+      "unarmed": {
+        "all": {
+          "count": 4,
+          "pct": 4
+        },
+        "men": {
+          "count": 1,
+          "pct": 2
+        },
+        "women": {
+          "count": 3,
+          "pct": 6
+        }
+      },
+      "knife": {
+        "all": {
+          "count": 16,
+          "pct": 14
+        },
+        "men": {
+          "count": 4,
+          "pct": 7
+        },
+        "women": {
+          "count": 10,
+          "pct": 19
+        }
+      }
+    },
+    {
+      "id": "elephant",
+      "label": "Elephant",
+      "unarmed": {
+        "all": {
+          "count": 4,
+          "pct": 4
+        },
+        "men": {
+          "count": 0,
+          "pct": 0
+        },
+        "women": {
+          "count": 4,
+          "pct": 8
+        }
+      },
+      "knife": {
+        "all": {
+          "count": 14,
+          "pct": 12
+        },
+        "men": {
+          "count": 6,
+          "pct": 11
+        },
+        "women": {
+          "count": 8,
+          "pct": 15
+        }
+      }
+    },
+    {
+      "id": "lion",
+      "label": "Lion",
+      "unarmed": {
+        "all": {
+          "count": 2,
+          "pct": 2
+        },
+        "men": {
+          "count": 1,
+          "pct": 2
+        },
+        "women": {
+          "count": 1,
+          "pct": 2
+        }
+      },
+      "knife": {
+        "all": {
+          "count": 7,
+          "pct": 6
+        },
+        "men": {
+          "count": 2,
+          "pct": 4
+        },
+        "women": {
+          "count": 5,
+          "pct": 10
+        }
+      }
+    }
+  ]
+}

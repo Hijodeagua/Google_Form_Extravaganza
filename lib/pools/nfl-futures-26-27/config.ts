@@ -34,7 +34,7 @@ const DIVISIONS: Question[] = [
 export const NFL_FUTURES_26_27: PoolConfig = {
   slug: "nfl-futures-26-27",
   title: "NFL Futures 2026-27",
-  blurb: "Friend-group futures pool, graded live against the season — and against the model.",
+  blurb: "Friend-group futures pool, graded live against the season, and against the model.",
   season: "2026-27",
   sheetId: "1QOYnNSYzYgkmpiG8_nTSOkpNDsoE1abIVrxBdum7sOE",
   // Paste the "Publish to the web -> CSV" URL for the responses tab here. It

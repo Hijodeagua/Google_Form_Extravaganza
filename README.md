@@ -31,8 +31,9 @@ Pages revalidate hourly. Sheet contents are never committed.
 | `/extravaganza/nfl-futures-26-27`         | Pick distribution — how the room split        |
 | `/extravaganza/nfl-futures-26-27/model`   | Tre model picks: divisions and the champion   |
 | `/extravaganza/edh-survey`                | The EDH Survey findings, in two parts         |
+| `/extravaganza/fight-survey`              | Could you beat it in a fight? Fifteen animals |
 
-`main` is deliberately just these two pages. Standings, entrant detail, the side
+`main` is deliberately just these pages. Standings, entrant detail, the side
 pot, the admin fix queue and the advanced board are all built and working on the
 `future/full-tracker` branch — see [docs/FUTURE-WORK.md](docs/FUTURE-WORK.md)
 for what each one does and why it is parked.
@@ -150,6 +151,17 @@ non-answers are dropped before percentages are taken.
 
 ```bash
 npx tsx scripts/build-edh-findings.ts path/to/answers.csv   # or no arg to fetch via gviz
+```
+
+### `data/fight-survey/findings.json`
+
+Aggregates from the "Could you beat it in a fight?" poll (113 responses so
+far), written by `scripts/build-fight-findings.ts`. Per animal: how many
+people think they would win unarmed and with a knife, overall and split by
+gender. Only counts are committed. Re-run and commit when new responses come in:
+
+```
+npx tsx scripts/build-fight-findings.ts path/to/answers.csv   # or no arg to fetch via gviz
 ```
 
 ### Form links

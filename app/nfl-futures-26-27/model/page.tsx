@@ -46,7 +46,7 @@ export default function ModelPage() {
         </p>
         <div className="meth">
           Locked {model.asOf}, {model.simulation.week}, with {model.simulation.gamesPlayed} of 272 games played. Nine
-          picks only — division winners and the champion — because those are what the simulation produces. It does not
+          picks only, division winners and the champion, because those are what the simulation produces. It does not
           guess at awards or stat leaders.
         </div>
       </section>
@@ -65,7 +65,7 @@ export default function ModelPage() {
 
       <h2 className="section-h">Division winners</h2>
       <p className="section-sub">
-        The share of full playthroughs each team won its division. A low number is not a weak pick — it is a close
+        The share of full playthroughs each team won its division. A low number is not a weak pick, it is a close
         division.
       </p>
 

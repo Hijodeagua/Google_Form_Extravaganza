@@ -750,3 +750,28 @@ tr.adv-pick td { background: color-mix(in srgb, var(--model) 10%, transparent) !
 }
 .cta-form:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 :root[data-theme="light"] .cta-form { color: #fff; }
+
+/* ===== fight poll ===== */
+.fight-list { border: 1.5px solid var(--line); background: var(--card); padding: 6px 15px 12px; }
+.fight-row { display: grid; grid-template-columns: 1fr; gap: 6px; padding: 11px 0; border-bottom: 1px solid var(--line-soft); }
+.fight-row:last-of-type { border-bottom: 0; }
+@media (min-width: 600px) { .fight-row { grid-template-columns: 150px 1fr; align-items: center; gap: 16px; } }
+.fight-row .fr-name { font-size: 14px; font-weight: 600; }
+.fight-row .fr-bars { display: grid; gap: 5px; }
+.fight-row .fr-bar { display: grid; grid-template-columns: 1fr 44px; align-items: center; gap: 10px; }
+.fight-row .fr-track { display: block; height: 10px; background: color-mix(in srgb, var(--chalk) 12%, transparent); border: 1px solid var(--line-soft); overflow: hidden; }
+.fight-row .fr-fill { display: block; height: 100%; }
+.fight-row .fr-fill.unarmed, .fr-legend .sw.unarmed { background: color-mix(in srgb, var(--turf) 55%, var(--mut-2)); }
+.fight-row .fr-fill.knife, .fr-legend .sw.knife { background: linear-gradient(90deg, var(--rust), var(--neon-y)); }
+.fight-row .fr-num { font-family: var(--font-pixel), monospace; font-size: 8px; color: var(--mut); text-align: right; white-space: nowrap; }
+.fr-legend { display: flex; gap: 18px; padding-top: 12px; font-size: 12px; color: var(--mut-2); }
+.fr-legend span { display: inline-flex; align-items: center; gap: 7px; }
+.fr-legend .sw { display: inline-block; width: 18px; height: 9px; border: 1px solid var(--line-soft); }
+table.data.split { min-width: 0; font-size: 13.5px; }
+table.data.split th, table.data.split td { text-align: right; padding-left: 8px; padding-right: 8px; font-variant-numeric: tabular-nums; }
+table.data.split thead tr.sub th { padding-bottom: 8px; border-bottom-width: 1.5px; }
+table.data.split thead tr:first-child th { border-bottom: 0; padding-bottom: 2px; color: var(--ink); text-align: center; }
+table.data.split th:first-child, table.data.split td.an { text-align: left; padding-left: 0; }
+table.data.split td { padding-top: 10px; padding-bottom: 10px; }
+table.data.split td.an { font-weight: 600; white-space: nowrap; }
+table.data.split td.hi { color: var(--neon-y); font-weight: 700; }

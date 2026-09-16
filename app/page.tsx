@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { POOLS } from "@/lib/pools/registry";
+import fight from "@/data/fight-survey/findings.json";
 
 export const revalidate = 3600;
 
@@ -32,6 +33,19 @@ export default function Home() {
               <b>14</b> questions
             </span>
             <span>January 2025</span>
+          </div>
+        </Link>
+        <Link href="/fight-survey" className="tcard">
+          <div className="tt">Could you beat it in a fight?</div>
+          <div className="tb">Fifteen animals, unarmed and then with a knife. Which ones people think they could take, split by gender.</div>
+          <div className="tm">
+            <span>
+              <b>{fight.responses}</b> responses
+            </span>
+            <span>
+              <b>{fight.animals.length}</b> animals
+            </span>
+            <span>{fight.collected}</span>
           </div>
         </Link>
         {POOLS.map((pool) => (
