@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { POOLS } from "@/lib/pools/registry";
-import fight from "@/data/fight-survey/findings.json";
+import { loadEdhFindings, loadFightFindings } from "@/lib/surveys/load";
 
 export const revalidate = 3600;
 
@@ -9,7 +9,8 @@ export const revalidate = 3600;
  * so a new pool appears here by being added to the registry — NBA futures, the
  * EDH survey and the gingerbread race all land as siblings, not rewrites.
  */
-export default function Home() {
+export default async function Home() {
+  const [{ data: edh }, { data: fight }] = await Promise.all([loadEdhFindings(), loadFightFindings()]);
   return (
     <>
       <section className="hero">
@@ -24,15 +25,15 @@ export default function Home() {
       <div className="cards">
         <Link href="/edh-survey" className="tcard">
           <div className="tt">The EDH Survey</div>
-          <div className="tb">What 358 Commander players said about how they got here and how they play. Findings only, in two parts.</div>
+          <div className="tb">What {edh.responses} Commander players said about how they got here and how they play. Findings only, in two parts.</div>
           <div className="tm">
             <span>
-              <b>358</b> responses
+              <b>{edh.responses}</b> responses
             </span>
             <span>
-              <b>14</b> questions
+              <b>{edh.parts.reduce((n, p) => n + p.questions.length, 0)}</b> questions
             </span>
-            <span>January 2025</span>
+            <span>{edh.collected}</span>
           </div>
         </Link>
         <Link href="/fight-survey" className="tcard">

@@ -141,28 +141,24 @@ what this cost: an earlier version of the fit scored 2 of 8, until the starter
 filter was found to be reading the target season's pass attempts. Removing that
 lookahead halved the score.
 
-### `data/edh-survey/findings.json`
+### `data/edh-survey/findings.json` and `data/fight-survey/findings.json`
 
-Aggregates from The EDH Survey (358 responses, January 2025), written by
-`scripts/build-edh-findings.ts`. Only counts are committed; individual
-responses never leave the sheet. Free-text answers are folded together where
-they clearly mean the same thing, one-off write-ins fold into Other, and
-non-answers are dropped before percentages are taken.
+Both survey pages read their sheet live: every hourly revalidation fetches
+the responses via gviz, aggregates them in memory (`lib/surveys/edh.ts`,
+`lib/surveys/fight.ts`), and renders the counts. New responses show up on
+their own, no deploy needed. Rows are never written anywhere.
 
-```bash
-npx tsx scripts/build-edh-findings.ts path/to/answers.csv   # or no arg to fetch via gviz
-```
-
-### `data/fight-survey/findings.json`
-
-Aggregates from the "Could you beat it in a fight?" poll (113 responses so
-far), written by `scripts/build-fight-findings.ts`. Per animal: how many
-people think they would win unarmed and with a knife, overall and split by
-gender. Only counts are committed. Re-run and commit when new responses come in:
+The committed files are fallback snapshots, used only when the sheet cannot
+be reached during `next build` (the page then says so). Refresh them now and
+then so the fallback is not ancient:
 
 ```
-npx tsx scripts/build-fight-findings.ts path/to/answers.csv   # or no arg to fetch via gviz
+npx tsx scripts/build-edh-findings.ts path/to/answers.csv     # or no arg to fetch via gviz
+npx tsx scripts/build-fight-findings.ts path/to/answers.csv
 ```
+
+Both sheets need "Anyone with the link can view" for gviz to answer; otherwise
+the page keeps serving the snapshot.
 
 ### Form links
 

@@ -16,6 +16,8 @@ import { NFL_FUTURES_26_27 as POOL } from "../lib/pools/nfl-futures-26-27/config
 import model from "../data/nfl-futures-26-27/model-picks.v1.json";
 import edh from "../data/edh-survey/findings.json";
 import fight from "../data/fight-survey/findings.json";
+import { buildFightFindings } from "../lib/surveys/fight";
+import { buildEdhFindings } from "../lib/surveys/edh";
 import entities from "../data/nfl-futures-26-27/entities.json";
 import aliases from "../data/nfl-futures-26-27/aliases.json";
 import results from "../data/nfl-futures-26-27/results-26-27.json";
@@ -289,6 +291,40 @@ function entrant(name: string, answers: Record<string, string>, at: number, outc
   check("fight: the knife helps overall",
     fight.animals.filter((a) => a.knife.all.count >= a.unarmed.all.count).length >= 12);
   check("fight: no raw response text is committed", !JSON.stringify(fight).includes("Timestamp"));
+
+  // The live path runs the same builders on whatever the sheet holds right
+  // now, so exercise them on a tiny made-up sheet with the form's real headers.
+  const fightTable = parseCsv([
+    'Timestamp,What is your gender?,Unarmed,"Given a knife? (bowie knife, 5-12 in length to your preference)"',
+    ',Male,"Rat, House Cat","Rat, House Cat, Large Dog"',
+    ',Female,"Rat","Rat, Goose, Wolf"',
+    ',Non-binary,"Rat, Goose, Lion","Rat"',
+    ',Female,"Rat, House Cat, Goose, Medium Sized Dog, Large Dog, Eagle, Kangaroo, Chimpanzee, King Cobra, Wolf, Crocodile, Gorilla, Grizzly Bear, Elephant, Lion","Rat, A Dragon"',
+  ].join("\n"));
+  const f = buildFightFindings(fightTable);
+  eq("fight live: counts every row", f.responses, 4);
+  eq("fight live: groups", `${f.groups.men}/${f.groups.women}/${f.groups.other}`, "1/2/1");
+  eq("fight live: rat is unanimous unarmed", f.animals[0].label + " " + f.animals[0].unarmed.all.pct, "Rat 100");
+  eq("fight live: house cat by women", f.animals.find((a) => a.label === "House cat")!.unarmed.women.count, 1);
+  eq("fight live: large dog knife share", f.animals.find((a) => a.label === "Large dog")!.knife.all.count, 1);
+  eq("fight live: ticked everything once", f.perPerson.unarmed.everything, 1);
+  eq("fight live: one write-in with the knife", f.perPerson.knife.writeIns, 1);
+  eq("fight live: one person picked fewer with the knife", f.perPerson.fewerWithKnife, 2);
+  check("fight live: still fifteen animals on a tiny sheet", f.animals.length === 15);
+
+  const edhTable = parseCsv([
+    'Timestamp,What year did you first start playing Magic?,What year did you first start playing Commander?,What was your first Magic format?,What is your favorite Magic format?,How many Commander decks do you own?,Who is your favorite commander?,Who is the strongest commander in the format?,How do you judge the power level of a deck? (pick two),How do you usually choose a commander?,How do you usually build the 99?,Do you play cEDH? (1 = never),Favorite EDH content creator?,A creator that deserves a shout out?,Would you be interested in answering other commander questions?',
+    ',2010,2015,Standard,Commander,3,Atraxa,Tymna and Thrasios,"Number of combos, The Commander",Theme,EDHREC,1,Command Zone,Commander at Home,Yes',
+    ',1998,2020,Kitchen table,Commander,6-10,Kenrith,Kraum / Tymna,"Number of Tutors, The Commander",Power level,Scryfall,3,The Command Zone,,No',
+    ',2023,2023,Commander,Commander,1,Atraxa,Atraxa,"The Commander",Theme,From my own collection,1,,,No',
+  ].join("\n"));
+  const e = buildEdhFindings(edhTable);
+  eq("edh live: counts every row", e.responses, 3);
+  eq("edh live: two parts", e.parts.length, 2);
+  eq("edh live: eras bucket the start years", e.parts[0].questions[0].items.find((i) => i.label === "Before 2000")!.count, 1);
+  eq("edh live: Tymna pairings fold together", e.parts[1].questions.find((q) => q.id === "strongest")!.items[0].label, "Tymna (any partner)");
+  eq("edh live: creator spellings fold together", e.parts[1].questions.find((q) => q.id === "creator")!.items[0].count, 2);
+  eq("edh live: the No survives", e.parts[1].questions.find((q) => q.id === "again")!.items.find((i) => i.label === "No")!.count, 2);
 
   eq("pool: 16 scoring points on offer", POOL.questions.filter((x) => x.bucket === "division" || x.bucket === "award").reduce((n, x) => n + x.points, 0), 16);
   eq("pool: max total with the bonus", POOL.maxPoints, 18);

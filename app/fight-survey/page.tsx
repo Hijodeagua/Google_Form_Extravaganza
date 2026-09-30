@@ -1,23 +1,13 @@
-import findings from "@/data/fight-survey/findings.json";
 import { FORMS } from "@/lib/forms";
+import { loadFightFindings } from "@/lib/surveys/load";
 
-export const revalidate = false;
-
-type Group = "all" | "men" | "women";
-interface Share { count: number; pct: number }
-interface Animal { id: string; label: string; unarmed: Record<Group, Share>; knife: Record<Group, Share> }
-interface PerPerson { median: number; mean: number; everything: number; none: number; writeIns: number }
-interface Findings {
-  title: string; subtitle: string; responses: number; collected: string;
-  groups: Record<Group, number> & { other: number };
-  perPerson: { unarmed: PerPerson; knife: PerPerson; fewerWithKnife: number; sameWithKnife: number };
-  animals: Animal[];
-}
+/** Re-read the sheet hourly, so new responses land without a deploy. */
+export const revalidate = 3600;
 
 const plural = (n: number, one: string, many = `${one}s`) => `${n} ${n === 1 ? one : many}`;
 
-export default function FightSurveyPage() {
-  const data = findings as unknown as Findings;
+export default async function FightSurveyPage() {
+  const { data, source, reason } = await loadFightFindings();
   const { animals, perPerson, groups } = data;
 
   // The animal the knife helps with most, and the ones almost nobody would fight.
@@ -39,9 +29,15 @@ export default function FightSurveyPage() {
             Fill out the fight form →
           </a>
         )}
+        {source === "snapshot" && (
+          <div className="notice warn">
+            <b>Showing the last saved snapshot.</b> The sheet could not be read when this page was built ({reason}). It
+            will be re-read on the next refresh.
+          </div>
+        )}
         <div className="meth">
           Each person ticked every animal they think they would beat, once bare handed and once holding a bowie knife.
-          Percentages are the share of people who ticked that animal. New responses get folded in when the page is rebuilt.
+          Percentages are the share of people who ticked that animal. The sheet is re-read hourly, so new responses fold in on their own.
         </div>
       </section>
 

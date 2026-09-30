@@ -1,15 +1,9 @@
-import findings from "@/data/edh-survey/findings.json";
 import { FORMS } from "@/lib/forms";
+import { loadEdhFindings } from "@/lib/surveys/load";
+import type { Question } from "@/lib/surveys/edh";
 
-export const revalidate = false;
-
-interface Item { label: string; count: number; pct: number }
-interface Question {
-  id: string; label: string; kind: "single" | "multi" | "years" | "scale" | "open";
-  answered: number; items: Item[]; note?: string; distinct?: number; median?: number;
-}
-interface Part { id: string; title: string; kicker: string; blurb: string; questions: Question[] }
-interface Findings { title: string; subtitle: string; responses: number; collected: string; parts: Part[] }
+/** Re-read the sheet hourly, so new responses land without a deploy. */
+export const revalidate = 3600;
 
 /** The one-line takeaway for a question, read off its own numbers. */
 function headline(q: Question): string {
@@ -30,8 +24,8 @@ function headline(q: Question): string {
   }
 }
 
-export default function EdhSurveyPage() {
-  const data = findings as unknown as Findings;
+export default async function EdhSurveyPage() {
+  const { data, source, reason } = await loadEdhFindings();
 
   return (
     <>
@@ -45,6 +39,12 @@ export default function EdhSurveyPage() {
           <a className="cta-form" href={FORMS.edhSurvey} target="_blank" rel="noreferrer noopener">
             Fill out the EDH survey →
           </a>
+        )}
+        {source === "snapshot" && (
+          <div className="notice warn">
+            <b>Showing the last saved snapshot.</b> The sheet could not be read when this page was built ({reason}). It
+            will be re-read on the next refresh.
+          </div>
         )}
         <div className="meth">
           High level on purpose. Each question gets its headline and the split behind it. Percentages are of the people
@@ -97,8 +97,8 @@ export default function EdhSurveyPage() {
       <div className="notice">
         <b>About the numbers.</b> Free-text answers were folded together where they clearly meant the same thing, so
         &ldquo;Command Zone&rdquo; and &ldquo;The Command Zone&rdquo; are one bar, and every Tymna partner pairing is
-        one bar. Non-answers were dropped before percentages were taken. Only the counts live in this site; the
-        individual responses never left the sheet.
+        one bar. Non-answers were dropped before percentages were taken. The sheet is re-read hourly, so new responses fold
+        in on their own. Only the counts live in this site; the individual responses never leave the sheet.
       </div>
       <div className="foot" />
     </>
